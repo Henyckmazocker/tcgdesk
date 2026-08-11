@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Entrypoint CLI de TCGDesk.
+ *
+ * Es la adición 4a de [[TCGDesk/Decisiones Técnicas]]: importar 105.788 printings
+ * y sincronizar precios a diario por HTTP es frágil (timeouts, memory_limit de la
+ * petición) y feo de programar.
+ *
+ * La clave de que esto no sea un apaño es que NO tiene bootstrap propio: monta el
+ * mismo config/container.php que public/index.php, así que los use cases de
+ * ingesta son use cases normales, testeables e idénticos a los del HTTP.
+ *
+ * Uso:
+ *   php bin/tcgdesk                 lista los comandos
+ *   php bin/tcgdesk hello [nombre]  comando de prueba
+ */
+
+if (PHP_SAPI !== 'cli') {
+    fwrite(STDERR, "bin/tcgdesk solo se ejecuta por CLI.\n");
+    exit(1);
+}
+
+require_once __DIR__ . '/../bootstrap.php';
+
+use App\Cli\CommandRegistry;
+
+// config/container.php devuelve una FACTORÍA, no el contenedor.
+$containerFactory = require __DIR__ . '/../config/container.php';
+$container        = $containerFactory();
+
+$registry = $container->get(CommandRegistry::class);
+
+exit($registry->run($argv[1] ?? 'list', array_slice($argv, 2)));

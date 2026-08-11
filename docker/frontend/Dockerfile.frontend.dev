@@ -1,0 +1,23 @@
+# Use an official Node runtime as a parent image
+FROM node:18-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock) first
+# This takes advantage of Docker cache layering
+COPY frontend/package*.json ./
+
+# Install project dependencies
+# --legacy-peer-deps needed for @codetrix-studio/capacitor-google-auth (declares peer @capacitor/core@^6, project uses ^8)
+RUN npm install --legacy-peer-deps
+
+# Copy the rest of the application's source code (this will be largely overridden by volume mounts)
+COPY frontend/ .
+
+# Expose the port the app runs on (Vue CLI default is 8080; el host lo publica en 8099)
+EXPOSE 8080
+
+# Command to run the Vue development server
+# --host 0.0.0.0 is important to make the server accessible from outside the container
+CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0"]

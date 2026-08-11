@@ -1,0 +1,80 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile.frontend.dev
+    ports:
+      - "8099:8080"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/babel.config.js:/app/babel.config.js
+      - ./frontend/jsconfig.json:/app/jsconfig.json
+      - ./frontend/vue.config.js:/app/vue.config.js
+    environment:
+      - NODE_ENV=development
+      - VUE_APP_API_URL=http://127.0.0.1:8899/index.php
+      - VUE_APP_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile.backend.dev
+    ports:
+      - "8899:80"
+    volumes:
+      # Mapear todo el directorio backend al DocumentRoot de Apache
+      - ./backend:/var/www/html
+      # Mapear específicamente vendor como volumen para performance
+      - backend_vendor:/var/www/html/vendor
+    environment:
+      - APP_ENV=development
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=tcgdesk_db
+      - DB_USERNAME=tcgdesk_user
+      - DB_PASSWORD=${DB_PASSWORD}
+      - LOG_PATH=/var/www/html/storage/logs
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    command: >
+      bash -c "cd /var/www/html &&
+               cp .env.docker-development .env &&
+               export COMPOSER_MEMORY_LIMIT=-1 &&
+               composer install --optimize-autoloader --no-interaction &&
+               mkdir -p storage/logs storage/cache storage/sessions storage/uploads &&
+               chown -R www-data:www-data storage/ &&
+               chmod -R 775 storage/ &&
+               apache2-foreground"
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3312:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: tcgdesk_db
+      MYSQL_USER: tcgdesk_user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    # utf8mb4 en el servidor, no solo en las tablas: los nombres de carta japoneses y
+    # los símbolos de maná lo exigen, y la colación tiene que coincidir entre tabla y
+    # conexión o los JOIN por nombre fallarán al importar colecciones.
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    # NO usar --init-file: ejecutaría init.sql (que hace DROP DATABASE) en CADA
+    # arranque y borraría los datos. init.sql se monta en docker-entrypoint-initdb.d,
+    # que solo corre la primera vez (volumen vacío). Eso basta para inicializar.
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:
+  backend_vendor:

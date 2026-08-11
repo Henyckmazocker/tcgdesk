@@ -1,0 +1,10 @@
+# Pasar la cabecera Authorization al PHP (Apache la filtra por defecto).
+# Sin esto, el login por JWT del cliente móvil no llega a AuthMiddleware.
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)$
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Todo lo que no sea un fichero real entra por index.php.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

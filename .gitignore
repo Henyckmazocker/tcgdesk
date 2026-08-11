@@ -1,0 +1,120 @@
+# ============================================================================
+# TCGDesk — Git Ignore
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Ficheros de sistema
+# ----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# ----------------------------------------------------------------------------
+# Dependencias
+# ----------------------------------------------------------------------------
+node_modules/
+/dist
+frontend/dist/
+/vendor/
+backend/vendor/
+# composer.lock SÍ se commitea: es lo que fija las versiones exactas entre
+# máquinas. (El .gitignore de LibraryVue lo excluye; es un error heredado que
+# aquí no se replica.)
+
+# ----------------------------------------------------------------------------
+# Entorno — CRÍTICO: nunca commitear
+# ----------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.*.example
+frontend/.env.mobile
+
+# ----------------------------------------------------------------------------
+# Credenciales y secretos — CRÍTICO: nunca commitear
+# ----------------------------------------------------------------------------
+*_secret*
+*_password*
+*_credentials*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.gpg
+secrets/
+credentials/
+
+# Secretos Android (contienen el OAuth client ID)
+frontend/android/app/src/main/res/values/secrets.xml
+
+# ----------------------------------------------------------------------------
+# Logs
+# ----------------------------------------------------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+logs/
+*.log.*
+
+# ----------------------------------------------------------------------------
+# Storage del backend — TODO su contenido es estado de ejecución
+# ----------------------------------------------------------------------------
+# Se ignora la carpeta entera en vez de enumerar subcarpetas: enumerar ya falló
+# una vez (los contadores de storage/ratelimit/ se colaron al primer `git add`
+# porque esa carpeta nació después de escribirse este fichero), y lo que viene
+# es peor — el Plan - Mirror del Catálogo MTG descarga ahí AllPrintings.json
+# (177 MB) y AllPrices.json.gz (149 MB), y la caché de imágenes de Scryfall
+# crece sin techo.
+backend/storage/*
+!backend/storage/.gitkeep
+
+*.json.gz
+
+# ----------------------------------------------------------------------------
+# Base de datos
+# ----------------------------------------------------------------------------
+*.sqlite
+*.sqlite3
+*.db
+*.sql.gz
+*.dump
+
+# ----------------------------------------------------------------------------
+# Editores e IDEs
+# ----------------------------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+.history/
+
+# ----------------------------------------------------------------------------
+# Build
+# ----------------------------------------------------------------------------
+/dist/
+/build/
+/.cache/
+
+# ----------------------------------------------------------------------------
+# Tests
+# ----------------------------------------------------------------------------
+coverage/
+.phpunit.result.cache
+backend/.phpunit.cache/
+
+# ----------------------------------------------------------------------------
+# Temporales
+# ----------------------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.backup
