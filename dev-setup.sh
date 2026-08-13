@@ -249,24 +249,30 @@ start_services() {
   done
   success "MySQL listo."
 
-  # Esperar a que el backend esté disponible
+  # Esperar a que el backend esté disponible.
+  # Se comprueba con la acción `ping`, NO con un GET a index.php: un GET sin
+  # acción devuelve 400 por diseño, y `curl -sf` lo trata como fallo — el
+  # chequeo heredado de LibraryVue nunca pasaba y siempre acababa en el warn.
   info "Esperando a que el backend esté disponible..."
   retries=30
-  until curl -sf http://127.0.0.1:8899/index.php -o /dev/null 2>/dev/null; do
+  until curl -sf -X POST http://127.0.0.1:8899/index.php \
+          -H 'Content-Type: application/json' \
+          -d '{"action":"ping"}' -o /dev/null 2>/dev/null; do
     retries=$((retries - 1))
     if [[ $retries -le 0 ]]; then
-      warn "Backend no respondió en el tiempo esperado. Puede que aún esté iniciando."
+      warn "Backend no respondió a la acción 'ping'. Revisa: ./dev-setup.sh --logs"
       break
     fi
     sleep 2
   done
+  success "Backend listo."
 
   echo ""
   success "=============================================="
   success " TCGDesk está corriendo en desarrollo"
   success "=============================================="
   echo ""
-  echo -e "  ${GREEN}Frontend:${NC} http://localhost:8099"
+  echo -e "  ${GREEN}Frontend:${NC} http://localhost:8094"
   echo -e "  ${GREEN}Backend:${NC}  http://localhost:8899"
   echo -e "  ${GREEN}MySQL:${NC}    localhost:3312  (user: tcgdesk_user)"
   echo ""

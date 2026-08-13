@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 use App\Cli\CommandRegistry;
 use App\Domain\GoogleAuthClientInterface;
+use App\Domain\Repository\CardRepositoryInterface;
+use App\Domain\Repository\CatalogRepositoryInterface;
+use App\Domain\Repository\PriceRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Auth\GoogleAuthClient;
 use App\Infrastructure\Database\DatabaseConnector;
 use App\Infrastructure\Logging\LoggerFactory;
+use App\Infrastructure\Mtgjson\MtgJsonDownloader;
+use App\Infrastructure\Persistence\MySqlCardRepository;
+use App\Infrastructure\Persistence\MySqlCatalogRepository;
+use App\Infrastructure\Persistence\MySqlPriceRepository;
 use App\Infrastructure\Persistence\MySqlUserRepository;
+use App\Infrastructure\Persistence\Search\BooleanExpressionBuilder;
 use App\Infrastructure\RateLimit\FileRateLimitStore;
 use App\Router\ActionRouter;
 use DI\ContainerBuilder;
@@ -55,6 +63,13 @@ return function (): ContainerInterface {
             return new FileRateLimitStore($dir, $logger);
         },
 
+        // Los 177 MB de AllPrintings.json.gz caen aquí. storage/ está gitignored
+        // entero, así que no hay riesgo de que acabe en un commit.
+        MtgJsonDownloader::class => function (LoggerInterface $logger): MtgJsonDownloader {
+            $dir = $_ENV['MTGJSON_PATH'] ?? __DIR__ . '/../storage/mtgjson';
+            return new MtgJsonDownloader($logger, $dir);
+        },
+
         // ====================================================================
         // ROUTER
         // ====================================================================
@@ -92,7 +107,30 @@ return function (): ContainerInterface {
         // Todo lo demás (controllers, middlewares, comandos) lo resuelve el
         // autowiring de PHP-DI y no hace falta declararlo.
 
-        UserRepositoryInterface::class => DI\get(MySqlUserRepository::class),
+        UserRepositoryInterface::class    => DI\get(MySqlUserRepository::class),
+
+        CatalogRepositoryInterface::class => DI\get(MySqlCatalogRepository::class),
+
+        CardRepositoryInterface::class    => DI\get(MySqlCardRepository::class),
+
+        PriceRepositoryInterface::class   => DI\get(MySqlPriceRepository::class),
+
+        // Las stopwords y el tamaño mínimo de token se leen del SERVIDOR, no se
+        // copian aquí: son configuración de MySQL, y una copia a mano se
+        // desincroniza en silencio y deja búsquedas devolviendo cero resultados
+        // sin ningún error. Es exactamente el fallo que midió el M0 del
+        // Plan - Mirror del Catálogo MTG con 'Jace, the Mind Sculptor'.
+        BooleanExpressionBuilder::class => function (PDO $db): BooleanExpressionBuilder {
+            $stopwords = $db
+                ->query('SELECT value FROM information_schema.INNODB_FT_DEFAULT_STOPWORD')
+                ->fetchAll(PDO::FETCH_COLUMN);
+
+            $minToken = (int) ($db
+                ->query("SHOW VARIABLES LIKE 'innodb_ft_min_token_size'")
+                ->fetch()['Value'] ?? 3);
+
+            return new BooleanExpressionBuilder(array_fill_keys($stopwords, true), $minToken);
+        },
 
     ]);
 

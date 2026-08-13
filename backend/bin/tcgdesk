@@ -24,6 +24,15 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
+// El memory_limit REAL del contenedor es 128M —la ENV PHP_MEMORY_LIMIT del
+// Dockerfile no la lee nadie en la imagen php:8.2-apache—, y la ingesta del
+// catálogo mide 102 MB de pico con un solo set: los sets grandes no caben.
+//
+// Esto NO sustituye al streaming: AllPrintings.json.gz pasa de 1 GB en claro y
+// seguiría sin caber con cualquier límite razonable. Lo que cubre es el objeto de
+// un set suelto, que json-machine sí decodifica entero.
+ini_set('memory_limit', $_ENV['CLI_MEMORY_LIMIT'] ?? '512M');
+
 require_once __DIR__ . '/../bootstrap.php';
 
 use App\Cli\CommandRegistry;

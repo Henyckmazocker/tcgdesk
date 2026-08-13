@@ -1,0 +1,8 @@
+{
+  "appId": "com.tcgdesk.app",
+  "appName": "TCGDesk",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http"
+  }
+}

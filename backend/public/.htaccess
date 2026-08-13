@@ -1,10 +1,38 @@
+RewriteEngine On
+
 # Pasar la cabecera Authorization al PHP (Apache la filtra por defecto).
 # Sin esto, el login por JWT del cliente móvil no llega a AuthMiddleware.
-RewriteEngine On
-RewriteCond %{HTTP:Authorization} ^(.*)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# El preflight se responde aquí, antes de llegar a PHP.
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ - [R=200,L]
+
+# --- CORS de desarrollo -------------------------------------------------------
+# Se REFLEJA el origen en vez de usar '*', porque '*' es incompatible con
+# Allow-Credentials y sin credenciales no hay cookie de sesión. La reflexión solo
+# ocurre si el origen casa con una de estas dos regex, así que no es un comodín:
+# cualquier otro origen se queda sin cabecera y el navegador bloquea.
+#
+# El frontend (:8099) y el backend (:8899) son orígenes distintos, y Capacitor
+# no atraviesa el devServer de Vue —va directo a 10.0.2.2:8899 desde
+# capacitor://localhost—, así que un proxy en vue.config.js no sustituye a esto.
+#
+# EN PRODUCCIÓN esto se sustituye por el dominio fijo en la config de Nginx.
+SetEnvIf Origin "^http(s)?://(127\.0\.0\.1|localhost)(:[0-9]+)?$" AccessControlAllowOrigin=$0
+SetEnvIf Origin "^capacitor://localhost$" AccessControlAllowOrigin=$0
+Header always set Access-Control-Allow-Origin "%{AccessControlAllowOrigin}e" env=AccessControlAllowOrigin
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Origin"
+Header always set Access-Control-Allow-Credentials "true"
+Header always set Access-Control-Max-Age "86400"
 
 # Todo lo que no sea un fichero real entra por index.php.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# --- Cabeceras de seguridad ---------------------------------------------------
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options SAMEORIGIN
+Header always set Referrer-Policy "strict-origin-when-cross-origin"

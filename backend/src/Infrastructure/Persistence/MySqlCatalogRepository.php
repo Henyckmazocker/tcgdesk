@@ -1,0 +1,144 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Infrastructure\Persistence;
+
+use App\Domain\Repository\CatalogRepositoryInterface;
+use PDO;
+
+/**
+ * Escritura del catálogo con `INSERT ... ON DUPLICATE KEY UPDATE` multi-fila.
+ *
+ * El upsert por lotes es lo que hace viable la ingesta: 105.788 printings y
+ * ~600.000 nombres localizados con una sentencia por fila son otros tantos viajes
+ * a MySQL. Aquí cada lote es UNA sentencia con N tuplas de VALUES.
+ *
+ * El `ON DUPLICATE KEY UPDATE` no es un detalle de rendimiento sino el mecanismo
+ * de idempotencia: una carta reimpresa en 40 sets llega 40 veces a upsertCards()
+ * y tiene que actualizarse, no reventar por clave duplicada.
+ */
+class MySqlCatalogRepository implements CatalogRepositoryInterface
+{
+    /**
+     * Filas por sentencia.
+     *
+     * El límite real no es el número de filas sino `max_allowed_packet` y los
+     * marcadores de posición del prepared statement. Con 1.000 filas × 16
+     * columnas son 16.000 marcadores, holgado frente al máximo de 65.535 de
+     * MySQL, y el lote más ancho de esta clase (mtg_printing) es el que fija el
+     * techo.
+     */
+    private const TAMANO_LOTE = 1000;
+
+    public function __construct(
+        private readonly PDO $db
+    ) {
+    }
+
+    public function upsertSet(array $set): void
+    {
+        $this->upsert('mtg_set', [$set], ['code']);
+    }
+
+    public function upsertCards(array $filas): int
+    {
+        return $this->upsert('mtg_card', $filas, ['oracle_id']);
+    }
+
+    public function upsertPrintings(array $filas): int
+    {
+        return $this->upsert('mtg_printing', $filas, ['uuid']);
+    }
+
+    public function upsertLocalized(array $filas): int
+    {
+        return $this->upsert('mtg_printing_localized', $filas, ['printing_uuid', 'language']);
+    }
+
+    public function upsertLegalities(array $filas): int
+    {
+        return $this->upsert('mtg_legality', $filas, ['oracle_id', 'format']);
+    }
+
+    public function contadores(): array
+    {
+        $tablas = [
+            'mtg_set',
+            'mtg_card',
+            'mtg_printing',
+            'mtg_printing_localized',
+            'mtg_legality',
+        ];
+
+        $out = [];
+
+        foreach ($tablas as $tabla) {
+            $out[$tabla] = (int) $this->db->query("SELECT COUNT(*) FROM {$tabla}")->fetchColumn();
+        }
+
+        return $out;
+    }
+
+    /**
+     * Upsert multi-fila, troceado en lotes.
+     *
+     * @param  list<array<string, mixed>> $filas
+     * @param  list<string>               $clave Columnas de la clave; se excluyen del UPDATE
+     * @return int Filas enviadas
+     */
+    private function upsert(string $tabla, array $filas, array $clave): int
+    {
+        if ($filas === []) {
+            return 0;
+        }
+
+        $columnas = array_keys($filas[0]);
+        $enviadas = 0;
+
+        foreach (array_chunk($filas, self::TAMANO_LOTE) as $lote) {
+            $this->ejecutarLote($tabla, $columnas, $clave, $lote);
+            $enviadas += count($lote);
+        }
+
+        return $enviadas;
+    }
+
+    /**
+     * @param list<string>               $columnas
+     * @param list<string>               $clave
+     * @param list<array<string, mixed>> $lote
+     */
+    private function ejecutarLote(string $tabla, array $columnas, array $clave, array $lote): void
+    {
+        $tupla  = '(' . implode(', ', array_fill(0, count($columnas), '?')) . ')';
+        $tuplas = implode(', ', array_fill(0, count($lote), $tupla));
+
+        // Las columnas de la clave no se actualizan: son por lo que casó la fila.
+        // El resto se sobreescribe con lo que traiga MTGJSON, que es la fuente.
+        $asignaciones = [];
+        foreach ($columnas as $columna) {
+            if (!in_array($columna, $clave, true)) {
+                $asignaciones[] = "`{$columna}` = VALUES(`{$columna}`)";
+            }
+        }
+
+        $sql = "INSERT INTO `{$tabla}` (`" . implode('`, `', $columnas) . "`) VALUES {$tuplas}";
+
+        // Una tabla cuyas columnas son TODAS clave (mtg_legality lo era antes de
+        // tener `status`) no tiene nada que actualizar; el upsert se degrada a
+        // un no-op explícito sobre la primera columna en vez de a SQL inválido.
+        $sql .= $asignaciones !== []
+            ? ' ON DUPLICATE KEY UPDATE ' . implode(', ', $asignaciones)
+            : " ON DUPLICATE KEY UPDATE `{$columnas[0]}` = `{$columnas[0]}`";
+
+        $valores = [];
+        foreach ($lote as $fila) {
+            foreach ($columnas as $columna) {
+                $valores[] = $fila[$columna] ?? null;
+            }
+        }
+
+        $this->db->prepare($sql)->execute($valores);
+    }
+}

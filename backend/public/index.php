@@ -16,8 +16,22 @@ declare(strict_types=1);
 require_once __DIR__ . '/../bootstrap.php';
 
 use App\Application;
+use App\Router\CatalogHttpRouter;
 
 try {
+    // La divergencia, entera: un `if` y una clase. Se desvía ANTES de construir
+    // Application porque el catálogo no necesita sesión, ni CSRF, ni el pipeline
+    // de middlewares de las acciones — es lectura pública y cacheable.
+    if (CatalogHttpRouter::atiende($_SERVER['REQUEST_METHOD'] ?? '', $_SERVER['REQUEST_URI'] ?? '/')) {
+        $containerFactory = require __DIR__ . '/../config/container.php';
+
+        $containerFactory()
+            ->get(CatalogHttpRouter::class)
+            ->handle($_SERVER['REQUEST_URI'] ?? '/');
+
+        exit;
+    }
+
     (new Application())->run();
 } catch (\Throwable $e) {
     http_response_code(500);

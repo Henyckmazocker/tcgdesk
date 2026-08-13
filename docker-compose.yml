@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: docker/frontend/Dockerfile.frontend.dev
     ports:
-      - "8099:8080"
+      - "8094:8080"
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
