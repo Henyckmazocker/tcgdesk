@@ -16,7 +16,7 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
  * contra el JWKS de Google. El frontend nunca decide si alguien está autenticado.
  */
 
-const GOOGLE_CLIENT_ID = process.env.VUE_APP_GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID
 
 const isSdkLoaded = ref(false)
 const isInitialized = ref(false)
@@ -62,7 +62,7 @@ export function useGoogleAuth() {
    */
   async function initialize(onCredential) {
     if (!GOOGLE_CLIENT_ID) {
-      error.value = 'Falta VUE_APP_GOOGLE_CLIENT_ID.'
+      error.value = 'Falta VITE_GOOGLE_CLIENT_ID.'
       return false
     }
 

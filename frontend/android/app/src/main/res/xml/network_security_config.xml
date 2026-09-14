@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Política de RELEASE: nada de HTTP en claro. Es además el valor por defecto de
+  Android desde targetSdk 28, y se escribe explícito para que se vea.
+
+  La variante de DEBUG la sustituye por completo con
+  `app/src/debug/res/xml/network_security_config.xml`, que sí permite cleartext
+  para poder hablar con el backend de desarrollo. Gradle elige el fichero según
+  la variante, así que no hay nada que acordarse de cambiar antes de publicar.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

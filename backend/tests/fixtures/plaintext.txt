@@ -1,0 +1,16 @@
+﻿Deck
+4 Lightning Bolt (M10) 146
+4x Counterspell
+2 Jace, the Mind Sculptor
+
+// Las de doble cara se pegan con el nombre entero
+3 Delver of Secrets // Insectile Aberration
+1 Lim-Dûl's Vault (ALL) 107
+# esto también es un comentario
+Sol Ring
+
+Sideboard
+2 Path to Exile (con) 15
+15 Thoughtseize
+Comprado en TCGPlayer por $32.10
+1x Sheoldred, the Apocalypse (DMU) 107

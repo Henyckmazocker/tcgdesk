@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "message": "Carta quitada del mazo.",
+  "data": {
+    "removed": true
+  },
+  "http_code": 200
+}

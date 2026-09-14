@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "message": "Mazo borrado.",
+  "data": {
+    "deleted": true,
+    "removedFromCollection": 0,
+    "shortfall": []
+  },
+  "http_code": 200
+}

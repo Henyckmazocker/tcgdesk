@@ -1,0 +1,34 @@
+{
+  "status": "success",
+  "message": "Carta añadida a la colección.",
+  "data": {
+    "id": 6886,
+    "item": {
+      "id": 6886,
+      "printingUuid": "a50dbd25-658a-5d98-b40c-013d09f73745",
+      "oracleId": "922d603e-6623-4455-b91f-fad76f94045a",
+      "name": "Starfield of Nyx",
+      "setCode": "CMM",
+      "setName": "Commander Masters",
+      "releaseDate": "2023-08-04",
+      "collectorNumber": "840",
+      "rarity": "mythic",
+      "manaCost": "{4}{W}",
+      "colors": "W",
+      "colorIdentity": "W",
+      "typeLine": "Enchantment",
+      "scryfallId": "bfe4e1cb-ceee-46aa-96d1-f3f26516cd77",
+      "finish": "normal",
+      "language": "English",
+      "condition": "NM",
+      "quantity": 1,
+      "isWishlist": true,
+      "notes": null,
+      "createdAt": "2026-09-12 17:14:53",
+      "updatedAt": "2026-09-12 17:14:53",
+      "priceEur": 13.51,
+      "lineValue": 13.51
+    }
+  },
+  "http_code": 200
+}

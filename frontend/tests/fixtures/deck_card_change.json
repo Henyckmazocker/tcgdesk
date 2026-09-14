@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "message": "Versión cambiada.",
+  "data": {
+    "card": {
+      "id": 1665,
+      "deckId": 23,
+      "printingUuid": "a4649be8-4284-5371-831f-2e3ee32ec988",
+      "oracleId": "6ad8011d-3471-4369-9d68-b264cc027487",
+      "name": "Sol Ring",
+      "setCode": "LTC",
+      "setName": "Tales of Middle-earth Commander",
+      "releaseDate": "2023-06-23",
+      "collectorNumber": "284",
+      "rarity": "uncommon",
+      "manaCost": "{1}",
+      "colors": "",
+      "colorIdentity": "",
+      "typeLine": "Artifact",
+      "scryfallId": "5805f64c-dd88-4e94-8f0a-a01dae67e3ba",
+      "finish": "foil",
+      "language": "English",
+      "condition": "LP",
+      "board": "side",
+      "count": 3,
+      "priceEur": 0.02,
+      "lineValue": 0.06
+    },
+    "merged": false
+  },
+  "http_code": 200
+}

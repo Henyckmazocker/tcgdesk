@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "message": "Versiones que tienes de esa carta.",
+  "data": {
+    "variants": [
+      {
+        "finish": "normal",
+        "language": "English",
+        "condition_grade": "NM",
+        "quantity": 1,
+        "claimed": 0,
+        "free": 1,
+        "priceEur": 8.49
+      },
+      {
+        "finish": "foil",
+        "language": "English",
+        "condition_grade": "NM",
+        "quantity": 1,
+        "claimed": 1,
+        "free": 0,
+        "priceEur": 8.72
+      }
+    ]
+  },
+  "http_code": 200
+}

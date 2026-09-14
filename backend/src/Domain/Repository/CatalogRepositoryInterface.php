@@ -44,6 +44,26 @@ interface CatalogRepositoryInterface
     public function upsertLegalities(array $filas): int;
 
     /**
+     * Reconstruye `mtg_format` con los formatos que hay en `mtg_legality`.
+     *
+     * Es **el único sitio** donde se escribe esa tabla, y el `SELECT DISTINCT`
+     * es el único origen de su contenido: ninguna lista de formatos se teclea a
+     * mano en este repositorio, porque cada vez que MTGJSON publica un formato
+     * nuevo la lista escrita se queda mintiendo en silencio.
+     *
+     * **Se llama al FINAL de la ingesta, jamás al principio.** `mtg_legality`
+     * se llena durante `catalog:import`; preguntarle al empezar devolvería los
+     * formatos de la ingesta anterior, o ninguno en una instalación nueva.
+     *
+     * El `DISTINCT` sigue costando sus 66 ms. Lo que cambia es cuántas veces se
+     * paga: una por ingesta, en vez de una por cada carga de la ficha de un mazo
+     * (ver `DeckRepositoryInterface::formatoConocido()`).
+     *
+     * @return int Formatos que quedan en `mtg_format`
+     */
+    public function refrescarFormatos(): int;
+
+    /**
      * Conteo por tabla del catálogo, para comprobar la idempotencia.
      *
      * @return array<string, int> nombre de tabla → filas

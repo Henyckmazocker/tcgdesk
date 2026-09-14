@@ -1,0 +1,14 @@
+{
+  "user": {
+    "username": "fixturas",
+    "displayName": "Usuaria de Fixturas",
+    "avatarUrl": "https://example.invalid/avatar/fixturas.png"
+  },
+  "visible": {
+    "collection": true,
+    "value": false,
+    "decks": true,
+    "sets": true,
+    "wishlist": false
+  }
+}

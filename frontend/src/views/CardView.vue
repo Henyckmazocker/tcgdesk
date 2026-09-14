@@ -41,6 +41,20 @@
         <p class="ficha__tipo">{{ carta.typeLine }}</p>
         <p class="ficha__edicion">{{ carta.setName }} · nº {{ carta.collectorNumber }}</p>
 
+        <!--
+          El botón va ARRIBA, antes del texto y de los precios: es la acción de
+          esta pantalla, y bajarla al final la convertiría en algo que hay que
+          buscar. Un clic la mete con los valores por defecto; el acabado, el
+          idioma y el estado están detrás de "Opciones", fuera del camino.
+        -->
+        <div class="ficha__anadir">
+          <AddToCollectionButton
+            :printing-uuid="carta.uuid"
+            :nombre="carta.name"
+            :finishes="carta.finishes"
+          />
+        </div>
+
         <p v-if="carta.oracleText" class="ficha__texto">{{ carta.oracleText }}</p>
 
         <section class="ficha__seccion">
@@ -82,6 +96,9 @@
         </section>
       </div>
     </div>
+
+    <!-- Confirmación discreta del "Añadir": se va sola y no pide cerrar nada. -->
+    <CollectionAviso />
   </div>
 </template>
 
@@ -92,7 +109,9 @@ import Button from 'primevue/button'
 import Skeleton from 'primevue/skeleton'
 import Tag from 'primevue/tag'
 
+import AddToCollectionButton from '@/components/AddToCollectionButton.vue'
 import CardImage from '@/components/CardImage.vue'
+import CollectionAviso from '@/components/CollectionAviso.vue'
 import PriceSparkline from '@/components/PriceSparkline.vue'
 import { catalogGet } from '@/services/api'
 
@@ -235,6 +254,10 @@ watch(() => route.params.uuid, (uuid) => uuid && cargar(uuid), { immediate: true
   margin: 0 0 1rem;
   font-size: 0.85rem;
   color: var(--p-text-muted-color);
+}
+
+.ficha__anadir {
+  margin: 0 0 1.25rem;
 }
 
 .ficha__texto {

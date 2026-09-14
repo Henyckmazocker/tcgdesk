@@ -258,6 +258,40 @@ final class MtgJsonMapperTest extends TestCase
     }
 
     // ------------------------------------------------------------------
+    // Índice de nombres (M2 del Plan - Importación de Colecciones)
+    // ------------------------------------------------------------------
+
+    /**
+     * La ingesta escribe `name_normalized` en cada pasada.
+     *
+     * No es un adorno del backfill: `catalog:import` es idempotente y se relanza
+     * cada vez que sale un set. Sin esta línea, cada reimportación metería las
+     * cartas nuevas con la columna a NULL y esas cartas dejarían de resolverse
+     * por nombre **sin que nada fallara**, que es justo el fallo silencioso que
+     * el plan existe para evitar.
+     */
+    public function testCadaCartaSaleDeLaIngestaConSuClaveNormalizada(): void
+    {
+        $fila = $this->mapper->card([
+            'name'        => "Lim-D\u{fb}l's Vault",
+            'identifiers' => ['scryfallOracleId' => 'oracle-vault'],
+        ]);
+
+        self::assertSame('lim duls vault', $fila['name_normalized']);
+    }
+
+    /** Y con la clave del resolvedor, blancos incluidos: la misma que el paso 3. */
+    public function testLaClaveDeLaIngestaConservaLosBlancosDeLasUnSets(): void
+    {
+        $fila = $this->mapper->card([
+            'name'        => '_____ Goblin',
+            'identifiers' => ['scryfallOracleId' => 'oracle-blanco'],
+        ]);
+
+        self::assertSame('_____ goblin', $fila['name_normalized']);
+    }
+
+    // ------------------------------------------------------------------
     // Set
     // ------------------------------------------------------------------
 

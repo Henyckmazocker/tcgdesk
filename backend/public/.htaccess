@@ -14,9 +14,9 @@ RewriteRule ^(.*)$ - [R=200,L]
 # ocurre si el origen casa con una de estas dos regex, así que no es un comodín:
 # cualquier otro origen se queda sin cabecera y el navegador bloquea.
 #
-# El frontend (:8099) y el backend (:8899) son orígenes distintos, y Capacitor
-# no atraviesa el devServer de Vue —va directo a 10.0.2.2:8899 desde
-# capacitor://localhost—, así que un proxy en vue.config.js no sustituye a esto.
+# El frontend (:8094) y el backend (:8899) son orígenes distintos, y Capacitor
+# no atraviesa el dev server de Vite —va directo a 10.0.2.2:8899 desde
+# capacitor://localhost—, así que un proxy en vite.config.js no sustituye a esto.
 #
 # EN PRODUCCIÓN esto se sustituye por el dominio fijo en la config de Nginx.
 SetEnvIf Origin "^http(s)?://(127\.0\.0\.1|localhost)(:[0-9]+)?$" AccessControlAllowOrigin=$0
@@ -31,6 +31,25 @@ Header always set Access-Control-Max-Age "86400"
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+# --- Límites de PHP para la importación de colecciones ------------------------
+# La imagen php:8.2-apache NO copia ningún php.ini, así que rigen los valores
+# compilados: post_max_size = 8M. El Plan - Importación de Colecciones declara
+# ficheros de 5 MB y 20.000 líneas que llegan como una cadena JSON en el cuerpo
+# del POST, y 8M deja demasiado poco margen: si el cuerpo lo supera, PHP lo
+# DESCARTA en silencio —`php://input` llega vacío y la acción se pierde—, así que
+# el usuario no vería un error de tamaño sino un 400 incomprensible.
+#
+# Va aquí y no en el Dockerfile porque el `ENV PHP_MEMORY_LIMIT` de esa imagen no
+# lo lee nadie y porque .htaccess no obliga a reconstruir la imagen (mod_php está
+# cargado y docker-php.conf pone AllowOverride All).
+#
+# `memory_limit` NO se toca: se queda en los 128M reales del contenedor, que es
+# la restricción con la que se ha dimensionado la importación.
+<IfModule mod_php.c>
+    php_value post_max_size 24M
+    php_value upload_max_filesize 24M
+</IfModule>
 
 # --- Cabeceras de seguridad ---------------------------------------------------
 Header always set X-Content-Type-Options nosniff

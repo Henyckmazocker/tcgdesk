@@ -1,0 +1,2264 @@
+{
+  "items": [
+    {
+      "fileName": "20WaysToWin_SLD",
+      "name": "20 Ways to Win",
+      "deckType": "Commander Deck",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "releaseDate": "2024-12-04",
+      "cardCount": 100
+    },
+    {
+      "fileName": "2014FullArtLandSet_J14",
+      "name": "2014 Full Art Land Set",
+      "deckType": "Box Set",
+      "setCode": "J14",
+      "setName": "Judge Gift Cards 2014",
+      "releaseDate": "2014-01-01",
+      "cardCount": 5
+    },
+    {
+      "fileName": "Aang_TLE",
+      "name": "Aang",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AboveTheClouds1_JMP",
+      "name": "Above the Clouds (1)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AboveTheClouds2_JMP",
+      "name": "Above the Clouds (2)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AboveTheClouds3_JMP",
+      "name": "Above the Clouds (3)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AboveTheClouds4_JMP",
+      "name": "Above the Clouds (4)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AbzanArmor_TDC",
+      "name": "Abzan Armor",
+      "deckType": "Commander Deck",
+      "setCode": "TDC",
+      "setName": "Tarkir: Dragonstorm Commander",
+      "releaseDate": "2025-04-11",
+      "cardCount": 100
+    },
+    {
+      "fileName": "AbzanSiege_KTK",
+      "name": "Abzan Siege",
+      "deckType": "Intro Pack",
+      "setCode": "KTK",
+      "setName": "Khans of Tarkir",
+      "releaseDate": "2014-09-26",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Adaptive_TLE",
+      "name": "Adaptive",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AdaptiveEnchantment_C18",
+      "name": "Adaptive Enchantment",
+      "deckType": "Commander Deck",
+      "setCode": "C18",
+      "setName": "Commander 2018",
+      "releaseDate": "2018-08-10",
+      "cardCount": 100
+    },
+    {
+      "fileName": "Adept1_TLE",
+      "name": "Adept (1)",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Adept2_TLE",
+      "name": "Adept (2)",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AeoPaquetteAffinity_WC04",
+      "name": "Aeo Paquette - Affinity",
+      "deckType": "World Championship Deck",
+      "setCode": "WC04",
+      "setName": "World Championship Decks 2004",
+      "releaseDate": "2004-09-01",
+      "cardCount": 75
+    },
+    {
+      "fileName": "AerialAcrobatics_GN2",
+      "name": "Aerial Acrobatics",
+      "deckType": "Game Night Deck",
+      "setCode": "GN2",
+      "setName": "Game Night 2019",
+      "releaseDate": "2019-11-15",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AerialDomination_ANB",
+      "name": "Aerial Domination",
+      "deckType": "Arena Starter Deck",
+      "setCode": "ANB",
+      "setName": "Arena Beginner Set",
+      "releaseDate": "2020-08-13",
+      "cardCount": 69
+    },
+    {
+      "fileName": "Aerodoom_BTD",
+      "name": "Aerodoom",
+      "deckType": "Theme Deck",
+      "setCode": "BTD",
+      "setName": "Beatdown Box Set",
+      "releaseDate": "2000-10-01",
+      "cardCount": 61
+    },
+    {
+      "fileName": "AgaGalneer_PAST",
+      "name": "Aga Galneer",
+      "deckType": "Shandalar Enemy Deck",
+      "setCode": "PAST",
+      "setName": "Astral Cards",
+      "releaseDate": "1997-04-01",
+      "cardCount": 69
+    },
+    {
+      "fileName": "AgentsOfSHIELD_MSH",
+      "name": "Agents of S.H.I.E.L.D.",
+      "deckType": "Jumpstart",
+      "setCode": "MSH",
+      "setName": "Marvel Super Heroes",
+      "releaseDate": "2026-06-26",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AhoyMateys_LCC",
+      "name": "Ahoy Mateys",
+      "deckType": "Commander Deck",
+      "setCode": "LCC",
+      "setName": "The Lost Caverns of Ixalan Commander",
+      "releaseDate": "2023-11-17",
+      "cardCount": 100
+    },
+    {
+      "fileName": "AirForces_WTH",
+      "name": "Air Forces",
+      "deckType": "MTGO Theme Deck",
+      "setCode": "WTH",
+      "setName": "Weatherlight",
+      "releaseDate": "2007-12-12",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AirRazers_JUD",
+      "name": "Air Razers",
+      "deckType": "Theme Deck",
+      "setCode": "JUD",
+      "setName": "Judgment",
+      "releaseDate": "2002-05-27",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Airbending_TLE",
+      "name": "Airbending",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Ajani_M19",
+      "name": "Ajani",
+      "deckType": "Planeswalker Deck",
+      "setCode": "M19",
+      "setName": "Core Set 2019",
+      "releaseDate": "2018-07-13",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AjaniGoldmane_DDH",
+      "name": "Ajani Goldmane",
+      "deckType": "Duel Deck",
+      "setCode": "DDH",
+      "setName": "Duel Decks: Ajani vs. Nicol Bolas",
+      "releaseDate": "2011-09-02",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AjaniInspiringLeader_M20",
+      "name": "Ajani, Inspiring Leader",
+      "deckType": "Planeswalker Deck",
+      "setCode": "M20",
+      "setName": "Core Set 2020",
+      "releaseDate": "2019-07-29",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AjaniValiantProtector_AER",
+      "name": "Ajani, Valiant Protector",
+      "deckType": "Planeswalker Deck",
+      "setCode": "AER",
+      "setName": "Aether Revolt",
+      "releaseDate": "2017-01-20",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AlexBortehMerfolkOpposition_WC01",
+      "name": "Alex Borteh - Merfolk Opposition",
+      "deckType": "World Championship Deck",
+      "setCode": "WC01",
+      "setName": "World Championship Decks 2001",
+      "releaseDate": "2001-08-08",
+      "cardCount": 75
+    },
+    {
+      "fileName": "Alliance1_TLE",
+      "name": "Alliance (1)",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Alliance2_TLE",
+      "name": "Alliance (2)",
+      "deckType": "Jumpstart",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "releaseDate": "2025-11-20",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AlliedFires_Q04",
+      "name": "Allied Fires",
+      "deckType": "Challenger Deck",
+      "setCode": "Q04",
+      "setName": "Challenger Decks 2020",
+      "releaseDate": "2020-04-03",
+      "cardCount": 75
+    },
+    {
+      "fileName": "AltAKesh_PAST",
+      "name": "Alt-A-Kesh",
+      "deckType": "Shandalar Enemy Deck",
+      "setCode": "PAST",
+      "setName": "Astral Cards",
+      "releaseDate": "1997-04-01",
+      "cardCount": 62
+    },
+    {
+      "fileName": "AmonkhetWelcomeDeckBlack_W17",
+      "name": "Amonkhet Welcome Deck - Black",
+      "deckType": "Welcome Deck",
+      "setCode": "W17",
+      "setName": "Welcome Deck 2017",
+      "releaseDate": "2017-04-15",
+      "cardCount": 30
+    },
+    {
+      "fileName": "AmonkhetWelcomeDeckBlue_W17",
+      "name": "Amonkhet Welcome Deck - Blue",
+      "deckType": "Welcome Deck",
+      "setCode": "W17",
+      "setName": "Welcome Deck 2017",
+      "releaseDate": "2017-04-15",
+      "cardCount": 30
+    },
+    {
+      "fileName": "AmonkhetWelcomeDeckGreen_W17",
+      "name": "Amonkhet Welcome Deck - Green",
+      "deckType": "Welcome Deck",
+      "setCode": "W17",
+      "setName": "Welcome Deck 2017",
+      "releaseDate": "2017-04-15",
+      "cardCount": 30
+    },
+    {
+      "fileName": "AmonkhetWelcomeDeckRed_W17",
+      "name": "Amonkhet Welcome Deck - Red",
+      "deckType": "Welcome Deck",
+      "setCode": "W17",
+      "setName": "Welcome Deck 2017",
+      "releaseDate": "2017-04-15",
+      "cardCount": 30
+    },
+    {
+      "fileName": "AmonkhetWelcomeDeckWhite_W17",
+      "name": "Amonkhet Welcome Deck - White",
+      "deckType": "Welcome Deck",
+      "setCode": "W17",
+      "setName": "Welcome Deck 2017",
+      "releaseDate": "2017-04-15",
+      "cardCount": 30
+    },
+    {
+      "fileName": "Analyzed_MSH",
+      "name": "Analyzed",
+      "deckType": "Jumpstart",
+      "setCode": "MSH",
+      "setName": "Marvel Super Heroes",
+      "releaseDate": "2026-06-26",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AncientArsenal_ACR",
+      "name": "Ancient Arsenal",
+      "deckType": "Starter Kit",
+      "setCode": "ACR",
+      "setName": "Assassin's Creed",
+      "releaseDate": "2024-07-05",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AncientDiscovery_OTJ",
+      "name": "Ancient Discovery",
+      "deckType": "Arena Starter Deck",
+      "setCode": "OTJ",
+      "setName": "Outlaws of Thunder Junction",
+      "releaseDate": "2024-07-08",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AngelicAccountants_SNC",
+      "name": "Angelic Accountants",
+      "deckType": "Arena Starter Deck",
+      "setCode": "SNC",
+      "setName": "Streets of New Capenna",
+      "releaseDate": "2022-09-09",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AngelicArmy_ANB",
+      "name": "Angelic Army",
+      "deckType": "Arena Starter Deck",
+      "setCode": "ANB",
+      "setName": "Arena Beginner Set",
+      "releaseDate": "2019-09-26",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AngelicArmy2_ANB",
+      "name": "Angelic Army 2",
+      "deckType": "Arena Starter Deck",
+      "setCode": "ANB",
+      "setName": "Arena Beginner Set",
+      "releaseDate": "2020-03-12",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AngelicFury_SOI",
+      "name": "Angelic Fury",
+      "deckType": "Intro Pack",
+      "setCode": "SOI",
+      "setName": "Shadows over Innistrad",
+      "releaseDate": "2016-04-08",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AngelicMight_AVR",
+      "name": "Angelic Might",
+      "deckType": "Intro Pack",
+      "setCode": "AVR",
+      "setName": "Avacyn Restored",
+      "releaseDate": "2012-05-04",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Angels_ECL",
+      "name": "Angels",
+      "deckType": "Theme Deck",
+      "setCode": "ECL",
+      "setName": "Lorwyn Eclipsed",
+      "releaseDate": "2026-01-23",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Angels_M13",
+      "name": "Angels",
+      "deckType": "Deck Builder's Toolkit",
+      "setCode": "M13",
+      "setName": "Magic 2013",
+      "releaseDate": "2012-07-13",
+      "cardCount": 10
+    },
+    {
+      "fileName": "Angels_PSAL",
+      "name": "Angels",
+      "deckType": "Theme Deck",
+      "setCode": "PSAL",
+      "setName": "Salvat 2005",
+      "releaseDate": "2005-08-01",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Angels1_J25",
+      "name": "Angels (1)",
+      "deckType": "Jumpstart",
+      "setCode": "J25",
+      "setName": "Foundations Jumpstart",
+      "releaseDate": "2024-11-07",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Angels1_JMP",
+      "name": "Angels (1)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Angels2_J25",
+      "name": "Angels (2)",
+      "deckType": "Jumpstart",
+      "setCode": "J25",
+      "setName": "Foundations Jumpstart",
+      "releaseDate": "2024-11-07",
+      "cardCount": 20
+    },
+    {
+      "fileName": "Angels2_JMP",
+      "name": "Angels (2)",
+      "deckType": "Jumpstart",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "releaseDate": "2020-07-17",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AngelsTheyReJustLikeUsButCoolerAndWithWings_SLD",
+      "name": "Angels: They're Just Like Us but Cooler and with Wings",
+      "deckType": "Commander Deck",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "releaseDate": "2023-08-14",
+      "cardCount": 100
+    },
+    {
+      "fileName": "AngrathMinotaurPirate_RIX",
+      "name": "Angrath, Minotaur Pirate",
+      "deckType": "Planeswalker Deck",
+      "setCode": "RIX",
+      "setName": "Rivals of Ixalan",
+      "releaseDate": "2018-01-19",
+      "cardCount": 60
+    },
+    {
+      "fileName": "Animal_MSH",
+      "name": "Animal",
+      "deckType": "Jumpstart",
+      "setCode": "MSH",
+      "setName": "Marvel Super Heroes",
+      "releaseDate": "2026-06-26",
+      "cardCount": 20
+    },
+    {
+      "fileName": "AnimatedArmy_BLC",
+      "name": "Animated Army",
+      "deckType": "Commander Deck",
+      "setCode": "BLC",
+      "setName": "Bloomburrow Commander",
+      "releaseDate": "2024-08-02",
+      "cardCount": 100
+    },
+    {
+      "fileName": "AnthousaSArmy_THS",
+      "name": "Anthousa's Army",
+      "deckType": "Intro Pack",
+      "setCode": "THS",
+      "setName": "Theros",
+      "releaseDate": "2013-09-27",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AntoineRuelBlueBlackRedNetherGo_WC01",
+      "name": "Antoine Ruel - Blue-Black-Red Nether-Go",
+      "deckType": "World Championship Deck",
+      "setCode": "WC01",
+      "setName": "World Championship Decks 2001",
+      "releaseDate": "2001-08-08",
+      "cardCount": 75
+    },
+    {
+      "fileName": "ApeLord_PAST",
+      "name": "Ape Lord",
+      "deckType": "Shandalar Enemy Deck",
+      "setCode": "PAST",
+      "setName": "Astral Cards",
+      "releaseDate": "1997-04-01",
+      "cardCount": 60
+    },
+    {
+      "fileName": "AragornAtHelmSDeep_LTC",
+      "name": "Aragorn at Helm's Deep",
+      "deckType": "Box Set",
+      "setCode": "LTC",
+      "setName": "Tales of Middle-earth Commander",
+      "releaseDate": "2023-11-03",
+      "cardCount": 6
+    }
+  ],
+  "nextCursor": "eyJ2IjoiQXJhZ29ybiBhdCBIZWxtJ3MgRGVlcCIsInUiOiJBcmFnb3JuQXRIZWxtU0RlZXBfTFRDIn0",
+  "deckTypes": [
+    {
+      "type": "Secret Lair Drop",
+      "count": 739,
+      "playable": false
+    },
+    {
+      "type": "Jumpstart",
+      "count": 570,
+      "playable": true
+    },
+    {
+      "type": "Theme Deck",
+      "count": 220,
+      "playable": true
+    },
+    {
+      "type": "MTGO Redemption",
+      "count": 197,
+      "playable": false
+    },
+    {
+      "type": "Commander Deck",
+      "count": 190,
+      "playable": true
+    },
+    {
+      "type": "Intro Pack",
+      "count": 167,
+      "playable": true
+    },
+    {
+      "type": "Deck Builder's Toolkit",
+      "count": 120,
+      "playable": true
+    },
+    {
+      "type": "Arena Starter Deck",
+      "count": 101,
+      "playable": true
+    },
+    {
+      "type": "Bundle Land Pack",
+      "count": 89,
+      "playable": false
+    },
+    {
+      "type": "Box Set",
+      "count": 71,
+      "playable": true
+    },
+    {
+      "type": "Shandalar Enemy Deck",
+      "count": 55,
+      "playable": true
+    },
+    {
+      "type": "Duel Deck",
+      "count": 52,
+      "playable": true
+    },
+    {
+      "type": "Sample Deck",
+      "count": 50,
+      "playable": true
+    },
+    {
+      "type": "Welcome Deck",
+      "count": 50,
+      "playable": true
+    },
+    {
+      "type": "Planeswalker Deck",
+      "count": 41,
+      "playable": true
+    },
+    {
+      "type": "World Championship Deck",
+      "count": 32,
+      "playable": true
+    },
+    {
+      "type": "Event Deck",
+      "count": 26,
+      "playable": true
+    },
+    {
+      "type": "Challenger Deck",
+      "count": 22,
+      "playable": true
+    },
+    {
+      "type": "Enhanced Deck",
+      "count": 20,
+      "playable": true
+    },
+    {
+      "type": "Starter Deck",
+      "count": 20,
+      "playable": true
+    },
+    {
+      "type": "MTGO Theme Deck",
+      "count": 18,
+      "playable": true
+    },
+    {
+      "type": "Welcome Booster",
+      "count": 16,
+      "playable": false
+    },
+    {
+      "type": "Game Night Deck",
+      "count": 15,
+      "playable": true
+    },
+    {
+      "type": "Advanced Deck",
+      "count": 12,
+      "playable": true
+    },
+    {
+      "type": "Planechase Deck",
+      "count": 12,
+      "playable": true
+    },
+    {
+      "type": "Starter Kit",
+      "count": 12,
+      "playable": true
+    },
+    {
+      "type": "Guild Kit",
+      "count": 10,
+      "playable": true
+    },
+    {
+      "type": "Clash Pack",
+      "count": 9,
+      "playable": true
+    },
+    {
+      "type": "Advanced Pack",
+      "count": 8,
+      "playable": true
+    },
+    {
+      "type": "Archenemy Deck",
+      "count": 8,
+      "playable": true
+    },
+    {
+      "type": "Arena Starter Kit",
+      "count": 8,
+      "playable": true
+    },
+    {
+      "type": "Pioneer Challenger Deck",
+      "count": 8,
+      "playable": true
+    },
+    {
+      "type": "Pro Tour Deck",
+      "count": 8,
+      "playable": true
+    },
+    {
+      "type": "San Diego Comic Con Promos",
+      "count": 7,
+      "playable": false
+    },
+    {
+      "type": "Demo Deck",
+      "count": 6,
+      "playable": true
+    },
+    {
+      "type": "Duel Of The Planeswalkers Deck",
+      "count": 5,
+      "playable": true
+    },
+    {
+      "type": "Halfdeck",
+      "count": 5,
+      "playable": true
+    },
+    {
+      "type": "Historic Brawl Precon Deck",
+      "count": 5,
+      "playable": true
+    },
+    {
+      "type": "Arena Promotional Deck",
+      "count": 4,
+      "playable": true
+    },
+    {
+      "type": "Brawl Deck",
+      "count": 4,
+      "playable": true
+    },
+    {
+      "type": "Spellslinger Starter Kit",
+      "count": 4,
+      "playable": true
+    },
+    {
+      "type": "Challenge Deck",
+      "count": 3,
+      "playable": true
+    },
+    {
+      "type": "Premium Deck",
+      "count": 3,
+      "playable": true
+    },
+    {
+      "type": "MTGO Commander Deck",
+      "count": 2,
+      "playable": true
+    },
+    {
+      "type": "MTGO Duel Deck",
+      "count": 2,
+      "playable": true
+    },
+    {
+      "type": "Dandan Deck",
+      "count": 1,
+      "playable": true
+    },
+    {
+      "type": "Enemy Deck",
+      "count": 1,
+      "playable": true
+    },
+    {
+      "type": "Modern Event Deck",
+      "count": 1,
+      "playable": true
+    }
+  ],
+  "sets": [
+    {
+      "code": "AFR",
+      "name": "Adventures in the Forgotten Realms",
+      "count": 18
+    },
+    {
+      "code": "AER",
+      "name": "Aether Revolt",
+      "count": 4
+    },
+    {
+      "code": "DFT",
+      "name": "Aetherdrift",
+      "count": 2
+    },
+    {
+      "code": "DRC",
+      "name": "Aetherdrift Commander",
+      "count": 2
+    },
+    {
+      "code": "ARB",
+      "name": "Alara Reborn",
+      "count": 7
+    },
+    {
+      "code": "AKH",
+      "name": "Amonkhet",
+      "count": 17
+    },
+    {
+      "code": "ATH",
+      "name": "Anthologies",
+      "count": 2
+    },
+    {
+      "code": "APC",
+      "name": "Apocalypse",
+      "count": 6
+    },
+    {
+      "code": "ARC",
+      "name": "Archenemy",
+      "count": 4
+    },
+    {
+      "code": "E01",
+      "name": "Archenemy: Nicol Bolas",
+      "count": 4
+    },
+    {
+      "code": "ANB",
+      "name": "Arena Beginner Set",
+      "count": 15
+    },
+    {
+      "code": "ACR",
+      "name": "Assassin's Creed",
+      "count": 3
+    },
+    {
+      "code": "PAST",
+      "name": "Astral Cards",
+      "count": 55
+    },
+    {
+      "code": "AVR",
+      "name": "Avacyn Restored",
+      "count": 10
+    },
+    {
+      "code": "TLA",
+      "name": "Avatar: The Last Airbender",
+      "count": 13
+    },
+    {
+      "code": "TLE",
+      "name": "Avatar: The Last Airbender Eternal",
+      "count": 66
+    },
+    {
+      "code": "BFZ",
+      "name": "Battle for Zendikar",
+      "count": 10
+    },
+    {
+      "code": "BRB",
+      "name": "Battle Royale Box Set",
+      "count": 4
+    },
+    {
+      "code": "TBTH",
+      "name": "Battle the Horde",
+      "count": 1
+    },
+    {
+      "code": "BTD",
+      "name": "Beatdown Box Set",
+      "count": 2
+    },
+    {
+      "code": "BOK",
+      "name": "Betrayers of Kamigawa",
+      "count": 6
+    },
+    {
+      "code": "BLB",
+      "name": "Bloomburrow",
+      "count": 4
+    },
+    {
+      "code": "BLC",
+      "name": "Bloomburrow Commander",
+      "count": 4
+    },
+    {
+      "code": "BNG",
+      "name": "Born of the Gods",
+      "count": 8
+    },
+    {
+      "code": "Q01",
+      "name": "Challenger Decks 2018",
+      "count": 4
+    },
+    {
+      "code": "Q02",
+      "name": "Challenger Decks 2019",
+      "count": 4
+    },
+    {
+      "code": "Q03",
+      "name": "Challenger Decks 2019 Japan",
+      "count": 2
+    },
+    {
+      "code": "Q04",
+      "name": "Challenger Decks 2020",
+      "count": 4
+    },
+    {
+      "code": "Q05",
+      "name": "Challenger Decks 2021",
+      "count": 4
+    },
+    {
+      "code": "Q07",
+      "name": "Challenger Decks 2022",
+      "count": 4
+    },
+    {
+      "code": "CHK",
+      "name": "Champions of Kamigawa",
+      "count": 6
+    },
+    {
+      "code": "6ED",
+      "name": "Classic Sixth Edition",
+      "count": 2
+    },
+    {
+      "code": "CSP",
+      "name": "Coldsnap",
+      "count": 7
+    },
+    {
+      "code": "CED",
+      "name": "Collectors' Edition",
+      "count": 1
+    },
+    {
+      "code": "CMD",
+      "name": "Commander 2011",
+      "count": 5
+    },
+    {
+      "code": "C13",
+      "name": "Commander 2013",
+      "count": 5
+    },
+    {
+      "code": "C14",
+      "name": "Commander 2014",
+      "count": 5
+    },
+    {
+      "code": "C15",
+      "name": "Commander 2015",
+      "count": 5
+    },
+    {
+      "code": "C16",
+      "name": "Commander 2016",
+      "count": 5
+    },
+    {
+      "code": "C17",
+      "name": "Commander 2017",
+      "count": 4
+    },
+    {
+      "code": "C18",
+      "name": "Commander 2018",
+      "count": 4
+    },
+    {
+      "code": "C19",
+      "name": "Commander 2019",
+      "count": 4
+    },
+    {
+      "code": "C20",
+      "name": "Commander 2020",
+      "count": 5
+    },
+    {
+      "code": "C21",
+      "name": "Commander 2021",
+      "count": 5
+    },
+    {
+      "code": "CMA",
+      "name": "Commander Anthology",
+      "count": 4
+    },
+    {
+      "code": "CM2",
+      "name": "Commander Anthology Volume II",
+      "count": 4
+    },
+    {
+      "code": "CC2",
+      "name": "Commander Collection: Black",
+      "count": 2
+    },
+    {
+      "code": "CC1",
+      "name": "Commander Collection: Green",
+      "count": 2
+    },
+    {
+      "code": "CMR",
+      "name": "Commander Legends",
+      "count": 2
+    },
+    {
+      "code": "CLB",
+      "name": "Commander Legends: Battle for Baldur's Gate",
+      "count": 5
+    },
+    {
+      "code": "CMM",
+      "name": "Commander Masters",
+      "count": 4
+    },
+    {
+      "code": "CM1",
+      "name": "Commander's Arsenal",
+      "count": 1
+    },
+    {
+      "code": "OCM1",
+      "name": "Commander's Arsenal Oversized",
+      "count": 1
+    },
+    {
+      "code": "CON",
+      "name": "Conflux",
+      "count": 7
+    },
+    {
+      "code": "M19",
+      "name": "Core Set 2019",
+      "count": 31
+    },
+    {
+      "code": "M20",
+      "name": "Core Set 2020",
+      "count": 26
+    },
+    {
+      "code": "M21",
+      "name": "Core Set 2021",
+      "count": 24
+    },
+    {
+      "code": "VOC",
+      "name": "Crimson Vow Commander",
+      "count": 2
+    },
+    {
+      "code": "DKA",
+      "name": "Dark Ascension",
+      "count": 10
+    },
+    {
+      "code": "DST",
+      "name": "Darksteel",
+      "count": 6
+    },
+    {
+      "code": "DKM",
+      "name": "Deckmasters",
+      "count": 2
+    },
+    {
+      "code": "TDAG",
+      "name": "Defeat a God",
+      "count": 1
+    },
+    {
+      "code": "DIS",
+      "name": "Dissension",
+      "count": 5
+    },
+    {
+      "code": "WHO",
+      "name": "Doctor Who",
+      "count": 4
+    },
+    {
+      "code": "DOM",
+      "name": "Dominaria",
+      "count": 15
+    },
+    {
+      "code": "DMU",
+      "name": "Dominaria United",
+      "count": 15
+    },
+    {
+      "code": "DMC",
+      "name": "Dominaria United Commander",
+      "count": 2
+    },
+    {
+      "code": "DGM",
+      "name": "Dragon's Maze",
+      "count": 8
+    },
+    {
+      "code": "DTK",
+      "name": "Dragons of Tarkir",
+      "count": 9
+    },
+    {
+      "code": "DVD",
+      "name": "Duel Decks Anthology: Divine vs. Demonic",
+      "count": 2
+    },
+    {
+      "code": "EVG",
+      "name": "Duel Decks Anthology: Elves vs. Goblins",
+      "count": 2
+    },
+    {
+      "code": "GVL",
+      "name": "Duel Decks Anthology: Garruk vs. Liliana",
+      "count": 2
+    },
+    {
+      "code": "JVC",
+      "name": "Duel Decks Anthology: Jace vs. Chandra",
+      "count": 2
+    },
+    {
+      "code": "DDH",
+      "name": "Duel Decks: Ajani vs. Nicol Bolas",
+      "count": 2
+    },
+    {
+      "code": "DDQ",
+      "name": "Duel Decks: Blessed vs. Cursed",
+      "count": 2
+    },
+    {
+      "code": "DDC",
+      "name": "Duel Decks: Divine vs. Demonic",
+      "count": 2
+    },
+    {
+      "code": "DDO",
+      "name": "Duel Decks: Elspeth vs. Kiora",
+      "count": 2
+    },
+    {
+      "code": "DDF",
+      "name": "Duel Decks: Elspeth vs. Tezzeret",
+      "count": 2
+    },
+    {
+      "code": "DD1",
+      "name": "Duel Decks: Elves vs. Goblins",
+      "count": 2
+    },
+    {
+      "code": "DDU",
+      "name": "Duel Decks: Elves vs. Inventors",
+      "count": 2
+    },
+    {
+      "code": "DDD",
+      "name": "Duel Decks: Garruk vs. Liliana",
+      "count": 2
+    },
+    {
+      "code": "DDL",
+      "name": "Duel Decks: Heroes vs. Monsters",
+      "count": 2
+    },
+    {
+      "code": "DDJ",
+      "name": "Duel Decks: Izzet vs. Golgari",
+      "count": 2
+    },
+    {
+      "code": "DD2",
+      "name": "Duel Decks: Jace vs. Chandra",
+      "count": 4
+    },
+    {
+      "code": "DDM",
+      "name": "Duel Decks: Jace vs. Vraska",
+      "count": 2
+    },
+    {
+      "code": "DDG",
+      "name": "Duel Decks: Knights vs. Dragons",
+      "count": 2
+    },
+    {
+      "code": "DDT",
+      "name": "Duel Decks: Merfolk vs. Goblins",
+      "count": 2
+    },
+    {
+      "code": "DDS",
+      "name": "Duel Decks: Mind vs. Might",
+      "count": 2
+    },
+    {
+      "code": "TD2",
+      "name": "Duel Decks: Mirrodin Pure vs. New Phyrexia",
+      "count": 2
+    },
+    {
+      "code": "DDR",
+      "name": "Duel Decks: Nissa vs. Ob Nixilis",
+      "count": 2
+    },
+    {
+      "code": "DDE",
+      "name": "Duel Decks: Phyrexia vs. the Coalition",
+      "count": 2
+    },
+    {
+      "code": "DDK",
+      "name": "Duel Decks: Sorin vs. Tibalt",
+      "count": 2
+    },
+    {
+      "code": "DDN",
+      "name": "Duel Decks: Speed vs. Cunning",
+      "count": 2
+    },
+    {
+      "code": "DDI",
+      "name": "Duel Decks: Venser vs. Koth",
+      "count": 2
+    },
+    {
+      "code": "DDP",
+      "name": "Duel Decks: Zendikar vs. Eldrazi",
+      "count": 2
+    },
+    {
+      "code": "DPA",
+      "name": "Duels of the Planeswalkers",
+      "count": 5
+    },
+    {
+      "code": "DSK",
+      "name": "Duskmourn: House of Horror",
+      "count": 7
+    },
+    {
+      "code": "DSC",
+      "name": "Duskmourn: House of Horror Commander",
+      "count": 4
+    },
+    {
+      "code": "EOE",
+      "name": "Edge of Eternities",
+      "count": 2
+    },
+    {
+      "code": "EOC",
+      "name": "Edge of Eternities Commander",
+      "count": 2
+    },
+    {
+      "code": "8ED",
+      "name": "Eighth Edition",
+      "count": 12
+    },
+    {
+      "code": "EMN",
+      "name": "Eldritch Moon",
+      "count": 7
+    },
+    {
+      "code": "EVE",
+      "name": "Eventide",
+      "count": 7
+    },
+    {
+      "code": "EXO",
+      "name": "Exodus",
+      "count": 8
+    },
+    {
+      "code": "E02",
+      "name": "Explorers of Ixalan",
+      "count": 4
+    },
+    {
+      "code": "TFTH",
+      "name": "Face the Hydra",
+      "count": 1
+    },
+    {
+      "code": "PIP",
+      "name": "Fallout",
+      "count": 4
+    },
+    {
+      "code": "FRF",
+      "name": "Fate Reforged",
+      "count": 11
+    },
+    {
+      "code": "5DN",
+      "name": "Fifth Dawn",
+      "count": 6
+    },
+    {
+      "code": "5ED",
+      "name": "Fifth Edition",
+      "count": 2
+    },
+    {
+      "code": "FIN",
+      "name": "Final Fantasy",
+      "count": 7
+    },
+    {
+      "code": "FIC",
+      "name": "Final Fantasy Commander",
+      "count": 8
+    },
+    {
+      "code": "AFC",
+      "name": "Forgotten Realms Commander",
+      "count": 4
+    },
+    {
+      "code": "FDN",
+      "name": "Foundations",
+      "count": 12
+    },
+    {
+      "code": "J25",
+      "name": "Foundations Jumpstart",
+      "count": 121
+    },
+    {
+      "code": "V15",
+      "name": "From the Vault: Angels",
+      "count": 1
+    },
+    {
+      "code": "V14",
+      "name": "From the Vault: Annihilation",
+      "count": 1
+    },
+    {
+      "code": "DRB",
+      "name": "From the Vault: Dragons",
+      "count": 1
+    },
+    {
+      "code": "V09",
+      "name": "From the Vault: Exiled",
+      "count": 1
+    },
+    {
+      "code": "V11",
+      "name": "From the Vault: Legends",
+      "count": 1
+    },
+    {
+      "code": "V16",
+      "name": "From the Vault: Lore",
+      "count": 1
+    },
+    {
+      "code": "V12",
+      "name": "From the Vault: Realms",
+      "count": 1
+    },
+    {
+      "code": "V10",
+      "name": "From the Vault: Relics",
+      "count": 1
+    },
+    {
+      "code": "V17",
+      "name": "From the Vault: Transform",
+      "count": 1
+    },
+    {
+      "code": "V13",
+      "name": "From the Vault: Twenty",
+      "count": 1
+    },
+    {
+      "code": "FUT",
+      "name": "Future Sight",
+      "count": 6
+    },
+    {
+      "code": "GNT",
+      "name": "Game Night",
+      "count": 5
+    },
+    {
+      "code": "GN2",
+      "name": "Game Night 2019",
+      "count": 5
+    },
+    {
+      "code": "GN3",
+      "name": "Game Night: Free-for-All",
+      "count": 5
+    },
+    {
+      "code": "GTC",
+      "name": "Gatecrash",
+      "count": 14
+    },
+    {
+      "code": "GS1",
+      "name": "Global Series Jiang Yanggu & Mu Yanling",
+      "count": 2
+    },
+    {
+      "code": "GK1",
+      "name": "GRN Guild Kit",
+      "count": 5
+    },
+    {
+      "code": "GPT",
+      "name": "Guildpact",
+      "count": 5
+    },
+    {
+      "code": "GRN",
+      "name": "Guilds of Ravnica",
+      "count": 6
+    },
+    {
+      "code": "H17",
+      "name": "HasCon 2017",
+      "count": 1
+    },
+    {
+      "code": "HOU",
+      "name": "Hour of Devastation",
+      "count": 5
+    },
+    {
+      "code": "IKO",
+      "name": "Ikoria: Lair of Behemoths",
+      "count": 3
+    },
+    {
+      "code": "ISD",
+      "name": "Innistrad",
+      "count": 10
+    },
+    {
+      "code": "VOW",
+      "name": "Innistrad: Crimson Vow",
+      "count": 4
+    },
+    {
+      "code": "MID",
+      "name": "Innistrad: Midnight Hunt",
+      "count": 5
+    },
+    {
+      "code": "CEI",
+      "name": "Intl. Collectors' Edition",
+      "count": 1
+    },
+    {
+      "code": "ITP",
+      "name": "Introductory Two-Player Set",
+      "count": 4
+    },
+    {
+      "code": "INV",
+      "name": "Invasion",
+      "count": 6
+    },
+    {
+      "code": "XLN",
+      "name": "Ixalan",
+      "count": 13
+    },
+    {
+      "code": "JOU",
+      "name": "Journey into Nyx",
+      "count": 8
+    },
+    {
+      "code": "J14",
+      "name": "Judge Gift Cards 2014",
+      "count": 1
+    },
+    {
+      "code": "JUD",
+      "name": "Judgment",
+      "count": 6
+    },
+    {
+      "code": "JMP",
+      "name": "Jumpstart",
+      "count": 121
+    },
+    {
+      "code": "J22",
+      "name": "Jumpstart 2022",
+      "count": 121
+    },
+    {
+      "code": "KLD",
+      "name": "Kaladesh",
+      "count": 18
+    },
+    {
+      "code": "KHM",
+      "name": "Kaldheim",
+      "count": 3
+    },
+    {
+      "code": "KHC",
+      "name": "Kaldheim Commander",
+      "count": 2
+    },
+    {
+      "code": "NEO",
+      "name": "Kamigawa: Neon Dynasty",
+      "count": 4
+    },
+    {
+      "code": "KTK",
+      "name": "Khans of Tarkir",
+      "count": 9
+    },
+    {
+      "code": "LGN",
+      "name": "Legions",
+      "count": 6
+    },
+    {
+      "code": "LRW",
+      "name": "Lorwyn",
+      "count": 8
+    },
+    {
+      "code": "ECL",
+      "name": "Lorwyn Eclipsed",
+      "count": 4
+    },
+    {
+      "code": "ECC",
+      "name": "Lorwyn Eclipsed Commander",
+      "count": 2
+    },
+    {
+      "code": "M10",
+      "name": "Magic 2010",
+      "count": 8
+    },
+    {
+      "code": "M11",
+      "name": "Magic 2011",
+      "count": 18
+    },
+    {
+      "code": "M12",
+      "name": "Magic 2012",
+      "count": 20
+    },
+    {
+      "code": "M13",
+      "name": "Magic 2013",
+      "count": 27
+    },
+    {
+      "code": "M14",
+      "name": "Magic 2014",
+      "count": 26
+    },
+    {
+      "code": "M15",
+      "name": "Magic 2015",
+      "count": 28
+    },
+    {
+      "code": "TD0",
+      "name": "Magic Online Theme Decks",
+      "count": 4
+    },
+    {
+      "code": "ORI",
+      "name": "Magic Origins",
+      "count": 28
+    },
+    {
+      "code": "MOM",
+      "name": "March of the Machine",
+      "count": 19
+    },
+    {
+      "code": "MOC",
+      "name": "March of the Machine Commander",
+      "count": 5
+    },
+    {
+      "code": "MSH",
+      "name": "Marvel Super Heroes",
+      "count": 70
+    },
+    {
+      "code": "MSC",
+      "name": "Marvel Super Heroes Commander",
+      "count": 8
+    },
+    {
+      "code": "SPM",
+      "name": "Marvel's Spider-Man",
+      "count": 7
+    },
+    {
+      "code": "SPE",
+      "name": "Marvel's Spider-Man Eternal",
+      "count": 1
+    },
+    {
+      "code": "ME2",
+      "name": "Masters Edition II",
+      "count": 4
+    },
+    {
+      "code": "MMQ",
+      "name": "Mercadian Masques",
+      "count": 8
+    },
+    {
+      "code": "MIC",
+      "name": "Midnight Hunt Commander",
+      "count": 2
+    },
+    {
+      "code": "MIR",
+      "name": "Mirage",
+      "count": 4
+    },
+    {
+      "code": "MRD",
+      "name": "Mirrodin",
+      "count": 6
+    },
+    {
+      "code": "MBS",
+      "name": "Mirrodin Besieged",
+      "count": 21
+    },
+    {
+      "code": "MD1",
+      "name": "Modern Event Deck 2014",
+      "count": 1
+    },
+    {
+      "code": "MH2",
+      "name": "Modern Horizons 2",
+      "count": 1
+    },
+    {
+      "code": "MH3",
+      "name": "Modern Horizons 3",
+      "count": 1
+    },
+    {
+      "code": "M3C",
+      "name": "Modern Horizons 3 Commander",
+      "count": 8
+    },
+    {
+      "code": "MOR",
+      "name": "Morningtide",
+      "count": 6
+    },
+    {
+      "code": "MKM",
+      "name": "Murders at Karlov Manor",
+      "count": 3
+    },
+    {
+      "code": "MKC",
+      "name": "Murders at Karlov Manor Commander",
+      "count": 4
+    },
+    {
+      "code": "NEM",
+      "name": "Nemesis",
+      "count": 8
+    },
+    {
+      "code": "NEC",
+      "name": "Neon Dynasty Commander",
+      "count": 2
+    },
+    {
+      "code": "NCC",
+      "name": "New Capenna Commander",
+      "count": 5
+    },
+    {
+      "code": "NPH",
+      "name": "New Phyrexia",
+      "count": 10
+    },
+    {
+      "code": "9ED",
+      "name": "Ninth Edition",
+      "count": 15
+    },
+    {
+      "code": "OGW",
+      "name": "Oath of the Gatewatch",
+      "count": 8
+    },
+    {
+      "code": "ODY",
+      "name": "Odyssey",
+      "count": 6
+    },
+    {
+      "code": "ONS",
+      "name": "Onslaught",
+      "count": 6
+    },
+    {
+      "code": "OTJ",
+      "name": "Outlaws of Thunder Junction",
+      "count": 13
+    },
+    {
+      "code": "OTC",
+      "name": "Outlaws of Thunder Junction Commander",
+      "count": 4
+    },
+    {
+      "code": "ONE",
+      "name": "Phyrexia: All Will Be One",
+      "count": 15
+    },
+    {
+      "code": "ONC",
+      "name": "Phyrexia: All Will Be One Commander",
+      "count": 2
+    },
+    {
+      "code": "Q06",
+      "name": "Pioneer Challenger Decks 2021",
+      "count": 4
+    },
+    {
+      "code": "Q08",
+      "name": "Pioneer Challenger Decks 2022",
+      "count": 4
+    },
+    {
+      "code": "PLC",
+      "name": "Planar Chaos",
+      "count": 6
+    },
+    {
+      "code": "HOP",
+      "name": "Planechase",
+      "count": 4
+    },
+    {
+      "code": "PC2",
+      "name": "Planechase 2012",
+      "count": 4
+    },
+    {
+      "code": "PCA",
+      "name": "Planechase Anthology",
+      "count": 5
+    },
+    {
+      "code": "PLS",
+      "name": "Planeshift",
+      "count": 6
+    },
+    {
+      "code": "PTG",
+      "name": "Ponies: The Galloping",
+      "count": 1
+    },
+    {
+      "code": "POR",
+      "name": "Portal",
+      "count": 4
+    },
+    {
+      "code": "P02",
+      "name": "Portal Second Age",
+      "count": 9
+    },
+    {
+      "code": "PTK",
+      "name": "Portal Three Kingdoms",
+      "count": 5
+    },
+    {
+      "code": "PD2",
+      "name": "Premium Deck Series: Fire and Lightning",
+      "count": 1
+    },
+    {
+      "code": "PD3",
+      "name": "Premium Deck Series: Graveborn",
+      "count": 1
+    },
+    {
+      "code": "H09",
+      "name": "Premium Deck Series: Slivers",
+      "count": 1
+    },
+    {
+      "code": "PTC",
+      "name": "Pro Tour Collector Set",
+      "count": 8
+    },
+    {
+      "code": "PCY",
+      "name": "Prophecy",
+      "count": 4
+    },
+    {
+      "code": "RNA",
+      "name": "Ravnica Allegiance",
+      "count": 6
+    },
+    {
+      "code": "RAV",
+      "name": "Ravnica: City of Guilds",
+      "count": 7
+    },
+    {
+      "code": "CLU",
+      "name": "Ravnica: Clue Edition",
+      "count": 21
+    },
+    {
+      "code": "RTR",
+      "name": "Return to Ravnica",
+      "count": 11
+    },
+    {
+      "code": "ROE",
+      "name": "Rise of the Eldrazi",
+      "count": 20
+    },
+    {
+      "code": "RIX",
+      "name": "Rivals of Ixalan",
+      "count": 5
+    },
+    {
+      "code": "RQS",
+      "name": "Rivals Quick Start Set",
+      "count": 4
+    },
+    {
+      "code": "GK2",
+      "name": "RNA Guild Kit",
+      "count": 5
+    },
+    {
+      "code": "PSAL",
+      "name": "Salvat 2005",
+      "count": 12
+    },
+    {
+      "code": "PS11",
+      "name": "Salvat 2011",
+      "count": 12
+    },
+    {
+      "code": "PSDC",
+      "name": "San Diego Comic-Con 2013",
+      "count": 2
+    },
+    {
+      "code": "PS14",
+      "name": "San Diego Comic-Con 2014",
+      "count": 2
+    },
+    {
+      "code": "PS15",
+      "name": "San Diego Comic-Con 2015",
+      "count": 2
+    },
+    {
+      "code": "PS16",
+      "name": "San Diego Comic-Con 2016",
+      "count": 2
+    },
+    {
+      "code": "PS17",
+      "name": "San Diego Comic-Con 2017",
+      "count": 2
+    },
+    {
+      "code": "PS18",
+      "name": "San Diego Comic-Con 2018",
+      "count": 2
+    },
+    {
+      "code": "PS19",
+      "name": "San Diego Comic-Con 2019",
+      "count": 2
+    },
+    {
+      "code": "SOK",
+      "name": "Saviors of Kamigawa",
+      "count": 6
+    },
+    {
+      "code": "SOM",
+      "name": "Scars of Mirrodin",
+      "count": 8
+    },
+    {
+      "code": "SCG",
+      "name": "Scourge",
+      "count": 6
+    },
+    {
+      "code": "SLC",
+      "name": "Secret Lair Countdown",
+      "count": 2
+    },
+    {
+      "code": "SLD",
+      "name": "Secret Lair Drop",
+      "count": 743
+    },
+    {
+      "code": "SLU",
+      "name": "Secret Lair: Ultimate Edition",
+      "count": 2
+    },
+    {
+      "code": "SOS",
+      "name": "Secrets of Strixhaven",
+      "count": 9
+    },
+    {
+      "code": "SOC",
+      "name": "Secrets of Strixhaven Commander",
+      "count": 5
+    },
+    {
+      "code": "7ED",
+      "name": "Seventh Edition",
+      "count": 12
+    },
+    {
+      "code": "SHM",
+      "name": "Shadowmoor",
+      "count": 8
+    },
+    {
+      "code": "SOI",
+      "name": "Shadows over Innistrad",
+      "count": 21
+    },
+    {
+      "code": "ALA",
+      "name": "Shards of Alara",
+      "count": 8
+    },
+    {
+      "code": "SS3",
+      "name": "Signature Spellbook: Chandra",
+      "count": 1
+    },
+    {
+      "code": "SS2",
+      "name": "Signature Spellbook: Gideon",
+      "count": 1
+    },
+    {
+      "code": "SS1",
+      "name": "Signature Spellbook: Jace",
+      "count": 1
+    },
+    {
+      "code": "S99",
+      "name": "Starter 1999",
+      "count": 9
+    },
+    {
+      "code": "S00",
+      "name": "Starter 2000",
+      "count": 5
+    },
+    {
+      "code": "SCD",
+      "name": "Starter Commander Decks",
+      "count": 5
+    },
+    {
+      "code": "SNC",
+      "name": "Streets of New Capenna",
+      "count": 16
+    },
+    {
+      "code": "STX",
+      "name": "Strixhaven: School of Mages",
+      "count": 3
+    },
+    {
+      "code": "STH",
+      "name": "Stronghold",
+      "count": 8
+    },
+    {
+      "code": "LTC",
+      "name": "Tales of Middle-earth Commander",
+      "count": 8
+    },
+    {
+      "code": "TDM",
+      "name": "Tarkir: Dragonstorm",
+      "count": 2
+    },
+    {
+      "code": "TDC",
+      "name": "Tarkir: Dragonstorm Commander",
+      "count": 5
+    },
+    {
+      "code": "TMT",
+      "name": "Teenage Mutant Ninja Turtles",
+      "count": 7
+    },
+    {
+      "code": "TMC",
+      "name": "Teenage Mutant Ninja Turtles Eternal",
+      "count": 1
+    },
+    {
+      "code": "TMP",
+      "name": "Tempest",
+      "count": 8
+    },
+    {
+      "code": "10E",
+      "name": "Tenth Edition",
+      "count": 18
+    },
+    {
+      "code": "BRO",
+      "name": "The Brothers' War",
+      "count": 13
+    },
+    {
+      "code": "BRC",
+      "name": "The Brothers' War Commander",
+      "count": 2
+    },
+    {
+      "code": "HOB",
+      "name": "The Hobbit",
+      "count": 6
+    },
+    {
+      "code": "LTR",
+      "name": "The Lord of the Rings: Tales of Middle-earth",
+      "count": 33
+    },
+    {
+      "code": "LCI",
+      "name": "The Lost Caverns of Ixalan",
+      "count": 3
+    },
+    {
+      "code": "LCC",
+      "name": "The Lost Caverns of Ixalan Commander",
+      "count": 4
+    },
+    {
+      "code": "THS",
+      "name": "Theros",
+      "count": 10
+    },
+    {
+      "code": "THB",
+      "name": "Theros Beyond Death",
+      "count": 6
+    },
+    {
+      "code": "ELD",
+      "name": "Throne of Eldraine",
+      "count": 9
+    },
+    {
+      "code": "TSP",
+      "name": "Time Spiral",
+      "count": 7
+    },
+    {
+      "code": "TSB",
+      "name": "Time Spiral Timeshifted",
+      "count": 2
+    },
+    {
+      "code": "TOR",
+      "name": "Torment",
+      "count": 6
+    },
+    {
+      "code": "UND",
+      "name": "Unsanctioned",
+      "count": 5
+    },
+    {
+      "code": "UDS",
+      "name": "Urza's Destiny",
+      "count": 8
+    },
+    {
+      "code": "ULG",
+      "name": "Urza's Legacy",
+      "count": 8
+    },
+    {
+      "code": "USG",
+      "name": "Urza's Saga",
+      "count": 8
+    },
+    {
+      "code": "PVAN",
+      "name": "Vanguard Series",
+      "count": 4
+    },
+    {
+      "code": "VIS",
+      "name": "Visions",
+      "count": 4
+    },
+    {
+      "code": "WAR",
+      "name": "War of the Spark",
+      "count": 5
+    },
+    {
+      "code": "40K",
+      "name": "Warhammer 40,000 Commander",
+      "count": 8
+    },
+    {
+      "code": "WTH",
+      "name": "Weatherlight",
+      "count": 4
+    },
+    {
+      "code": "W16",
+      "name": "Welcome Deck 2016",
+      "count": 5
+    },
+    {
+      "code": "W17",
+      "name": "Welcome Deck 2017",
+      "count": 5
+    },
+    {
+      "code": "WOE",
+      "name": "Wilds of Eldraine",
+      "count": 5
+    },
+    {
+      "code": "WOC",
+      "name": "Wilds of Eldraine Commander",
+      "count": 2
+    },
+    {
+      "code": "WC97",
+      "name": "World Championship Decks 1997",
+      "count": 4
+    },
+    {
+      "code": "WC98",
+      "name": "World Championship Decks 1998",
+      "count": 4
+    },
+    {
+      "code": "WC99",
+      "name": "World Championship Decks 1999",
+      "count": 4
+    },
+    {
+      "code": "WC00",
+      "name": "World Championship Decks 2000",
+      "count": 4
+    },
+    {
+      "code": "WC01",
+      "name": "World Championship Decks 2001",
+      "count": 4
+    },
+    {
+      "code": "WC02",
+      "name": "World Championship Decks 2002",
+      "count": 4
+    },
+    {
+      "code": "WC03",
+      "name": "World Championship Decks 2003",
+      "count": 4
+    },
+    {
+      "code": "WC04",
+      "name": "World Championship Decks 2004",
+      "count": 4
+    },
+    {
+      "code": "WWK",
+      "name": "Worldwake",
+      "count": 7
+    },
+    {
+      "code": "ZEN",
+      "name": "Zendikar",
+      "count": 8
+    },
+    {
+      "code": "ZNR",
+      "name": "Zendikar Rising",
+      "count": 4
+    },
+    {
+      "code": "ZNC",
+      "name": "Zendikar Rising Commander",
+      "count": 2
+    }
+  ]
+}

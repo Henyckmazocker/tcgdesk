@@ -336,16 +336,16 @@ setup_mobile_env() {
     info "Configurando frontend/.env.mobile..."
 
     local api_url google_client_id
-    api_url=$(env_get "$MOBILE_ENV_FILE"          VUE_APP_API_URL)
-    google_client_id=$(env_get "$MOBILE_ENV_FILE" VUE_APP_GOOGLE_CLIENT_ID)
+    api_url=$(env_get "$MOBILE_ENV_FILE"          VITE_API_URL)
+    google_client_id=$(env_get "$MOBILE_ENV_FILE" VITE_GOOGLE_CLIENT_ID)
 
     # Fallbacks desde .env raíz
     [[ -z "$google_client_id" ]] && google_client_id=$(env_get "$ENV_FILE" GOOGLE_CLIENT_ID)
 
     echo ""
     echo -e "${YELLOW}=== Configuración móvil ===${NC}"
-    warn "VUE_APP_API_URL usa 10.0.2.2 para emulador Android (= localhost del host)."
-    api_url=$(ask_if_empty    "VUE_APP_API_URL"        "${api_url:-http://10.0.2.2:8899/index.php}")
+    warn "VITE_API_URL usa 10.0.2.2 para emulador Android (= localhost del host)."
+    api_url=$(ask_if_empty    "VITE_API_URL"           "${api_url:-http://10.0.2.2:8899/index.php}")
     google_client_id=$(ask_if_empty "Google OAuth Client ID" "$google_client_id")
 
     cat > "$MOBILE_ENV_FILE" <<EOF
@@ -353,16 +353,16 @@ setup_mobile_env() {
 # Generado por dev-setup.sh el $(date '+%Y-%m-%d %H:%M:%S')
 # NUNCA commitear este archivo
 
-VUE_APP_API_URL=${api_url}
-VUE_APP_MODE=mobile
-VUE_APP_GOOGLE_CLIENT_ID=${google_client_id}
+# El modo ya no es una variable: lo pasa vite build --mode mobile a vite.config.js
+VITE_API_URL=${api_url}
+VITE_GOOGLE_CLIENT_ID=${google_client_id}
 EOF
     success "frontend/.env.mobile creado/actualizado."
   fi
 
   # secrets.xml — Google OAuth Client ID para el plugin nativo
   local google_client_id
-  google_client_id=$(env_get "$MOBILE_ENV_FILE" VUE_APP_GOOGLE_CLIENT_ID)
+  google_client_id=$(env_get "$MOBILE_ENV_FILE" VITE_GOOGLE_CLIENT_ID)
 
   if [[ ! -f "$SECRETS_XML" ]]; then
     info "Creando android/app/.../secrets.xml..."

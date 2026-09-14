@@ -25,6 +25,12 @@ use Throwable;
  * La ingesta es idempotente: todo son upserts y ejecutarla dos veces seguidas no
  * cambia ningún contador. Eso es lo que permite relanzarla cuando sale un set
  * nuevo sin borrar nada.
+ *
+ * **Lleva dos enganches al final que no se ven desde aquí y que no se pueden
+ * perder**: `name_normalized`, que lo escribe el propio mapper
+ * (`MtgJsonMapper::card()`), y `mtg_format`, que se reconstruye tras el bucle
+ * con `refrescarFormatos()`. Los dos fallan igual de mal —dejando dato viejo sin
+ * decir nada— y por eso el segundo imprime su contador.
  */
 class CatalogImportCommand implements CommandInterface
 {
@@ -103,16 +109,28 @@ class CatalogImportCommand implements CommandInterface
             );
         }
 
+        // `mtg_format` se reconstruye AQUÍ, con la ingesta ya terminada, y no
+        // antes: `mtg_legality` se llena en el bucle de arriba, así que un
+        // `SELECT DISTINCT` al empezar leería los formatos de la ingesta
+        // anterior —o ninguno, en una instalación nueva—.
+        //
+        // Si alguien reordena este comando, este enganche se va con lo demás y
+        // el desplegable de formatos se queda congelado **sin quejarse**, que es
+        // exactamente lo que ya pasó una vez con `name_normalized`. Por eso el
+        // número se imprime: una ingesta que diga «formatos 0» se ve.
+        $formatos = $totales['sets'] > 0 ? $this->catalogo->refrescarFormatos() : 0;
+
         $segundos = microtime(true) - $inicio;
 
         echo str_repeat('-', 64), "\n";
         printf(
-            "Sets %d · cartas %d · printings %d · localizados %d · legalidades %d\n",
+            "Sets %d · cartas %d · printings %d · localizados %d · legalidades %d · formatos %d\n",
             $totales['sets'],
             $totales['cards'],
             $totales['printings'],
             $totales['localized'],
-            $totales['legalities']
+            $totales['legalities'],
+            $formatos
         );
 
         if ($sinOracle > 0) {
@@ -126,6 +144,7 @@ class CatalogImportCommand implements CommandInterface
         }
 
         $this->logger->info('catalog:import completado', $totales + [
+            'formatos'   => $formatos,
             'segundos'   => round($segundos, 1),
             'sin_oracle' => $sinOracle,
             'set'        => $soloSet,

@@ -1,0 +1,1728 @@
+{
+  "items": [
+    {
+      "uuid": "00cf70ec-98f3-5e3e-928a-a7866a1d0c54",
+      "oracleId": "16052b52-ade1-406f-a06b-ce7ea607fb63",
+      "name": "Stomping Ground",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "395",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G",
+        "R"
+      ],
+      "typeLine": "Land — Mountain Forest",
+      "scryfallId": "e1614245-8a15-4139-acbc-e0e98c9fb9b2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "035c0dda-4bbd-5438-9af1-fbc46cfe5f17",
+      "oracleId": "fba54c2d-a664-4e4c-b9d4-e24cf2523ab9",
+      "name": "Planetary Patrol",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "163",
+      "rarity": "common",
+      "manaCost": "{1}{R}",
+      "manaValue": 2,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Creature — Scout",
+      "scryfallId": "163f5474-138d-4b47-a6f5-b1a0974e56a4",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "03d4a9a0-c0e5-57fe-9312-80ef6ce72574",
+      "oracleId": "847efb61-5933-43c1-93ff-e8375f9469a9",
+      "name": "Klingon Strike Force",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "199",
+      "rarity": "rare",
+      "manaCost": "{3}{R}{R}",
+      "manaValue": 5,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Creature — Klingon Warrior",
+      "scryfallId": "bc121e37-b01c-4cf3-bd41-19a1cb21caa5",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "05601653-af1d-5e35-8ed5-dd5cbc068709",
+      "oracleId": "39426cd1-8c0d-4ec6-8747-f0693080f8f2",
+      "name": "Hoshi Sato, Exolinguist",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "64",
+      "rarity": "uncommon",
+      "manaCost": "{4}{U}",
+      "manaValue": 5,
+      "colors": [
+        "U"
+      ],
+      "colorIdentity": [
+        "U"
+      ],
+      "typeLine": "Legendary Creature — Human Scientist",
+      "scryfallId": "24589f4d-c530-4f6a-b2d0-450ef70fca71",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "05f4d165-c482-5621-9d33-7a2a0e8112fa",
+      "oracleId": "3c037865-d38c-48da-aee9-308975e12638",
+      "name": "Seven of Nine",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "252",
+      "rarity": "uncommon",
+      "manaCost": "{2}{U}{B}",
+      "manaValue": 4,
+      "colors": [
+        "B",
+        "U"
+      ],
+      "colorIdentity": [
+        "B",
+        "U"
+      ],
+      "typeLine": "Legendary Artifact Creature — Human Scientist",
+      "scryfallId": "6204cfdb-6fb4-4030-96b6-9306c8266bcf",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0799c285-3d5f-5714-9753-55619de79e26",
+      "oracleId": "17039058-822d-409f-938c-b727a366ba63",
+      "name": "Steam Vents",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "398",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "R",
+        "U"
+      ],
+      "typeLine": "Land — Island Mountain",
+      "scryfallId": "e8e9d4cd-f94a-416f-aaa1-0c60bdd58391",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "09a6d65c-791c-5396-a575-c479b5e7eed3",
+      "oracleId": "90c78f79-982f-4acd-a8ba-0c6ce115a248",
+      "name": "In the Pale Moonlight",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "117",
+      "rarity": "uncommon",
+      "manaCost": "{3}{B}{B}",
+      "manaValue": 5,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Enchantment — Saga",
+      "scryfallId": "47c8262c-e0c6-4c1a-b1c1-3b5fe5252a9c",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0ca712e5-cd57-514b-aff4-c8874922f710",
+      "oracleId": "4b36f8e2-ba7d-4bc7-890f-dd6ab73eef17",
+      "name": "Picard, Leading by Example",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "29",
+      "rarity": "uncommon",
+      "manaCost": "{1}{W}",
+      "manaValue": 2,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "f9fa20c5-f241-4da2-9c99-c9b650095d74",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0d58d34f-8e7e-5866-8273-9dfe8fd7cfd9",
+      "oracleId": "1c4afb0d-6d6e-4d21-9fe0-5621cd2fd27c",
+      "name": "Command Decision",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "8",
+      "rarity": "common",
+      "manaCost": "{1}{W}",
+      "manaValue": 2,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Sorcery",
+      "scryfallId": "9f1f789b-5c08-4a4d-b3a3-4d51ad9f1a4d",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0e02f714-1a9d-5bb7-969f-9e0ee8a5f24c",
+      "oracleId": "cda786aa-1259-45e8-a834-21c7ad0259a6",
+      "name": "Picard, Steadfast Captain",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "193",
+      "rarity": "mythic",
+      "manaCost": "{4}{W}{W}",
+      "manaValue": 6,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "ddfbfc4f-eeea-4b49-92c2-3060e2cef830",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0e22c69e-8c40-5f93-b93b-5f3ce329d8f7",
+      "oracleId": "d4030d30-4c24-458c-87a9-c2f80bb68d27",
+      "name": "Common Goal",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "190",
+      "rarity": "common",
+      "manaCost": "{1}{G}",
+      "manaValue": 2,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Sorcery",
+      "scryfallId": "4fddc950-fbc5-4cf7-b694-dcd54ffccb31",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0f176bd3-3ca7-514c-95a3-ea70b815ff5d",
+      "oracleId": "6c18f853-684b-42f6-8bc6-e86596131ab1",
+      "name": "Guidance Failure",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "60",
+      "rarity": "common",
+      "manaCost": "{3}{U}",
+      "manaValue": 4,
+      "colors": [
+        "U"
+      ],
+      "colorIdentity": [
+        "U"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "86b790e6-3c99-4a95-8327-eb90ed9380f2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1054964b-57ea-5b60-8f50-ba0566547ef7",
+      "oracleId": "8170dcbb-9879-414c-819d-ea2658ff770c",
+      "name": "Emergency Medical Hologram",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "15",
+      "rarity": "common",
+      "manaCost": "{W}",
+      "manaValue": 1,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Artifact Creature — Illusion Doctor",
+      "scryfallId": "dda6f965-cbdf-4dbc-b0b1-00c27e32f5f2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1484ec43-d273-5bd5-9ecb-e4ece77c51af",
+      "oracleId": "fc9ec820-4245-4a96-b009-5308a818ca58",
+      "name": "Watery Grave",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "488",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "B",
+        "U"
+      ],
+      "typeLine": "Land — Island Swamp",
+      "scryfallId": "6ccd8ea5-b8c9-4012-b3a0-dbc2b95538c3",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1540b2b9-2e17-5467-b263-da89757fac11",
+      "oracleId": "98cbac1d-7896-4c63-a265-03bc5d670fa6",
+      "name": "Relentless Drednok",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "124",
+      "rarity": "common",
+      "manaCost": "{B}",
+      "manaValue": 1,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact Creature — Robot",
+      "scryfallId": "ce538db8-373d-4554-821e-cd96e795e37a",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1637a86e-8518-5086-8137-721dbc68897a",
+      "oracleId": "5228fffe-6347-4177-bccb-b15621c7159c",
+      "name": "Captain Kirk, Boldly Going",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "85",
+      "rarity": "mythic",
+      "manaCost": "{1}{G}{W}{U}",
+      "manaValue": 4,
+      "colors": [
+        "G",
+        "U",
+        "W"
+      ],
+      "colorIdentity": [
+        "G",
+        "U",
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "6b5d9bd2-cc78-4c30-b6ee-65b76c60a588",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1740604a-c0d6-500f-ae31-aff1166d375f",
+      "oracleId": "c06c17c2-203c-4b4a-8564-f29bc41c9eb5",
+      "name": "Eject the Warp Core",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "105",
+      "rarity": "common",
+      "manaCost": "{1}{B}",
+      "manaValue": 2,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "04a479be-8093-4775-a5d9-8b0e1683bf12",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "178dbf17-da19-5735-abad-52436ae905b2",
+      "oracleId": "5fe6f4ae-3fb1-4df6-8760-88c8666068df",
+      "name": "Dr. Beverly Crusher",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "500",
+      "rarity": "mythic",
+      "manaCost": "{2}{W}",
+      "manaValue": 3,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Doctor",
+      "scryfallId": "179d50b5-cab1-482c-85a6-36f59335b562",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "19961f41-a22e-5fc5-bf94-9bd2f17e7370",
+      "oracleId": "d95af032-3efd-40c7-8229-ade9d974934f",
+      "name": "U.S.S. Enterprise-D, Galaxy-Class",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "273",
+      "rarity": "rare",
+      "manaCost": "{3}",
+      "manaValue": 3,
+      "colors": [],
+      "colorIdentity": [],
+      "typeLine": "Legendary Artifact — Spacecraft",
+      "scryfallId": "057a4413-6a17-491e-bfd7-6cd427b1a442",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1ada6333-0c9f-5bb6-97a7-31112909eda2",
+      "oracleId": "d5e9b04f-4a97-4da1-bf86-3715fc75ab23",
+      "name": "Cold-Blooded Crew",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "189",
+      "rarity": "common",
+      "manaCost": "{4}{G}{G}",
+      "manaValue": 6,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Creature — Gorn Warrior",
+      "scryfallId": "4f2d1830-baea-4735-b029-cb8c0b538d83",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1b15d9fb-fd3c-5ff3-92c4-a5a4420ec7e1",
+      "oracleId": "bb8c2c0f-fc63-40c6-98c6-691e42b3b8c9",
+      "name": "Disruptor Pistol",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "177",
+      "rarity": "common",
+      "manaCost": "{2}",
+      "manaValue": 2,
+      "colors": [],
+      "colorIdentity": [],
+      "typeLine": "Artifact",
+      "scryfallId": "2b3ba275-0671-4328-a337-9de498ec2d99",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1d483efa-e89f-55f9-a46b-9325be9bac7d",
+      "oracleId": "31c7453e-33b8-4eb6-abac-28cdb35fb993",
+      "name": "Salt Vampire",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "417",
+      "rarity": "rare",
+      "manaCost": "{1}{B}",
+      "manaValue": 2,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Creature — Vampire Shapeshifter",
+      "scryfallId": "5ad670fc-85ef-4f9b-9b5b-bac20f080bf5",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1db9b6a8-0a81-50c3-ac51-1a47c687998d",
+      "oracleId": "26e86be4-52e1-47cb-b548-c434482bd3ad",
+      "name": "Worf, Chief Tactical Officer",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "141",
+      "rarity": "uncommon",
+      "manaCost": "{2}{W}",
+      "manaValue": 3,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Klingon Warrior Officer",
+      "scryfallId": "ced54aa6-c8ee-451f-91cd-967fe766ec13",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1e158dfc-2314-52a3-99b4-c30755019c64",
+      "oracleId": "1000d26e-7a29-48df-806f-9eb7d4e1082d",
+      "name": "Bat'leth",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "94",
+      "rarity": "uncommon",
+      "manaCost": "{2}{B}",
+      "manaValue": 3,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact — Equipment",
+      "scryfallId": "888e6e0f-43c3-4516-88ff-8a8d814478d4",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1f3be5fe-40c3-5baa-b982-1b3c91432917",
+      "oracleId": "83b31215-ea9b-4ad9-a39e-3fe6cdb9b7de",
+      "name": "Starfleet Crew",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "139",
+      "rarity": "common",
+      "manaCost": "{1}{W}",
+      "manaValue": 2,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Creature — Officer",
+      "scryfallId": "ecf2358f-542d-45c9-b5c5-c57b2b0c1122",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1f8ee533-bfb1-52ec-8efe-5c7712d98511",
+      "oracleId": "b08c5b86-4f84-46a3-877f-bbf71ec17adb",
+      "name": "Open Communications",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "76",
+      "rarity": "common",
+      "manaCost": "{U}",
+      "manaValue": 1,
+      "colors": [
+        "U"
+      ],
+      "colorIdentity": [
+        "U"
+      ],
+      "typeLine": "Sorcery",
+      "scryfallId": "8eeec269-13f0-4923-9f13-e995acd73e00",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "216fb8de-3dda-5fc4-8227-f60d276f3536",
+      "oracleId": "f9b46a1a-474f-4fac-8d71-131c1720e4c0",
+      "name": "Borg Queen, Perfection Manifest",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "197",
+      "rarity": "mythic",
+      "manaCost": "{4}{B}{B}",
+      "manaValue": 6,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Legendary Artifact Creature — Borg Noble",
+      "scryfallId": "cb07e5e4-154e-4ba5-85a4-ecc78f1555d2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "231ffd24-3a5b-57ad-b7ae-de041958ef0e",
+      "oracleId": "8e6ae6ed-065c-47bd-a3c6-69b2608e7ddc",
+      "name": "Hive Mind Coprocessor",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "115",
+      "rarity": "uncommon",
+      "manaCost": "{4}{B}",
+      "manaValue": 5,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact Creature — Borg",
+      "scryfallId": "a4734c59-ff41-47ac-bbb4-c8c3bf052fe6",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "2419ff3a-7614-5973-919a-e4b5b01f5708",
+      "oracleId": "19edde54-153f-46b8-8a8d-a20fdef0667f",
+      "name": "Captain James T. Kirk",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "1701",
+      "rarity": "mythic",
+      "manaCost": "{2}{R}",
+      "manaValue": 3,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "b1cfb3f1-f1ad-47aa-a7f0-ff3ebd2ffa5e",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "25277931-59af-5c66-b356-80701b087fec",
+      "oracleId": "45181cb8-2090-4471-ba90-e5a8f04d525f",
+      "name": "Sacred Foundry",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "295",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "R",
+        "W"
+      ],
+      "typeLine": "Land — Mountain Plains",
+      "scryfallId": "a7758cc6-4e18-48a5-8720-5f42b5cd9d31",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "26bff161-3819-57a4-8223-ff9c93d57dce",
+      "oracleId": "fc9ec820-4245-4a96-b009-5308a818ca58",
+      "name": "Watery Grave",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "393",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "B",
+        "U"
+      ],
+      "typeLine": "Land — Island Swamp",
+      "scryfallId": "fa84ef4e-44ee-4b34-a454-8a19548ec3cc",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "272a30be-3509-5807-93c9-287ca7eecfc6",
+      "oracleId": "d77d1895-ce02-4302-87c9-649e852fd0ea",
+      "name": "Captain Kathryn Janeway",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "520",
+      "rarity": "mythic",
+      "manaCost": "{3}{G}",
+      "manaValue": 4,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "2e462516-fddb-4e76-836b-b590d37e783f",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "27eefd17-3f47-541a-ae33-760598a3ebe6",
+      "oracleId": "5fdff691-686d-4ce0-bd12-eea676a648b4",
+      "name": "Xindi Surveyors",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "225",
+      "rarity": "common",
+      "manaCost": "{2}{G}",
+      "manaValue": 3,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Creature — Xindi Scientist",
+      "scryfallId": "803608aa-ae69-45d2-ae48-f1688d2a6a0d",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "2881d8c2-a2ac-509c-8018-db22554bf564",
+      "oracleId": "0013f005-2b49-48a4-8a74-9bbdadc88c9f",
+      "name": "Munitions Enthusiast",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "158",
+      "rarity": "uncommon",
+      "manaCost": "{1}{R}",
+      "manaValue": 2,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Creature — Klingon Warrior",
+      "scryfallId": "6d73bb1c-39e3-429c-b6bb-96dae2254708",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "298d0fa5-478b-5926-ad66-5cc6fc5bc75f",
+      "oracleId": "369f086f-3497-496a-94a8-0faccd1d5931",
+      "name": "Talarian Hook Spider",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "175",
+      "rarity": "common",
+      "manaCost": "{1}{G}",
+      "manaValue": 2,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Creature — Spider",
+      "scryfallId": "f49df857-5488-455e-8ac1-b000f600eda7",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "299310e1-79cb-5658-a7bc-80610417706b",
+      "oracleId": "4c4559a5-a7a4-4a40-8a8f-e7375c741748",
+      "name": "A Good Day to Die",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "111",
+      "rarity": "common",
+      "manaCost": "{B}",
+      "manaValue": 1,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "e2b350b2-0eda-4c2b-b9d6-b58ab4848545",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "2a9f2605-a967-549e-9c71-b66c5b9efef9",
+      "oracleId": "76b7e1ee-43f0-4b56-822a-71b064c9201b",
+      "name": "Dathon and Picard at El-Adrel",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "192",
+      "rarity": "common",
+      "manaCost": "{2}{G}",
+      "manaValue": 3,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "94e9d400-f2bb-46e7-8d41-6038ebdc6c8b",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "2f93373a-0ccd-5784-b386-100745450a51",
+      "oracleId": "8656291d-8de7-4341-b1ee-0fcd65d629a4",
+      "name": "Cloistered Telepath",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "50",
+      "rarity": "common",
+      "manaCost": "{1}{U}",
+      "manaValue": 2,
+      "colors": [
+        "U"
+      ],
+      "colorIdentity": [
+        "U"
+      ],
+      "typeLine": "Creature — Talosian Advisor",
+      "scryfallId": "959318c1-3f7e-4418-91ce-be529af27972",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "307224d2-77d7-55ab-b346-addea33045db",
+      "oracleId": "eb9a3b52-62ad-467f-b62a-0273ceee48e5",
+      "name": "Mugato",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "208",
+      "rarity": "uncommon",
+      "manaCost": "{3}{G}{G}",
+      "manaValue": 5,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Creature — Ape Beast",
+      "scryfallId": "f3c68b20-f202-4d55-bef1-398d96e55c57",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "31b8997d-5af5-51f1-8dea-78e979137042",
+      "oracleId": "25855177-a416-4083-a6e4-8c9e00361d41",
+      "name": "Shuttle Crew",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "137",
+      "rarity": "uncommon",
+      "manaCost": "{2}{W}",
+      "manaValue": 3,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Creature — Human Officer",
+      "scryfallId": "f5174a37-fbc7-4dbd-a5c2-e2f256ea7a6c",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "31ce539a-f99a-58bb-9fef-71801a94e3c3",
+      "oracleId": "81229e0a-8413-40cf-8087-9d580cbb21c3",
+      "name": "First Contact",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "199",
+      "rarity": "common",
+      "manaCost": "{1}{G}",
+      "manaValue": 2,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "5407e8f4-0c8e-4e66-9d2f-f22277aa38f4",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "32199f52-5d03-528a-b95e-08a4c535709f",
+      "oracleId": "4849f2f8-0c0e-470d-a4f5-76547a9570a0",
+      "name": "Rogue Artificial Intelligence",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "126",
+      "rarity": "common",
+      "manaCost": "{4}{B}{B}",
+      "manaValue": 6,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact Creature — Construct",
+      "scryfallId": "edcce061-88c9-40bf-97f8-d0d3018e24dd",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "36a28dc5-ca41-5cf5-9724-03cc441fd470",
+      "oracleId": "10af9cd9-1700-48f9-97e1-61e239536fef",
+      "name": "Brad Boimler, Eager Ensign",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "5",
+      "rarity": "uncommon",
+      "manaCost": "{1}{W}",
+      "manaValue": 2,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "a6bf1525-2212-46d0-ad4d-1dbaa2e3b3cd",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "372359c9-6f90-5c45-97b9-091f9a78637d",
+      "oracleId": "a9df60bf-f327-4d50-ab4d-99324fc2dcfe",
+      "name": "Xenobotanist",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "224",
+      "rarity": "common",
+      "manaCost": "{1}{G}",
+      "manaValue": 2,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Creature — Vulcan Scientist",
+      "scryfallId": "20a97cda-42b2-44f1-8e77-f64dd1c98f6f",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "375dad3d-b040-55d0-958a-6b141f76375c",
+      "oracleId": "d77d1895-ce02-4302-87c9-649e852fd0ea",
+      "name": "Captain Kathryn Janeway",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "340",
+      "rarity": "mythic",
+      "manaCost": "{3}{G}",
+      "manaValue": 4,
+      "colors": [
+        "G"
+      ],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "b16da038-5e35-4cd7-a157-624d4ed6bde3",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3b190ae0-5935-5fc3-813a-0669497baedf",
+      "oracleId": "20283c4a-f1f0-42f0-bc08-6da87474426b",
+      "name": "Breeding Pool",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "401",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G",
+        "U"
+      ],
+      "typeLine": "Land — Forest Island",
+      "scryfallId": "e5f775cc-ab3a-4e5d-887f-ef40c45e3560",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3df59937-5d90-5442-a8f0-4047305002d7",
+      "oracleId": "b1914241-6b2b-4b3e-8626-aeb0b8cbc12d",
+      "name": "Ceti Eel",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "153",
+      "rarity": "common",
+      "manaCost": "{3}{B}",
+      "manaValue": 4,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Creature — Worm",
+      "scryfallId": "8ba16590-26bb-4bc9-9147-b7f4728da549",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3eae73d2-eaac-5843-aefb-643301656eb4",
+      "oracleId": "ed3b80eb-8915-4428-89b8-90f4278f2733",
+      "name": "La'An Noonien-Singh, Security",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "156",
+      "rarity": "uncommon",
+      "manaCost": "{2}{R}{R}",
+      "manaValue": 4,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Legendary Creature — Human Soldier",
+      "scryfallId": "afe08bef-b184-4b91-8d69-0101e183c3ff",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3eeb0b7e-76be-5c24-811f-ed020063b423",
+      "oracleId": "d95af032-3efd-40c7-8229-ade9d974934f",
+      "name": "U.S.S. Enterprise-D, Galaxy-Class",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "557",
+      "rarity": "rare",
+      "manaCost": "{3}",
+      "manaValue": 3,
+      "colors": [],
+      "colorIdentity": [],
+      "typeLine": "Legendary Artifact — Spacecraft",
+      "scryfallId": "cb823267-b230-40f3-a1eb-140657df2b1e",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3f4411bb-21fd-531b-89f7-0b61742f78f3",
+      "oracleId": "18832d7a-9a1f-45f1-a0f9-8e768a36af07",
+      "name": "Assault Drone",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "92",
+      "rarity": "common",
+      "manaCost": "{3}{B}",
+      "manaValue": 4,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact Creature — Borg",
+      "scryfallId": "5ca2da7a-afbf-4b32-8ff6-ae899b9f70ad",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "4393cca5-bf6c-59ed-8116-deba2aa399c1",
+      "oracleId": "20283c4a-f1f0-42f0-bc08-6da87474426b",
+      "name": "Breeding Pool",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "279",
+      "rarity": "rare",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G",
+        "U"
+      ],
+      "typeLine": "Land — Forest Island",
+      "scryfallId": "63e4dc07-c742-41bd-8301-861637908fd1",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "442bf2db-c1c3-57b3-b30b-20b87b000016",
+      "oracleId": "4b5b0864-7ddd-497d-a7d6-a31c49bb9c7b",
+      "name": "Shuttle Ace",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "36",
+      "rarity": "common",
+      "manaCost": "{4}{W}",
+      "manaValue": 5,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Creature — Kelpien Pilot",
+      "scryfallId": "559f838a-24ac-4f18-8c40-23cfde6f65cc",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "443efdbf-9489-5e77-b5f2-72c512863443",
+      "oracleId": "d55977f8-1655-4d97-adbf-ef6cb979ea55",
+      "name": "Warship Flight Crew",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "168",
+      "rarity": "common",
+      "manaCost": "{1}{R}",
+      "manaValue": 2,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Creature — Klingon Pilot",
+      "scryfallId": "9b6d130a-60f7-410a-b45f-ad81dd203c8c",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "44aec1e2-dbe7-5eb7-83fc-cdaa2f918ea7",
+      "oracleId": "1ca22ca0-eca3-4578-9746-47d443d5fb73",
+      "name": "Bio-Asset Allocator",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "196",
+      "rarity": "rare",
+      "manaCost": "{3}{B}{B}",
+      "manaValue": 5,
+      "colors": [
+        "B"
+      ],
+      "colorIdentity": [
+        "B"
+      ],
+      "typeLine": "Artifact Creature — Borg",
+      "scryfallId": "fb9805a5-eea3-48a8-92b6-7387bb23bc88",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "45184d1c-80ca-55ea-987b-1ac42782ba60",
+      "oracleId": "d95af032-3efd-40c7-8229-ade9d974934f",
+      "name": "U.S.S. Enterprise-D, Galaxy-Class",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "481",
+      "rarity": "rare",
+      "manaCost": "{3}",
+      "manaValue": 3,
+      "colors": [],
+      "colorIdentity": [],
+      "typeLine": "Legendary Artifact — Spacecraft",
+      "scryfallId": "12a2e90a-6776-4213-b696-fd48a4bcf0a2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "45eacb32-bb1b-56e9-a008-fcf71eb7d1d9",
+      "oracleId": "19edde54-153f-46b8-8a8d-a20fdef0667f",
+      "name": "Captain James T. Kirk",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "542",
+      "rarity": "mythic",
+      "manaCost": "{2}{R}",
+      "manaValue": 3,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Legendary Creature — Human Officer",
+      "scryfallId": "a7f991c5-0a55-4d34-8dee-d3f206167be1",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "462f0a05-55ee-5988-960c-471216d13e6e",
+      "oracleId": "286213a8-ae53-4f97-9f81-e13bed462d0a",
+      "name": "Gin'tak Charge",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "163",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Sorcery",
+      "scryfallId": "a5d7bb33-fdf7-479a-93df-b2d0acddf033",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "4847f35b-6289-5f75-b242-3e74da5f1371",
+      "oracleId": "5fe6f4ae-3fb1-4df6-8760-88c8666068df",
+      "name": "Dr. Beverly Crusher",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "13",
+      "rarity": "mythic",
+      "manaCost": "{2}{W}",
+      "manaValue": 3,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Legendary Creature — Human Doctor",
+      "scryfallId": "ef9c5790-d909-4271-90bd-5fa4816ddd6b",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "484aeb89-0b0b-5dfb-a25e-9d811ffa14cc",
+      "oracleId": "3759f1de-eda1-4f09-b12b-ea5f5fc731d7",
+      "name": "Federation Field Medic",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "17",
+      "rarity": "common",
+      "manaCost": "{3}{W}",
+      "manaValue": 4,
+      "colors": [
+        "W"
+      ],
+      "colorIdentity": [
+        "W"
+      ],
+      "typeLine": "Creature — Human Doctor",
+      "scryfallId": "b312dacd-b87f-44c1-a804-bee221e70f52",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "4b71f272-de31-5112-856b-edf568f625fd",
+      "oracleId": "f6b0adcb-4676-4d9f-83ae-a2ff3cdfd84b",
+      "name": "Direct Hit",
+      "setCode": "TRC",
+      "setName": "Star Trek Commander",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{2}{R}",
+      "manaValue": 3,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Sorcery",
+      "scryfallId": "97388288-9254-4fa8-bcae-c2e2a55ef92b",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    }
+  ],
+  "nextCursor": "eyJvIjo2MH0"
+}

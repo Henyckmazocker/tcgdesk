@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "message": "Privacidad.",
+  "data": {
+    "privacy": {
+      "collection": "everyone",
+      "value": "friends",
+      "decks": "everyone",
+      "sets": "everyone",
+      "wishlist": "friends"
+    },
+    "search": "everyone"
+  },
+  "http_code": 200
+}

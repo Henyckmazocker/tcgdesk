@@ -50,14 +50,21 @@ final class InMemoryUserRepository implements UserRepositoryInterface
         return $this->users[$id] ?? null;
     }
 
-    public function usernameExists(string $username): bool
+    public function findByUsername(string $username): ?User
     {
         foreach ($this->users as $user) {
-            if ($user->username === $username) {
-                return true;
+            // Sin distinguir mayúsculas, como la colación utf8mb4_unicode_ci de
+            // la columna. Lo usa la ruta pública de perfil del M3.
+            if (mb_strtolower($user->username) === mb_strtolower($username)) {
+                return $user;
             }
         }
-        return false;
+        return null;
+    }
+
+    public function usernameExists(string $username): bool
+    {
+        return $this->findByUsername($username) !== null;
     }
 
     public function create(User $user): User
@@ -82,6 +89,18 @@ final class InMemoryUserRepository implements UserRepositoryInterface
     public function updateProfileFromGoogle(int $id, ?string $displayName, ?string $avatarUrl): void
     {
         $this->profileUpdates[] = ['id' => $id, 'display_name' => $displayName, 'avatar_url' => $avatarUrl];
+    }
+
+    /**
+     * El buscador del M6 no entra en el alta por ningún lado, así que aquí no
+     * hace falta reproducirlo: lo que sí hace falta es no mentir sobre él. Un
+     * array vacío es la respuesta honesta —este doble no tiene la privacidad de
+     * nadie— y quien prueba el buscador de verdad es `UsuariosFalsos`, que sí la
+     * modela con su `LEFT JOIN` y su defecto para el que no tiene fila.
+     */
+    public function buscarPorPrefijo(string $prefijo, int $excluyendoId, int $limite): array
+    {
+        return [];
     }
 }
 

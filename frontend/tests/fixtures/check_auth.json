@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "message": "Autenticado.",
+  "data": {
+    "user": {
+      "id": 1,
+      "email": "fixturas@example.invalid",
+      "username": "fixturas",
+      "display_name": "Usuaria de Fixturas",
+      "avatar_url": "https://example.invalid/avatar/fixturas.png",
+      "created_at": "2026-08-11 15:23:32"
+    },
+    "csrf_token": "0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0",
+    "auth_method": "session"
+  },
+  "http_code": 200
+}

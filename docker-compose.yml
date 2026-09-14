@@ -8,13 +8,13 @@ services:
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
-      - ./frontend/babel.config.js:/app/babel.config.js
       - ./frontend/jsconfig.json:/app/jsconfig.json
-      - ./frontend/vue.config.js:/app/vue.config.js
+      - ./frontend/vite.config.js:/app/vite.config.js
+      - ./frontend/index.html:/app/index.html
     environment:
       - NODE_ENV=development
-      - VUE_APP_API_URL=http://127.0.0.1:8899/index.php
-      - VUE_APP_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - VITE_API_URL=http://127.0.0.1:8899/index.php
+      - VITE_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     depends_on:
       - backend
     restart: unless-stopped

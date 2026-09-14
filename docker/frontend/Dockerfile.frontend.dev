@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:18-alpine
+FROM node:22-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -15,9 +15,8 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the application's source code (this will be largely overridden by volume mounts)
 COPY frontend/ .
 
-# Expose the port the app runs on (Vue CLI default is 8080; el host lo publica en 8099)
+# Expose the port the app runs on (Vite sirve en 8080; el host lo publica en 8094)
 EXPOSE 8080
 
-# Command to run the Vue development server
-# --host 0.0.0.0 is important to make the server accessible from outside the container
-CMD ["npm", "run", "serve", "--", "--host", "0.0.0.0"]
+# Command to run the Vite dev server (M0: antes era `npm run serve`, Vue CLI)
+CMD ["npm", "run", "dev"]

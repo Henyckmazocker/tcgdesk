@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "message": "Has dejado de seguir a esa persona.",
+  "data": {
+    "following": false,
+    "user": {
+      "username": "otroseguido",
+      "displayName": null,
+      "avatarUrl": null
+    }
+  },
+  "http_code": 200
+}

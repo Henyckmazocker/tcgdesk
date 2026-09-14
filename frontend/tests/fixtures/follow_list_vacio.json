@@ -1,0 +1,9 @@
+{
+  "status": "success",
+  "message": "Seguimientos.",
+  "data": {
+    "following": [],
+    "followerCount": 0
+  },
+  "http_code": 200
+}

@@ -1,0 +1,77 @@
+{
+  "status": "success",
+  "message": "Progreso por edición.",
+  "data": {
+    "sets": [
+      {
+        "setCode": "APC",
+        "setName": "Apocalypse",
+        "releaseDate": "2001-06-04",
+        "totalSetSize": 143,
+        "ownedPrintings": 4,
+        "items": 4,
+        "copies": 7,
+        "valueEur": 50.21,
+        "percent": 2.8,
+        "complete": false
+      },
+      {
+        "setCode": "WOC",
+        "setName": "Wilds of Eldraine Commander",
+        "releaseDate": "2023-09-08",
+        "totalSetSize": 173,
+        "ownedPrintings": 2,
+        "items": 2,
+        "copies": 2,
+        "valueEur": 30.57,
+        "percent": 1.2,
+        "complete": false
+      },
+      {
+        "setCode": "CMM",
+        "setName": "Commander Masters",
+        "releaseDate": "2023-08-04",
+        "totalSetSize": 1067,
+        "ownedPrintings": 8,
+        "items": 8,
+        "copies": 12,
+        "valueEur": 560.98,
+        "percent": 0.7,
+        "complete": false
+      },
+      {
+        "setCode": "LTR",
+        "setName": "The Lord of the Rings: Tales of Middle-earth",
+        "releaseDate": "2023-06-23",
+        "totalSetSize": 854,
+        "ownedPrintings": 3,
+        "items": 3,
+        "copies": 4,
+        "valueEur": 101.55,
+        "percent": 0.4,
+        "complete": false
+      },
+      {
+        "setCode": "MOM",
+        "setName": "March of the Machine",
+        "releaseDate": "2023-04-21",
+        "totalSetSize": 387,
+        "ownedPrintings": 1,
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0,
+        "percent": 0.3,
+        "complete": false
+      }
+    ],
+    "totals": {
+      "catalogSets": 868,
+      "startedSets": 5,
+      "completedSets": 0,
+      "unsizedSets": 0,
+      "ownedPrintings": 18,
+      "totalCopies": 26
+    }
+  },
+  "http_code": 200
+}

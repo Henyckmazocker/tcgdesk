@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Mtgjson;
 
+use App\Domain\Import\NameNormalizer;
+
 /**
  * Traduce un set de MTGJSON a las filas de nuestras tablas mtg_*.
  *
@@ -39,6 +41,26 @@ class MtgJsonMapper
 
     /** Rarezas que admite el ENUM de mtg_printing. */
     private const RAREZAS = ['common', 'uncommon', 'rare', 'mythic', 'special', 'bonus'];
+
+    /**
+     * El normalizador de nombres entra aquí porque la ingesta es IDEMPOTENTE y se
+     * relanza cada vez que sale un set.
+     *
+     * `catalog:normalize` rellena `name_normalized` una vez; si la ingesta no la
+     * escribiera también, cada reimportación metería las cartas nuevas con la
+     * columna a NULL y esas cartas dejarían de resolverse por nombre **sin que
+     * nada fallara** — el fallo silencioso que el Plan - Importación de
+     * Colecciones existe para evitar. Al escribirla aquí, el `ON DUPLICATE KEY
+     * UPDATE` de `upsertCards()` la mantiene al día sola.
+     *
+     * El valor por defecto no es pereza: el normalizador no tiene estado ni
+     * dependencias, y así el mapper se sigue construyendo con `new MtgJsonMapper()`
+     * en los tests que ya existían.
+     */
+    public function __construct(
+        private readonly NameNormalizer $normalizador = new NameNormalizer()
+    ) {
+    }
 
     /**
      * Fila de mtg_set a partir del objeto de set.
@@ -108,16 +130,19 @@ class MtgJsonMapper
         }
 
         return [
-            'oracle_id'      => $oracleId,
-            'name'           => $card['name'],
-            'mana_cost'      => $card['manaCost'] ?? null,
-            'mana_value'     => $card['manaValue'] ?? null,
-            'type_line'      => $card['type'] ?? null,
-            'oracle_text'    => $texto,
-            'colors'         => implode('', $card['colors'] ?? []),
-            'color_identity' => implode('', $card['colorIdentity'] ?? []),
-            'layout'         => $card['layout'] ?? null,
-            'edhrec_rank'    => $card['edhrecRank'] ?? null,
+            'oracle_id'       => $oracleId,
+            'name'            => $card['name'],
+            // Clave del paso 3 del resolvedor de importación. Se escribe en cada
+            // ingesta para que ninguna carta nueva nazca fuera del índice.
+            'name_normalized' => $this->normalizador->normalizar((string) $card['name']),
+            'mana_cost'       => $card['manaCost'] ?? null,
+            'mana_value'      => $card['manaValue'] ?? null,
+            'type_line'       => $card['type'] ?? null,
+            'oracle_text'     => $texto,
+            'colors'          => implode('', $card['colors'] ?? []),
+            'color_identity'  => implode('', $card['colorIdentity'] ?? []),
+            'layout'          => $card['layout'] ?? null,
+            'edhrec_rank'     => $card['edhrecRank'] ?? null,
         ];
     }
 

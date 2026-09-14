@@ -1,0 +1,599 @@
+{
+  "status": "success",
+  "message": "Valoración de la colección.",
+  "data": {
+    "totals": {
+      "valueEur": 262.68,
+      "uniqueItems": 185,
+      "uniquePrintings": 184,
+      "uniqueCards": 167,
+      "totalCopies": 200,
+      "itemsWithoutPrice": 1
+    },
+    "bySet": [
+      {
+        "setCode": "LTC",
+        "setName": "Tales of Middle-earth Commander",
+        "items": 77,
+        "copies": 78,
+        "valueEur": 94.59
+      },
+      {
+        "setCode": "APC",
+        "setName": "Apocalypse",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 26.19
+      },
+      {
+        "setCode": "LTR",
+        "setName": "The Lord of the Rings: Tales of Middle-earth",
+        "items": 21,
+        "copies": 31,
+        "valueEur": 21.47
+      },
+      {
+        "setCode": "MOM",
+        "setName": "March of the Machine",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 17.21
+      },
+      {
+        "setCode": "CMM",
+        "setName": "Commander Masters",
+        "items": 4,
+        "copies": 4,
+        "valueEur": 14.51
+      },
+      {
+        "setCode": "WOC",
+        "setName": "Wilds of Eldraine Commander",
+        "items": 5,
+        "copies": 5,
+        "valueEur": 13.07
+      },
+      {
+        "setCode": "NEO",
+        "setName": "Kamigawa: Neon Dynasty",
+        "items": 7,
+        "copies": 7,
+        "valueEur": 8.38
+      },
+      {
+        "setCode": "THB",
+        "setName": "Theros Beyond Death",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 6.23
+      },
+      {
+        "setCode": "PKHM",
+        "setName": "Kaldheim Promos",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 5.41
+      },
+      {
+        "setCode": "NPH",
+        "setName": "New Phyrexia",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 5.27
+      },
+      {
+        "setCode": "PLST",
+        "setName": "The List",
+        "items": 3,
+        "copies": 3,
+        "valueEur": 4.98
+      },
+      {
+        "setCode": "WHO",
+        "setName": "Doctor Who",
+        "items": 11,
+        "copies": 11,
+        "valueEur": 4.9
+      },
+      {
+        "setCode": "7ED",
+        "setName": "Seventh Edition",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 4.44
+      },
+      {
+        "setCode": "ONS",
+        "setName": "Onslaught",
+        "items": 4,
+        "copies": 8,
+        "valueEur": 4.17
+      },
+      {
+        "setCode": "MH2",
+        "setName": "Modern Horizons 2",
+        "items": 3,
+        "copies": 3,
+        "valueEur": 3.68
+      },
+      {
+        "setCode": "MRD",
+        "setName": "Mirrodin",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 3.57
+      },
+      {
+        "setCode": "DMU",
+        "setName": "Dominaria United",
+        "items": 6,
+        "copies": 6,
+        "valueEur": 2.85
+      },
+      {
+        "setCode": "ONE",
+        "setName": "Phyrexia: All Will Be One",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 2.4
+      },
+      {
+        "setCode": "KHC",
+        "setName": "Kaldheim Commander",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 2.08
+      },
+      {
+        "setCode": "DMC",
+        "setName": "Dominaria United Commander",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 1.71
+      },
+      {
+        "setCode": "C16",
+        "setName": "Commander 2016",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 1.69
+      },
+      {
+        "setCode": "40K",
+        "setName": "Warhammer 40,000 Commander",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 1.6
+      },
+      {
+        "setCode": "BRC",
+        "setName": "The Brothers' War Commander",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 1.29
+      },
+      {
+        "setCode": "LCC",
+        "setName": "The Lost Caverns of Ixalan Commander",
+        "items": 3,
+        "copies": 3,
+        "valueEur": 1.28
+      },
+      {
+        "setCode": "C20",
+        "setName": "Commander 2020",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 1.23
+      },
+      {
+        "setCode": "PTHB",
+        "setName": "Theros Beyond Death Promos",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 1.02
+      },
+      {
+        "setCode": "M15",
+        "setName": "Magic 2015",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.83
+      },
+      {
+        "setCode": "RAV",
+        "setName": "Ravnica: City of Guilds",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.71
+      },
+      {
+        "setCode": "NEC",
+        "setName": "Neon Dynasty Commander",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 0.7
+      },
+      {
+        "setCode": "C18",
+        "setName": "Commander 2018",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.66
+      },
+      {
+        "setCode": "AFC",
+        "setName": "Forgotten Realms Commander",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 0.65
+      },
+      {
+        "setCode": "DOM",
+        "setName": "Dominaria",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.63
+      },
+      {
+        "setCode": "CMR",
+        "setName": "Commander Legends",
+        "items": 2,
+        "copies": 2,
+        "valueEur": 0.55
+      },
+      {
+        "setCode": "M11",
+        "setName": "Magic 2011",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.51
+      },
+      {
+        "setCode": "2X2",
+        "setName": "Double Masters 2022",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.45
+      },
+      {
+        "setCode": "USG",
+        "setName": "Urza's Saga",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.41
+      },
+      {
+        "setCode": "CLB",
+        "setName": "Commander Legends: Battle for Baldur's Gate",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.33
+      },
+      {
+        "setCode": "J22",
+        "setName": "Jumpstart 2022",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.3
+      },
+      {
+        "setCode": "KHM",
+        "setName": "Kaldheim",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.25
+      },
+      {
+        "setCode": "C19",
+        "setName": "Commander 2019",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.21
+      },
+      {
+        "setCode": "M14",
+        "setName": "Magic 2014",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.14
+      },
+      {
+        "setCode": "NCC",
+        "setName": "New Capenna Commander",
+        "items": 1,
+        "copies": 1,
+        "valueEur": 0.13
+      }
+    ],
+    "byRarity": [
+      {
+        "rarity": "mythic",
+        "items": 10,
+        "copies": 10,
+        "valueEur": 45.53
+      },
+      {
+        "rarity": "rare",
+        "items": 97,
+        "copies": 98,
+        "valueEur": 161.99
+      },
+      {
+        "rarity": "uncommon",
+        "items": 39,
+        "copies": 39,
+        "valueEur": 31.59
+      },
+      {
+        "rarity": "common",
+        "items": 39,
+        "copies": 53,
+        "valueEur": 23.57
+      }
+    ],
+    "topCards": [
+      {
+        "id": 6486,
+        "printingUuid": "2eb56c36-3797-5001-95e9-33227a67ff74",
+        "oracleId": "40b36bc6-c185-4bda-99e7-0118953c2c97",
+        "name": "Yavimaya Coast",
+        "setCode": "APC",
+        "setName": "Apocalypse",
+        "releaseDate": "2001-06-04",
+        "collectorNumber": "143",
+        "rarity": "rare",
+        "manaCost": null,
+        "colors": "",
+        "colorIdentity": "GU",
+        "typeLine": "Land",
+        "scryfallId": "177ee102-d981-4fc3-9f09-9dd07755f22c",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-10 17:11:55",
+        "priceEur": 18.44,
+        "lineValue": 18.44
+      },
+      {
+        "id": 6466,
+        "printingUuid": "a50dbd25-658a-5d98-b40c-013d09f73745",
+        "oracleId": "922d603e-6623-4455-b91f-fad76f94045a",
+        "name": "Starfield of Nyx",
+        "setCode": "CMM",
+        "setName": "Commander Masters",
+        "releaseDate": "2023-08-04",
+        "collectorNumber": "840",
+        "rarity": "mythic",
+        "manaCost": "{4}{W}",
+        "colors": "W",
+        "colorIdentity": "W",
+        "typeLine": "Enchantment",
+        "scryfallId": "bfe4e1cb-ceee-46aa-96d1-f3f26516cd77",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-10 17:11:55",
+        "priceEur": 13.51,
+        "lineValue": 13.51
+      },
+      {
+        "id": 6483,
+        "printingUuid": "f9918f42-8f0e-554e-b92d-1dfb3f93e38a",
+        "oracleId": "de4e5120-b958-4dcb-ad78-d0f726b7a881",
+        "name": "There and Back Again",
+        "setCode": "LTR",
+        "setName": "The Lord of the Rings: Tales of Middle-earth",
+        "releaseDate": "2023-06-23",
+        "collectorNumber": "602",
+        "rarity": "rare",
+        "manaCost": "{3}{R}{R}",
+        "colors": "R",
+        "colorIdentity": "R",
+        "typeLine": "Enchantment — Saga",
+        "scryfallId": "f7596fb2-2f2b-4fde-8b8b-e041e16de4e9",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-10 17:11:55",
+        "priceEur": 11.88,
+        "lineValue": 11.88
+      },
+      {
+        "id": 6656,
+        "printingUuid": "e7e5e196-05db-5625-a9ac-e4f20628c8f3",
+        "oracleId": "d3a0b660-358c-41bd-9cd2-41fbf3491b1a",
+        "name": "Birds of Paradise",
+        "setCode": "LTC",
+        "setName": "Tales of Middle-earth Commander",
+        "releaseDate": "2023-06-23",
+        "collectorNumber": "235",
+        "rarity": "rare",
+        "manaCost": "{G}",
+        "colors": "G",
+        "colorIdentity": "G",
+        "typeLine": "Creature — Bird",
+        "scryfallId": "45835349-99c3-4071-95d1-7191110bfd9f",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-12 09:12:04",
+        "updatedAt": "2026-09-12 09:12:04",
+        "priceEur": 10.51,
+        "lineValue": 10.51
+      },
+      {
+        "id": 6729,
+        "printingUuid": "0c182bcb-0386-5c75-b89b-4bc9a7a4efd0",
+        "oracleId": "a177295e-3b58-4e46-a1cb-fc003a7a0848",
+        "name": "The Gaffer",
+        "setCode": "LTC",
+        "setName": "Tales of Middle-earth Commander",
+        "releaseDate": "2023-06-23",
+        "collectorNumber": "12",
+        "rarity": "rare",
+        "manaCost": "{2}{W}",
+        "colors": "W",
+        "colorIdentity": "W",
+        "typeLine": "Legendary Creature — Halfling Peasant",
+        "scryfallId": "863ed552-dc6d-4910-b188-3cefc3ebf0ed",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-12 09:12:04",
+        "updatedAt": "2026-09-12 09:12:04",
+        "priceEur": 9,
+        "lineValue": 9
+      },
+      {
+        "id": 6493,
+        "printingUuid": "22cadebf-e1f3-5dd2-81e9-1d03df5ba19c",
+        "oracleId": "b70c3adb-64ba-49ea-bcf6-6406a58cb453",
+        "name": "Jin-Gitaxias // The Great Synthesis",
+        "setCode": "MOM",
+        "setName": "March of the Machine",
+        "releaseDate": "2023-04-21",
+        "collectorNumber": "65",
+        "rarity": "mythic",
+        "manaCost": "{3}{U}{U}",
+        "colors": "U",
+        "colorIdentity": "U",
+        "typeLine": "Legendary Creature — Phyrexian Praetor",
+        "scryfallId": "41c83142-b948-4ee5-a486-41306d2bb411",
+        "finish": "foil",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:14:44",
+        "updatedAt": "2026-09-10 17:14:44",
+        "priceEur": 8.72,
+        "lineValue": 8.72
+      },
+      {
+        "id": 6494,
+        "printingUuid": "22cadebf-e1f3-5dd2-81e9-1d03df5ba19c",
+        "oracleId": "b70c3adb-64ba-49ea-bcf6-6406a58cb453",
+        "name": "Jin-Gitaxias // The Great Synthesis",
+        "setCode": "MOM",
+        "setName": "March of the Machine",
+        "releaseDate": "2023-04-21",
+        "collectorNumber": "65",
+        "rarity": "mythic",
+        "manaCost": "{3}{U}{U}",
+        "colors": "U",
+        "colorIdentity": "U",
+        "typeLine": "Legendary Creature — Phyrexian Praetor",
+        "scryfallId": "41c83142-b948-4ee5-a486-41306d2bb411",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 19:25:31",
+        "updatedAt": "2026-09-10 19:25:31",
+        "priceEur": 8.49,
+        "lineValue": 8.49
+      },
+      {
+        "id": 6403,
+        "printingUuid": "bacd573c-9949-5bcd-8471-4d0a0228574d",
+        "oracleId": "6b75b94e-83b7-457e-ac41-7ca90b5a59aa",
+        "name": "Battlefield Forge",
+        "setCode": "APC",
+        "setName": "Apocalypse",
+        "releaseDate": "2001-06-04",
+        "collectorNumber": "139",
+        "rarity": "rare",
+        "manaCost": null,
+        "colors": "",
+        "colorIdentity": "RW",
+        "typeLine": "Land",
+        "scryfallId": "a9c25e71-0140-48fe-8b9e-33b4b50c5c12",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-10 17:11:55",
+        "priceEur": 7.75,
+        "lineValue": 7.75
+      },
+      {
+        "id": 6731,
+        "printingUuid": "cf404ed5-a0dd-59ff-8e4d-ccf5974f16da",
+        "oracleId": "afaef788-34d1-460b-b884-9d7ae6ddeb18",
+        "name": "Toxic Deluge",
+        "setCode": "LTC",
+        "setName": "Tales of Middle-earth Commander",
+        "releaseDate": "2023-06-23",
+        "collectorNumber": "209",
+        "rarity": "rare",
+        "manaCost": "{2}{B}",
+        "colors": "B",
+        "colorIdentity": "B",
+        "typeLine": "Sorcery",
+        "scryfallId": "dc988247-1072-4e47-a656-8c5b1391dfca",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-12 09:12:04",
+        "updatedAt": "2026-09-12 09:12:04",
+        "priceEur": 6.22,
+        "lineValue": 6.22
+      },
+      {
+        "id": 6439,
+        "printingUuid": "0b922fe8-0130-5a97-bea1-141f9e6705f4",
+        "oracleId": "84d0c616-2fce-47f4-bfdd-783741a63fd2",
+        "name": "Kiora Bests the Sea God",
+        "setCode": "THB",
+        "setName": "Theros Beyond Death",
+        "releaseDate": "2020-01-24",
+        "collectorNumber": "52",
+        "rarity": "mythic",
+        "manaCost": "{5}{U}{U}",
+        "colors": "U",
+        "colorIdentity": "U",
+        "typeLine": "Enchantment — Saga",
+        "scryfallId": "2b604451-4f6c-4cfa-8d3a-01f18d01d88f",
+        "finish": "normal",
+        "language": "English",
+        "condition": "NM",
+        "quantity": 1,
+        "isWishlist": false,
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-10 17:11:55",
+        "priceEur": 5.89,
+        "lineValue": 5.89
+      }
+    ]
+  },
+  "http_code": 200
+}

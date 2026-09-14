@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "message": "Solicitud enviada.",
+  "data": {
+    "friendshipId": 11,
+    "status": "pending",
+    "user": {
+      "username": "apedir",
+      "displayName": "A Quien Pido Amistad",
+      "avatarUrl": "https://example.invalid/avatar/apedir.png"
+    }
+  },
+  "http_code": 201
+}

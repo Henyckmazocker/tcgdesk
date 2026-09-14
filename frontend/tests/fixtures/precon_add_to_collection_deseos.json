@@ -1,0 +1,40 @@
+{
+  "status": "success",
+  "message": "Caja deseada: 100 ejemplares en tu lista de deseos (87 líneas nuevas y 0 sumadas a las que ya tenías), y el mazo «Riders of Rohan» creado, pidiendo sus 100 cartas. Se han dado por English y NM: MTGJSON no publica ni idioma ni estado.",
+  "data": {
+    "inserted": 87,
+    "updated": 0,
+    "totalQuantity": 100,
+    "deck": {
+      "id": 9009,
+      "name": "Riders of Rohan",
+      "status": "building",
+      "format": "commander",
+      "notes": null,
+      "createdAt": "2026-09-12 18:08:17",
+      "updatedAt": "2026-09-12 18:08:17",
+      "cards": 100,
+      "cardLines": 87,
+      "valueEur": 66.49
+    },
+    "deckCards": 100,
+    "precon": {
+      "fileName": "RidersOfRohan_LTC",
+      "name": "Riders of Rohan",
+      "deckType": "Commander Deck",
+      "setCode": "LTC",
+      "setName": "Tales of Middle-earth Commander",
+      "releaseDate": "2023-06-23",
+      "cardCount": 100,
+      "sourceUrl": "https://magic.wizards.com/en/news/announcements/the-lord-of-the-rings-tales-of-middle-earth-commander-decklists"
+    },
+    "unknownPrintings": 0,
+    "tokenLines": 0,
+    "isWishlist": true,
+    "assumed": {
+      "language": "English",
+      "condition": "NM"
+    }
+  },
+  "http_code": 200
+}

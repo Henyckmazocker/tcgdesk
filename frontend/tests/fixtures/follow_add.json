@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "message": "Ahora sigues a esa persona.",
+  "data": {
+    "following": true,
+    "user": {
+      "username": "aseguir",
+      "displayName": "A Quien Sigo",
+      "avatarUrl": null
+    }
+  },
+  "http_code": 200
+}

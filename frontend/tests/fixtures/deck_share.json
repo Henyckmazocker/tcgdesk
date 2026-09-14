@@ -1,0 +1,9 @@
+{
+  "status": "success",
+  "message": "Mazo compartido.",
+  "data": {
+    "shareToken": "96eeb3fc22a0f15c75b3d35a260a84a4694e29190d976f22d6d76a6312949692",
+    "url": "/#/shared/deck/96eeb3fc22a0f15c75b3d35a260a84a4694e29190d976f22d6d76a6312949692"
+  },
+  "http_code": 200
+}

@@ -1,0 +1,36 @@
+{
+  "status": "success",
+  "message": "Mazos.",
+  "data": {
+    "decks": [
+      {
+        "id": 17,
+        "name": "Tom bombadil",
+        "status": "built",
+        "format": "commander",
+        "notes": null,
+        "createdAt": "2026-09-10 17:11:55",
+        "updatedAt": "2026-09-12 09:12:23",
+        "cards": 100,
+        "cardLines": 96,
+        "valueEur": 160.18,
+        "missingCount": 0
+      },
+      {
+        "id": 21,
+        "name": "Food and Fellowship",
+        "status": "built",
+        "format": "commander",
+        "notes": null,
+        "createdAt": "2026-09-12 09:12:04",
+        "updatedAt": "2026-09-12 09:12:04",
+        "cards": 100,
+        "cardLines": 90,
+        "valueEur": 94.62,
+        "missingCount": 0
+      }
+    ],
+    "count": 2
+  },
+  "http_code": 200
+}

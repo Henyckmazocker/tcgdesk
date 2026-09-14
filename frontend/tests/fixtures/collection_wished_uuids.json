@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "message": "Impresiones en tu lista de deseos.",
+  "data": {
+    "uuids": [
+      "22cadebf-e1f3-5dd2-81e9-1d03df5ba19c",
+      "2eb56c36-3797-5001-95e9-33227a67ff74",
+      "a4649be8-4284-5371-831f-2e3ee32ec988",
+      "a50dbd25-658a-5d98-b40c-013d09f73745"
+    ],
+    "count": 4
+  },
+  "http_code": 200
+}

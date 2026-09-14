@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Política de DEBUG únicamente. Sustituye a la de `src/main/res/xml/` al compilar
+  la variante debug, y nunca llega a un APK de release.
+
+  `base-config` en vez de una lista de `<domain>`: el backend de desarrollo está
+  en un sitio distinto según cómo se pruebe —10.0.2.2 en el emulador, la IP del PC
+  en la LAN desde un móvil físico, o localhost con `adb reverse tcp:8899 tcp:8899`—
+  y listarlos a mano obliga a tocar este fichero cada vez que cambia la red.
+
+  Sin esto Android corta toda petición HTTP sin TLS antes de que salga del
+  dispositivo: la app dice «no se pudo contactar con el servidor» y en el log del
+  backend no aparece absolutamente nada.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

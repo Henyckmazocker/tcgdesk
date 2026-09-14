@@ -1,0 +1,44 @@
+{
+  "decks": [
+    {
+      "id": 17,
+      "name": "Tom bombadil",
+      "status": "built",
+      "format": "commander",
+      "createdAt": "2026-09-10 17:11:55",
+      "updatedAt": "2026-09-13 12:39:40",
+      "cards": 100,
+      "cardLines": 96
+    },
+    {
+      "id": 9007,
+      "name": "asf",
+      "status": "building",
+      "format": "commander",
+      "createdAt": "2026-09-12 17:52:29",
+      "updatedAt": "2026-09-13 12:38:51",
+      "cards": 1,
+      "cardLines": 1
+    },
+    {
+      "id": 9006,
+      "name": "Aang",
+      "status": "building",
+      "format": null,
+      "createdAt": "2026-09-12 17:51:41",
+      "updatedAt": "2026-09-12 17:51:56",
+      "cards": 20,
+      "cardLines": 15
+    },
+    {
+      "id": 21,
+      "name": "Food and Fellowship",
+      "status": "built",
+      "format": "commander",
+      "createdAt": "2026-09-12 09:12:04",
+      "updatedAt": "2026-09-12 09:12:04",
+      "cards": 100,
+      "cardLines": 90
+    }
+  ]
+}

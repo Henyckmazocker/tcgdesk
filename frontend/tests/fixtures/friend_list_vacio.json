@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "message": "Amistades.",
+  "data": {
+    "friends": [],
+    "pending": [],
+    "sent": [],
+    "counts": {
+      "friends": 0,
+      "pending": 0,
+      "sent": 0
+    }
+  },
+  "http_code": 200
+}

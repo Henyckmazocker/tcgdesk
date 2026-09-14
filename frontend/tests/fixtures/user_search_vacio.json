@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "message": "Resultados de la búsqueda.",
+  "data": {
+    "users": []
+  },
+  "http_code": 200
+}

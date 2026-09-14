@@ -1,0 +1,34 @@
+{
+  "status": "success",
+  "message": "Cantidad actualizada.",
+  "data": {
+    "removed": false,
+    "item": {
+      "id": 6399,
+      "printingUuid": "99443bab-0121-5860-942b-ac04b2807447",
+      "oracleId": "0bc7f093-bef0-4f1a-852c-4b75ebf54838",
+      "name": "Arcane Signet",
+      "setCode": "LTC",
+      "setName": "Tales of Middle-earth Commander",
+      "releaseDate": "2023-06-23",
+      "collectorNumber": "273",
+      "rarity": "common",
+      "manaCost": "{2}",
+      "colors": "",
+      "colorIdentity": "",
+      "typeLine": "Artifact",
+      "scryfallId": "4e92354d-c203-41e1-822d-8263fadd9eb3",
+      "finish": "normal",
+      "language": "English",
+      "condition": "NM",
+      "quantity": 1,
+      "isWishlist": false,
+      "notes": null,
+      "createdAt": "2026-09-10 17:11:55",
+      "updatedAt": "2026-09-12 14:59:34",
+      "priceEur": 0.61,
+      "lineValue": 0.61
+    }
+  },
+  "http_code": 200
+}

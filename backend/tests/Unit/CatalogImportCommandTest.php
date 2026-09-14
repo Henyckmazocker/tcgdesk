@@ -42,6 +42,20 @@ class CatalogoFalso implements CatalogRepositoryInterface
      */
     public array $lotes = ['cards' => [], 'printings' => [], 'localized' => [], 'legalities' => []];
 
+    /**
+     * Las legalidades que había cuando se llamó a `refrescarFormatos()`.
+     *
+     * `null` mientras no se haya llamado, que es como se distingue «el enganche
+     * no está» de «el enganche corrió sin nada que leer». Y guarda el CUÁNDO,
+     * no solo el CUÁNTAS: el fallo que hay que cazar es que alguien mueva la
+     * llamada al principio del comando, donde leería la ingesta anterior.
+     *
+     * @var int|null
+     */
+    public ?int $legalidadesAlRefrescar = null;
+
+    public int $vecesRefrescado = 0;
+
     public function upsertSet(array $set): void
     {
         $this->sets[] = $set;
@@ -73,6 +87,16 @@ class CatalogoFalso implements CatalogRepositoryInterface
         $this->legalities            = array_merge($this->legalities, $filas);
         $this->lotes['legalities'][] = $filas;
         return count($filas);
+    }
+
+    public function refrescarFormatos(): int
+    {
+        $this->vecesRefrescado++;
+        $this->legalidadesAlRefrescar = count($this->legalities);
+
+        $formatos = array_unique(array_column($this->legalities, 'format'));
+
+        return count($formatos);
     }
 
     public function contadores(): array
@@ -306,6 +330,45 @@ final class CatalogImportCommandTest extends TestCase
 
         self::assertSame(1, $this->ejecutar($catalogo, ['--set=NOEXISTE']));
         self::assertSame([], $catalogo->sets);
+    }
+
+    /**
+     * El enganche de `mtg_format`, que es la mitad del #17 y la que se pierde
+     * sola: es una línea al final de un comando de 300, no la ve nadie al
+     * reordenar, y cuando falta el desplegable de formatos se queda congelado
+     * **sin una sola queja** —igual que pasó con `name_normalized`—.
+     *
+     * Y se comprueba el CUÁNDO, no solo el si: al refrescar tienen que estar ya
+     * enviadas **todas** las legalidades. Llamarlo al principio leería los
+     * formatos de la ingesta anterior, o ninguno en una instalación nueva, y la
+     * tabla saldría igual de plausible.
+     */
+    public function testRefrescaMtgFormatUnaVezYConLaIngestaYaTerminada(): void
+    {
+        $catalogo = new CatalogoFalso();
+        $this->ejecutar($catalogo);
+
+        self::assertSame(1, $catalogo->vecesRefrescado, 'mtg_format se reconstruye una vez por ingesta');
+        self::assertNotSame(0, count($catalogo->legalities), 'El fixture tiene legalidades que contar');
+        self::assertSame(
+            count($catalogo->legalities),
+            $catalogo->legalidadesAlRefrescar,
+            'Se refrescó antes de terminar de ingerir: leería los formatos de la pasada anterior'
+        );
+    }
+
+    /**
+     * Sin sets no hay nada nuevo que destilar, y además el comando sale con 1.
+     * Reconstruir la tabla aquí no rompería nada, pero tampoco diría la verdad:
+     * la ingesta no ocurrió.
+     */
+    public function testUnSetInexistenteNoTocaMtgFormat(): void
+    {
+        $catalogo = new CatalogoFalso();
+        $this->ejecutar($catalogo, ['--set=NOEXISTE']);
+
+        self::assertSame(0, $catalogo->vecesRefrescado);
+        self::assertNull($catalogo->legalidadesAlRefrescar);
     }
 
     public function testUnFicheroInexistenteDevuelveCodigoDeError(): void

@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "message": "Resultados de la búsqueda.",
+  "data": {
+    "users": [
+      {
+        "username": "buscable",
+        "displayName": "Sin Fila Ninguna",
+        "avatarUrl": "https://example.invalid/avatar/buscable.png"
+      },
+      {
+        "username": "buscavisible",
+        "displayName": "Con Fila En Everyone",
+        "avatarUrl": null
+      }
+    ]
+  },
+  "http_code": 200
+}

@@ -61,6 +61,20 @@ class MySqlCatalogRepository implements CatalogRepositoryInterface
         return $this->upsert('mtg_legality', $filas, ['oracle_id', 'format']);
     }
 
+    public function refrescarFormatos(): int
+    {
+        // `REPLACE INTO` y no `TRUNCATE` + `INSERT`: el `TRUNCATE` deja la tabla
+        // vacía durante un instante y cualquier ficha de mazo que se cargue
+        // justo ahí perdería su aviso de legalidad. Con `REPLACE` la tabla nunca
+        // está vacía; a cambio, un formato que MTGJSON deje de publicar se queda
+        // como fila huérfana, que es el error inocuo de los dos.
+        $this->db->exec(
+            'REPLACE INTO mtg_format (format) SELECT DISTINCT format FROM mtg_legality'
+        );
+
+        return (int) $this->db->query('SELECT COUNT(*) FROM mtg_format')->fetchColumn();
+    }
+
     public function contadores(): array
     {
         $tablas = [

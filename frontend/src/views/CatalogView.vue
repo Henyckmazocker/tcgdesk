@@ -85,22 +85,42 @@
     </p>
 
     <div v-else class="catalogo__rejilla">
-      <article
-        v-for="carta in catalogo.items"
-        :key="carta.uuid"
-        class="carta"
-        role="link"
-        tabindex="0"
-        @click="abrir(carta)"
-        @keyup.enter="abrir(carta)"
-      >
-        <CardImage :scryfall-id="carta.scryfallId" :nombre="carta.name" tamano="small" />
+      <article v-for="carta in catalogo.items" :key="carta.uuid" class="carta">
+        <!--
+          El enlace a la ficha va en la imagen y NO en el <article> entero: el
+          pie lleva ahora el botón de añadir, y un botón dentro de algo con
+          role="link" ni se puede tabular bien ni se puede pulsar sin que el
+          clic abra también la ficha.
+        -->
+        <div
+          class="carta__imagen"
+          role="link"
+          tabindex="0"
+          @click="abrir(carta)"
+          @keyup.enter="abrir(carta)"
+        >
+          <CardImage :scryfall-id="carta.scryfallId" :nombre="carta.name" tamano="small" />
+        </div>
+
         <div class="carta__pie">
-          <span class="carta__nombre">{{ carta.name }}</span>
+          <span class="carta__nombre" :title="carta.name">{{ carta.name }}</span>
           <span class="carta__meta">
             {{ carta.setCode }} · {{ carta.collectorNumber }}
             <span v-if="precioDe(carta)" class="carta__precio">{{ precioDe(carta) }}</span>
           </span>
+
+          <!--
+            Un clic aquí = una carta en la colección, con los valores por
+            defecto. Es la mitigación del riesgo del plan, y por eso el botón
+            está en la REJILLA y no solo en la ficha: buscar, entrar y volver
+            por cada carta es justo lo que haría insoportable registrar diez.
+          -->
+          <AddToCollectionButton
+            :printing-uuid="carta.uuid"
+            :nombre="carta.name"
+            :finishes="carta.finishes"
+            compacto
+          />
         </div>
       </article>
     </div>
@@ -112,6 +132,9 @@
         No hay más resultados
       </span>
     </div>
+
+    <!-- Confirmación discreta del "Añadir": se va sola y no pide cerrar nada. -->
+    <CollectionAviso />
   </div>
 </template>
 
@@ -128,7 +151,9 @@ import MultiSelect from 'primevue/multiselect'
 import Skeleton from 'primevue/skeleton'
 import ProgressSpinner from 'primevue/progressspinner'
 
+import AddToCollectionButton from '@/components/AddToCollectionButton.vue'
 import CardImage from '@/components/CardImage.vue'
+import CollectionAviso from '@/components/CollectionAviso.vue'
 import { useCatalogStore } from '@/stores/catalog'
 
 const RAREZAS = [
@@ -306,13 +331,14 @@ onBeforeUnmount(() => observador?.disconnect())
   border-radius: 4.75% / 3.5%;
 }
 
-.carta {
+.carta__imagen {
   cursor: pointer;
+  display: block;
   transition: transform 0.15s ease;
 }
 
-.carta:hover,
-.carta:focus-visible {
+.carta__imagen:hover,
+.carta__imagen:focus-visible {
   transform: translateY(-3px);
   outline: none;
 }
@@ -320,6 +346,7 @@ onBeforeUnmount(() => observador?.disconnect())
 .carta__pie {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
   padding-top: 0.4rem;
   font-size: 0.78rem;
   line-height: 1.25;

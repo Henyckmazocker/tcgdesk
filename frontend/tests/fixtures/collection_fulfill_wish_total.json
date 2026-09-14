@@ -1,0 +1,35 @@
+{
+  "status": "success",
+  "message": "Deseo cumplido: se ha unido a la línea que ya tenías en tu colección.",
+  "data": {
+    "item": {
+      "id": 6883,
+      "printingUuid": "2eb56c36-3797-5001-95e9-33227a67ff74",
+      "oracleId": "40b36bc6-c185-4bda-99e7-0118953c2c97",
+      "name": "Yavimaya Coast",
+      "setCode": "APC",
+      "setName": "Apocalypse",
+      "releaseDate": "2001-06-04",
+      "collectorNumber": "143",
+      "rarity": "rare",
+      "manaCost": null,
+      "colors": "",
+      "colorIdentity": "GU",
+      "typeLine": "Land",
+      "scryfallId": "177ee102-d981-4fc3-9f09-9dd07755f22c",
+      "finish": "normal",
+      "language": "English",
+      "condition": "NM",
+      "quantity": 3,
+      "isWishlist": false,
+      "notes": null,
+      "createdAt": "2026-09-12 17:14:53",
+      "updatedAt": "2026-09-12 17:15:06",
+      "priceEur": 18.44,
+      "lineValue": 55.32
+    },
+    "merged": true,
+    "origen": null
+  },
+  "http_code": 200
+}

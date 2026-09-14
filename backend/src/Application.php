@@ -134,7 +134,32 @@ class Application
         }
 
         http_response_code($statusCode);
-        echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        echo json_encode($response, self::opcionesDeJson());
+    }
+
+    /**
+     * Las banderas de json_encode con las que sale toda respuesta de acción.
+     *
+     * El sangrado solo sirve para leer la respuesta a ojo mientras se desarrolla,
+     * y se paga en cada byte que viaja: medido el 2026-09-12 sobre cargas reales
+     * del proyecto, JSON_PRETTY_PRINT infla entre un +53 % (las 868 ediciones) y
+     * un +107 % (la página de precons). Fuera de producción se deja porque ahí
+     * quien lee la respuesta es una persona.
+     *
+     * Se reutiliza el mismo APP_ENV que ya decide las cookies de sesión más
+     * arriba: ni variable nueva ni concepto nuevo. Y es estática y pública para
+     * poder fijar el criterio en un test sin construir la Application entera,
+     * que arrastra sesión y contenedor.
+     */
+    public static function opcionesDeJson(): int
+    {
+        $opciones = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
+
+        if (($_ENV['APP_ENV'] ?? 'development') !== 'production') {
+            $opciones |= JSON_PRETTY_PRINT;
+        }
+
+        return $opciones;
     }
 
     /**

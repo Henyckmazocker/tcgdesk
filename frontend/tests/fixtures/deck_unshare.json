@@ -1,0 +1,8 @@
+{
+  "status": "success",
+  "message": "El enlace de ese mazo ya no funciona.",
+  "data": {
+    "shareToken": null
+  },
+  "http_code": 200
+}

@@ -1,0 +1,10 @@
+{
+  "status": "success",
+  "message": "Importación aplicada: 3 líneas nuevas y 0 sumadas a las que ya tenías.",
+  "data": {
+    "inserted": 3,
+    "updated": 0,
+    "totalQuantity": 3
+  },
+  "http_code": 200
+}

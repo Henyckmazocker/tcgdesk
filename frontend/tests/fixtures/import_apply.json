@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "message": "Importación aplicada: 17 líneas nuevas y 0 sumadas a las que ya tenías. Y el mazo «Mazo importado de prueba» con 27 cartas.",
+  "data": {
+    "inserted": 17,
+    "updated": 0,
+    "totalQuantity": 27,
+    "deck": {
+      "id": 24,
+      "name": "Mazo importado de prueba",
+      "cards": 27
+    }
+  },
+  "http_code": 200
+}

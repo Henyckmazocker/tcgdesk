@@ -1,0 +1,22 @@
+{
+  "user": {
+    "username": "fixturas",
+    "displayName": "Usuaria de Fixturas",
+    "avatarUrl": "https://example.invalid/avatar/fixturas.png"
+  },
+  "visible": {
+    "collection": true,
+    "value": true,
+    "decks": true,
+    "sets": true,
+    "wishlist": true
+  },
+  "value": {
+    "valueEur": 281.72,
+    "uniqueItems": 200,
+    "uniquePrintings": 199,
+    "uniqueCards": 180,
+    "totalCopies": 221,
+    "itemsWithoutPrice": 1
+  }
+}
