@@ -51,16 +51,35 @@ class ScryfallImageDownloader
     ) {
     }
 
+    /** Las dos caras que sirve el CDN. `descargar()` solo guarda la frontal. */
+    public const CARAS = ['front', 'back'];
+
     /**
      * La URL pública del CDN para una carta. También la usa el router HTTP para
      * redirigir cuando todavía no hay copia local.
+     *
+     * **`$face` llega con el M4 del Plan - Índice Visual del Catálogo**, y por
+     * eso vale `'front'` por defecto: las 1.652 impresiones de doble cara
+     * (`transform`, `modal_dfc`, `reversible_card`, `meld`) tienen dos imágenes
+     * y `catalog:hash` necesita hashear las dos. Con el valor por defecto,
+     * ninguna de las llamadas que ya existían cambia de comportamiento.
+     *
+     * Ojo: que una impresión sea de doble cara no garantiza que el CDN sirva su
+     * reverso — medido el 2026-09-15, `meld` y `reversible_card` devuelven 404
+     * en `/back/`—. Quien pida el reverso tiene que estar preparado para un 404
+     * que no es un error.
      */
-    public static function url(string $scryfallId, string $size = 'normal'): string
+    public static function url(string $scryfallId, string $size = 'normal', string $face = 'front'): string
     {
+        if (!in_array($face, self::CARAS, true)) {
+            throw new InvalidArgumentException("Cara desconocida: {$face}");
+        }
+
         return sprintf(
-            '%s/%s/front/%s/%s/%s.jpg',
+            '%s/%s/%s/%s/%s/%s.jpg',
             self::CDN,
             $size,
+            $face,
             $scryfallId[0],
             $scryfallId[1],
             $scryfallId

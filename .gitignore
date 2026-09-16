@@ -81,6 +81,17 @@ backend/storage/*
 *.json.gz
 
 # ----------------------------------------------------------------------------
+# opencv.js — SE GENERA, no se commitea
+# ----------------------------------------------------------------------------
+# `frontend/scripts/extraer-opencv-wasm.mjs` saca el wasm de
+# `@techstark/opencv-js` (node_modules) a un fichero aparte, porque servirlo
+# incrustado en base64 cuesta ~340 ms mas de carga en el movil. Son 8 MB de
+# binario que NO tienen por que vivir en el historial de git: la version esta
+# declarada en `frontend/package.json` y esto se reconstruye con
+# `npm run opencv:wasm` (que ya corren `dev`, `build` y `build:mobile`).
+frontend/public/opencv/
+
+# ----------------------------------------------------------------------------
 # Base de datos
 # ----------------------------------------------------------------------------
 *.sqlite

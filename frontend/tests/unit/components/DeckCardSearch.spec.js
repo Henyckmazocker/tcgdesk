@@ -6,7 +6,7 @@ import DeckCardSearch from '@/components/DeckCardSearch.vue'
 import { apiCall, catalogGet } from '@/services/api'
 import { ACABADOS } from '@/constants/collection'
 
-import { SESION, montarVista } from '../../helpers'
+import { SESION, montarVista, pulsacionLarga } from '../../helpers'
 
 import catalogoFixture from '../../fixtures/catalog_cards.json'
 import altaFixture from '../../fixtures/deck_card_add.json'
@@ -241,6 +241,106 @@ describe('un clic sobre la fila es una carta en el mazo', () => {
 
     expect(fila(wrapper).principal.attributes('disabled')).toBeDefined()
     expect(fila(wrapper).opciones.attributes('disabled')).toBeDefined()
+  })
+
+  /**
+   * **El caso caro de la ampliación de la carta, y el motivo de este test.**
+   *
+   * Este `<button>` envuelve la fila ENTERA (`DeckCardSearch.vue:46-54`), y su
+   * clic no navega: **mete una carta en el mazo**, y eso no se deshace de un
+   * clic. Por eso el envoltorio caro se vigila por los dos lados.
+   *
+   * Este es el lado de hoy: **un clic normal sobre la miniatura tiene que seguir
+   * añadiendo la carta**, igual que antes de que existiera la ampliación.
+   * `CardImage` registra un listener de `click` en **fase de captura** sobre su
+   * raíz —M0 demostró que ahí `stopPropagation()` mata el evento antes de que
+   * pueda subir a este `<button>`—, pero solo traga cuando su bandera
+   * `debeTragarClick` está armada, y nace en `false`. Si alguien la deja armada
+   * de serie (era el spike de M0), este test se pone rojo — que es justo su
+   * oficio.
+   *
+   * **Su par complementario llega con M2**, el hito que arma la bandera: la
+   * secuencia `pointerdown(touch)` → 450 ms → `pointerup` → `click`, que sí debe
+   * tragarse el clic y NO añadir la carta.
+   *
+   * (Hasta la reescritura de M1 este test afirmaba lo contrario —que la
+   * miniatura no añadía nada— y llevaba de contraste un clic sobre el resto de
+   * la fila. Ese contraste ya no distingue nada: ahora los dos clics añaden, y
+   * una fila rota pone rojo el primero.)
+   */
+  it('un clic sobre la MINIATURA añade la carta: el clic normal sigue vivo', async () => {
+    const { wrapper } = await montarBuscador()
+
+    const miniatura = fila(wrapper).principal.find('.resultado__mini img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await miniatura.trigger('click')
+    await flushPromises()
+
+    expect(apiCall).toHaveBeenCalledWith(
+      'deck_card_add',
+      expect.objectContaining({ printing_uuid: CARTA.uuid })
+    )
+  })
+
+  /**
+   * **El par complementario del anterior, y el test que justifica M2 entero.**
+   *
+   * Es el único fallo de la ampliación de la carta con consecuencias en los
+   * datos: mantener el dedo sobre un resultado del buscador amplía la carta, y
+   * si al soltar el `click` llegara a este `<button>` **la carta entraría en el
+   * mazo sin que nadie la pidiera** (`DeckCardSearch.vue:46-54`). Los otros dos
+   * envoltorios solo navegan, y de una navegación se vuelve.
+   *
+   * La secuencia es la real y completa: `pointerdown(touch)` → 450 ms →
+   * `pointerup` → `click`. Los 450 ms abren la ampliación, `pointerup` arma
+   * `debeTragarClick` porque llegó a abrirse, y el listener de captura de
+   * `CardImage` se come el `click` (`CardImage.vue`, `alSoltarPuntero()` y
+   * `tragarClick()`). Comentando la línea que arma la bandera, este test se pone
+   * rojo — que es su oficio.
+   */
+  it('una PULSACIÓN LARGA amplía y NO añade la carta al mazo', async () => {
+    const { wrapper } = await montarBuscador()
+
+    const miniatura = fila(wrapper).principal.find('.resultado__mini img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await pulsacionLarga(miniatura)
+    await miniatura.trigger('click')
+    await flushPromises()
+
+    expect(apiCall).not.toHaveBeenCalledWith('deck_card_add', expect.anything())
+  })
+
+  /**
+   * **El aborto por arrastre, medido donde se nota.**
+   *
+   * Recorrer con el dedo una lista es scroll, no una pulsación: un `pointermove`
+   * que se aleje más de `TOLERANCIA_ARRASTRE` (10 px) del origen mata el
+   * temporizador, así que no se abre nada y la bandera nunca se arma. Y como no
+   * se arma, **el clic vuelve a añadir la carta** — que es exactamente lo que se
+   * afirma aquí.
+   *
+   * Es el sitio donde el aborto se puede probar sin mirar el overlay (que es de
+   * M3 y que `css: false` deja sin estilos igualmente): si alguien quita el
+   * manejador de `pointermove`, los 450 ms abrirían la ampliación, `pointerup`
+   * armaría la bandera y el alta desaparecería. Rojo.
+   */
+  it('arrastrar el dedo NO es pulsación: aborta el gesto y el clic sigue añadiendo', async () => {
+    const { wrapper } = await montarBuscador()
+
+    const miniatura = fila(wrapper).principal.find('.resultado__mini img')
+
+    await pulsacionLarga(miniatura, { arrastre: 20 })
+    await miniatura.trigger('click')
+    await flushPromises()
+
+    expect(apiCall).toHaveBeenCalledWith(
+      'deck_card_add',
+      expect.objectContaining({ printing_uuid: CARTA.uuid })
+    )
   })
 })
 

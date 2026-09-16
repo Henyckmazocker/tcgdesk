@@ -36,6 +36,18 @@ export function filtrosVacios() {
 
 export const useCollectionStore = defineStore('collection', {
   state: () => ({
+    /**
+     * La línea que devolvió el último `collection_add`, con su `id` y su
+     * `quantity` YA sumada.
+     *
+     * La necesita el escáner: para deshacer una carta escrita sola hay que
+     * restarle una copia, y eso exige el `item_id` que solo conoce la respuesta
+     * del alta. Se expone aquí en vez de cambiar lo que devuelve `anadir()`
+     * porque esa firma la consumen también el catálogo y la ficha, y pasar de
+     * `boolean` a objeto obligaría a revisarlas a las dos para ganar nada.
+     */
+    ultimoAnadido: null,
+
     filtros: filtrosVacios(),
     /** 'grid' o 'table'. Se conmuta y también viaja en la query string. */
     vista: 'grid',
@@ -236,6 +248,8 @@ export const useCollectionStore = defineStore('collection', {
       }
 
       const item = respuesta.data?.item ?? null
+
+      this.ultimoAnadido = item
 
       // Si la vista de colección está montada con esta línea a la vista, se
       // refresca en su sitio: el backend devuelve la cantidad YA sumada.

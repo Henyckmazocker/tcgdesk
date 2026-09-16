@@ -64,7 +64,7 @@ class CatalogNormalizeCommand implements CommandInterface
 
     public function getDescription(): string
     {
-        return 'Rellena mtg_card.name_normalized (clave de resolución por nombre)';
+        return 'Rellena las dos columnas name_normalized (clave de resolución por nombre)';
     }
 
     public function run(array $args): int
@@ -79,25 +79,65 @@ class CatalogNormalizeCommand implements CommandInterface
 
         if (isset($opciones['help'])) {
             echo "catalog:normalize — índice de nombres del resolvedor de importación\n\n"
-                . "  --all        Recalcula TODAS las cartas, no solo las que están a NULL.\n"
+                . "  --all        Recalcula TODAS las filas, no solo las que están a NULL.\n"
                 . "               Es lo que hay que lanzar si cambia NameNormalizer.\n"
                 . "  --batch=N    Filas por lote (por defecto " . self::LOTE . ").\n"
                 . "  --help       Esto\n\n"
-                . "Sin --all solo toca las cartas fuera del índice, así que relanzarlo es barato.\n"
-                . "Devuelve 1 si al terminar queda alguna carta con name_normalized a NULL.\n";
+                . "Normaliza las DOS tablas: `mtg_card` (el nombre en inglés) y\n"
+                . "`mtg_printing_localized` (los otros nueve idiomas, 410.604 filas).\n"
+                . "Sin --all solo toca lo que está fuera del índice, así que relanzarlo es barato.\n"
+                . "Devuelve 1 si al terminar queda alguna fila con name_normalized a NULL.\n";
             return 0;
         }
 
         $todas  = isset($opciones['all']);
         $limite = max(1, (int) ($opciones['batch'] ?? self::LOTE));
 
-        $pendientes = $this->indice->contarSinNormalizar();
+        $inicio = microtime(true);
 
-        echo 'Normalizando nombres del catálogo', $todas ? ' (TODAS las cartas)' : '', "\n";
-        printf("Cartas fuera del índice antes de empezar: %d\n", $pendientes);
+        echo 'Normalizando nombres del catálogo', $todas ? ' (TODAS las filas)' : '', "\n";
         echo str_repeat('-', 64), "\n";
 
-        $inicio    = microtime(true);
+        $escritasCartas     = $this->normalizarCartas($limite, $todas);
+        $escritasLocalizados = $this->normalizarLocalizados($limite, $todas);
+
+        $segundos       = microtime(true) - $inicio;
+        $quedanCartas   = $this->indice->contarSinNormalizar();
+        $quedanLocales  = $this->indice->contarLocalizadosSinNormalizar();
+        $quedan         = $quedanCartas + $quedanLocales;
+
+        echo str_repeat('-', 64), "\n";
+        printf(
+            "Normalizadas %d cartas y %d nombres localizados en %.1f s\n",
+            $escritasCartas,
+            $escritasLocalizados,
+            $segundos
+        );
+        printf("Con name_normalized a NULL: %d cartas, %d localizados\n", $quedanCartas, $quedanLocales);
+
+        $this->logger->info('catalog:normalize terminado', [
+            'escritas'            => $escritasCartas,
+            'escritasLocalizados' => $escritasLocalizados,
+            'pendientes'          => $quedanCartas,
+            'pendientesLocales'   => $quedanLocales,
+            'todas'               => $todas,
+            'segundos'            => round($segundos, 1),
+        ]);
+
+        if ($quedan > 0) {
+            // Una fila sin clave no se resuelve por nombre y no protesta nadie.
+            fwrite(STDERR, "Quedan {$quedan} filas fuera del índice de nombres.\n");
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /** `mtg_card.name_normalized`: el nombre en inglés, paginado por `oracle_id`. */
+    private function normalizarCartas(int $limite, bool $todas): int
+    {
+        printf("Cartas fuera del índice antes de empezar: %d\n", $this->indice->contarSinNormalizar());
+
         $cursor    = '';
         $escritas  = 0;
         $siguiente = self::PROGRESO_CADA;
@@ -123,26 +163,58 @@ class CatalogNormalizeCommand implements CommandInterface
             }
         }
 
-        $segundos = microtime(true) - $inicio;
-        $quedan   = $this->indice->contarSinNormalizar();
+        return $escritas;
+    }
 
-        echo str_repeat('-', 64), "\n";
-        printf("Normalizadas %d cartas en %.1f s\n", $escritas, $segundos);
-        printf("Cartas con name_normalized a NULL: %d\n", $quedan);
+    /**
+     * `mtg_printing_localized.name_normalized`: los otros nueve idiomas.
+     *
+     * Son **410.604 filas**, doce veces las de `mtg_card`, y por eso el progreso
+     * se imprime igual: una pasada larga y muda parece colgada.
+     *
+     * El cursor son dos columnas porque la PK es `(printing_uuid, language)`.
+     * Paginar solo por el uuid dejaría fuera los otros idiomas de la impresión
+     * en la que se cortó el lote, en silencio y sin repetir nunca.
+     */
+    private function normalizarLocalizados(int $limite, bool $todas): int
+    {
+        printf(
+            "Nombres localizados fuera del índice antes de empezar: %d\n",
+            $this->indice->contarLocalizadosSinNormalizar()
+        );
 
-        $this->logger->info('catalog:normalize terminado', [
-            'escritas'  => $escritas,
-            'pendientes'=> $quedan,
-            'todas'     => $todas,
-            'segundos'  => round($segundos, 1),
-        ]);
+        $uuid      = '';
+        $idioma    = '';
+        $escritas  = 0;
+        $siguiente = self::PROGRESO_CADA;
 
-        if ($quedan > 0) {
-            // Una carta sin clave no se resuelve por nombre y no protesta nadie.
-            fwrite(STDERR, "Quedan {$quedan} cartas fuera del índice de nombres.\n");
-            return 1;
+        while (true) {
+            $lote = $this->indice->loteLocalizadoPorNormalizar($uuid, $idioma, $limite, $todas);
+
+            if ($lote === []) {
+                break;
+            }
+
+            $filas = [];
+            foreach ($lote as $localizado) {
+                $filas[] = [
+                    'printingUuid' => $localizado['printingUuid'],
+                    'language'     => $localizado['language'],
+                    'name'         => $localizado['name'],
+                    'clave'        => $this->normalizador->normalizar($localizado['name']),
+                ];
+                $uuid   = $localizado['printingUuid'];
+                $idioma = $localizado['language'];
+            }
+
+            $escritas += $this->indice->escribirClavesLocalizadas($filas);
+
+            if ($escritas >= $siguiente) {
+                printf("  %6d nombres localizados normalizados\n", $escritas);
+                $siguiente += self::PROGRESO_CADA;
+            }
         }
 
-        return 0;
+        return $escritas;
     }
 }

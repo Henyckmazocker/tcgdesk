@@ -10,6 +10,17 @@
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
+
+        <!--
+            Los tests que hablan con MySQL de verdad. Van en su propia suite
+            porque no prueban lo mismo: una consulta solo falla contra datos, y
+            estos necesitan el catálogo cargado. `composer test` corre las dos;
+            `composer test:unit` corre solo la de arriba, que no necesita nada.
+            Si no hay base de datos se saltan solos, nunca se ponen rojos.
+        -->
+        <testsuite name="Integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

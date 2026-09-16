@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { Capacitor } from '@capacitor/core'
 import { useAuthStore } from '@/stores/auth'
 
 /**
@@ -95,6 +96,41 @@ const routes = [
     path: '/friends',
     name: 'friends',
     component: () => import('@/views/FriendsView.vue')
+  },
+  /**
+   * `/scan` — el escáner por cámara.
+   *
+   * **Sin `meta.public`**, y no por inercia: el escáner acaba escribiendo en TU
+   * colección, así que sin sesión no hay nada que escanear ni dónde dejarlo. Es
+   * el mismo criterio que `/friends`.
+   *
+   * Y **antes del catch-all** de abajo, que redirige a `/` todo lo que no case:
+   * declarada después no se alcanzaría nunca.
+   *
+   * Tiene su enlace en el menú de `HomeView.vue` **cuando la app corre en
+   * nativo**, y eso es parte de la ruta y no un adorno: el webview de Capacitor
+   * **no tiene barra de direcciones** y el manifest solo declara el
+   * intent-filter `MAIN`/`LAUNCHER`, así que no hay deep link por el que entrar.
+   * Una ruta sin enlace funciona en `npm run dev` tecleando el hash y es
+   * **inalcanzable en el APK**. Lo aprendió el spike del M0 a golpes.
+   *
+   * Y **`beforeEnter` la cierra en web**, que es la otra mitad de lo mismo: la
+   * vista vive de `CameraPreview` y del OCR de ML Kit, dos plugins **nativos**
+   * que en el navegador no existen. Esconder el enlace no basta —el hash se
+   * teclea, y un enlace viejo en el historial sigue ahí—, y montar la vista
+   * fuera del APK solo da una pantalla negra con un error de plugin. Se vuelve a
+   * la portada, que es de donde se venía.
+   *
+   * La plataforma se pregunta a `Capacitor.isNativePlatform()` y a nada más,
+   * igual que en `composables/useGoogleAuth.js:25`: el `userAgent` y el ancho de
+   * pantalla dirían que sí en un móvil con el navegador abierto, donde tampoco
+   * hay plugins.
+   */
+  {
+    path: '/scan',
+    name: 'scan',
+    component: () => import('@/views/ScanView.vue'),
+    beforeEnter: () => (Capacitor.isNativePlatform() ? true : { name: 'home' })
   },
   /**
    * LAS DOS RUTAS PÚBLICAS, y las únicas junto a `/login` que llevan

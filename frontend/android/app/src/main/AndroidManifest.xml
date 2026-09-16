@@ -40,4 +40,25 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+        CAMERA lo exige el escáner de cartas (spike M0 del Plan - Escáner de
+        Cartas por Cámara). Declararlo aquí NO basta: desde Android 6 el permiso
+        se pide además en tiempo de ejecución, y `targetSdkVersion` es 36. Quien
+        lo pide es `@capacitor-community/camera-preview`, que lleva
+        @CapacitorPlugin(permissions = @Permission(CAMERA)) y dispara
+        requestPermissionForAlias() dentro de su `start()`
+        (CameraPreview.java:32,52-57). Lo que el plugin NO hace es explicar el
+        rechazo: eso lo pinta la vista, porque una previsualización negra sin
+        mensaje es el bug que más tiempo cuesta.
+    -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!--
+        `android.hardware.camera` declarado como NO requerido a propósito: con
+        `required="true"` Google Play esconde la app a cualquier dispositivo sin
+        cámara, y el escáner es una vía de entrada más a la colección, no la
+        app entera. El resto de TCGDesk funciona sin cámara.
+    -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 </manifest>

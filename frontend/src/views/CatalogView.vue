@@ -154,24 +154,8 @@ import ProgressSpinner from 'primevue/progressspinner'
 import AddToCollectionButton from '@/components/AddToCollectionButton.vue'
 import CardImage from '@/components/CardImage.vue'
 import CollectionAviso from '@/components/CollectionAviso.vue'
+import { COLORES, RAREZAS } from '@/constants/collection'
 import { useCatalogStore } from '@/stores/catalog'
-
-const RAREZAS = [
-  { label: 'Común', value: 'common' },
-  { label: 'Infrecuente', value: 'uncommon' },
-  { label: 'Rara', value: 'rare' },
-  { label: 'Mítica', value: 'mythic' },
-  { label: 'Especial', value: 'special' },
-  { label: 'Bonus', value: 'bonus' }
-]
-
-const COLORES = [
-  { label: 'Blanco', value: 'W' },
-  { label: 'Azul', value: 'U' },
-  { label: 'Negro', value: 'B' },
-  { label: 'Rojo', value: 'R' },
-  { label: 'Verde', value: 'G' }
-]
 
 const ORDENES = [
   { label: 'Relevancia', value: 'relevance' },

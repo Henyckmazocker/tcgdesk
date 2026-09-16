@@ -1,0 +1,2064 @@
+{
+  "items": [
+    {
+      "uuid": "267f2433-0375-5cf2-a108-8f1f6ac1887b",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "MSC",
+      "setName": "Marvel Super Heroes Commander",
+      "collectorNumber": "806",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "7673784e-db4b-43a1-8d55-1bb9fc1e284f",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.01,
+        "foil": 1.83,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "ac84190b-bb2c-5e14-912b-b02f0614825d",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PW26",
+      "setName": "Wizards Play Network 2026",
+      "collectorNumber": "5",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "b6bc6ff3-f466-4cb0-8b4e-a20d8ed129c8",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.98,
+        "foil": 5.85,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "40c28aec-7f39-5694-a5c3-f5ce1361cf74",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "TLE",
+      "setName": "Avatar: The Last Airbender Eternal",
+      "collectorNumber": "32",
+      "rarity": "mythic",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6881d7c8-5bb7-4f8c-9f03-50fb1309d9c8",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 4.31,
+        "foil": 9.14,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "c253d801-5d57-5d08-ad30-a9404353f250",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "FCA",
+      "setName": "Final Fantasy: Through the Ages",
+      "collectorNumber": "40",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "e89794ab-6070-4916-936f-2b42fe41d31b",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.52,
+        "foil": 3.31,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "c7d04140-bd26-5fc3-8c9c-c79cea4be3b9",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PF25",
+      "setName": "MagicFest 2025",
+      "collectorNumber": "13",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6580f4f9-870b-4258-8dce-48c606b90a6c",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 19.85,
+        "foil": 4.2,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "e3398df5-ced3-57a1-b58e-0f77de2618ed",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "CLU",
+      "setName": "Ravnica: Clue Edition",
+      "collectorNumber": "141",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "77c6fa74-5543-42ac-9ead-0e890b188e99",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.74,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "c6970f85-4121-5b91-9b82-4458fe83181b",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLP",
+      "setName": "Secret Lair Promo",
+      "collectorNumber": "37",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "b9399b98-a545-47b2-99bb-6d8251d9ae76",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 1999.95,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "7f07821e-c12b-5085-82cf-c2278532a870",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLP",
+      "setName": "Secret Lair Promo",
+      "collectorNumber": "21",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "074d2360-3ded-412d-90b5-2b8ab209fe47",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 98.67,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "67abef58-4a5c-5f0d-bcbf-146366371dcc",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "30A",
+      "setName": "30th Anniversary Edition",
+      "collectorNumber": "454",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "996a81ae-0c2d-4e74-b018-5f0ec0fcfbd3",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 223.61,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "3995b117-80ba-5d3f-b57f-beb4055df545",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "30A",
+      "setName": "30th Anniversary Edition",
+      "collectorNumber": "157",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "54be73dd-cb3b-411b-8f48-d12ca5183dee",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 10.36,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "cc53a850-484b-51e3-8cb7-5cd332da2ae1",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "GN3",
+      "setName": "Game Night: Free-for-All",
+      "collectorNumber": "83",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "a6de74d2-0668-49c6-a385-bf706bfed8f7",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.96,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "190a854f-6657-59fb-a551-4bf99e4a5905",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "2X2",
+      "setName": "Double Masters 2022",
+      "collectorNumber": "361",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "c8c8390f-4072-454f-8dc4-174919187a47",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.28,
+        "foil": 3.51,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0aa4288b-47ee-5d3b-8b81-5479779a8b7b",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "2X2",
+      "setName": "Double Masters 2022",
+      "collectorNumber": "117",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "f29ba16f-c8fb-42fe-aabf-87089cb214a7",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.49,
+        "foil": 2.23,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1f17c868-cfd0-59f2-8bbf-3d79ddd23c27",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "HBG",
+      "setName": "Alchemy Horizons: Baldur's Gate",
+      "collectorNumber": "926",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "4bdf13fe-4b7a-4972-8163-fbf8bd359d30",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "578de53b-151a-5082-9c0a-81409d544162",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "CLB",
+      "setName": "Commander Legends: Battle for Baldur's Gate",
+      "collectorNumber": "401",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "c69f668b-cf28-495a-bbe1-24e9d0089fa1",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.43,
+        "foil": 2.24,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0b0ac66e-a46b-5a7d-ba53-07d6c06e9561",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "CLB",
+      "setName": "Commander Legends: Battle for Baldur's Gate",
+      "collectorNumber": "187",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ae5f9fb1-5a55-4db3-98a1-2628e3598c18",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.4,
+        "foil": 1.98,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "9fa26a2d-e60e-59de-87d5-c6019bfe4e32",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "J21",
+      "setName": "Jumpstart: Historic Horizons",
+      "collectorNumber": "787",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "988cd919-146e-4212-b0e4-146b87f806bd",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "952756ad-89fd-5524-95dc-baaa99cdbc19",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "STA",
+      "setName": "Strixhaven Mystical Archive",
+      "collectorNumber": "42",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "4eaac4fd-95f5-4f38-b593-0101e79a20f9",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": true
+      },
+      "priceEur": {
+        "normal": 3.1,
+        "foil": null,
+        "etched": 6.28
+      }
+    },
+    {
+      "uuid": "440af151-df38-5152-979d-84009ab7e1a7",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "STA",
+      "setName": "Strixhaven Mystical Archive",
+      "collectorNumber": "105",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "b14fae63-2e82-49c1-8e62-d84a65f27479",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": true
+      },
+      "priceEur": {
+        "normal": 13.62,
+        "foil": null,
+        "etched": 28.48
+      }
+    },
+    {
+      "uuid": "ef018e83-134b-55eb-8b84-d2acd404d195",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PLST",
+      "setName": "The List",
+      "collectorNumber": "A25-141",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "df77bf7d-546a-416b-a2fe-8038a4125af5",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.83,
+        "foil": 0.6,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "d80c98f8-3748-5ab9-8aba-4e04bd450c76",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PLST",
+      "setName": "The List",
+      "collectorNumber": "E01-54",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "32a180dd-9641-4546-8940-9b21084f0c71",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.18,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1b602847-c240-594e-9c48-b939f5ebdadb",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PLST",
+      "setName": "The List",
+      "collectorNumber": "PF19-1",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "0f29ea1f-a226-4ec4-8297-109e2f2b5c69",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 7.27,
+        "foil": 9.28,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "f5e9103b-8b91-54fc-88bc-57ca415bdb44",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "JMP",
+      "setName": "Jumpstart",
+      "collectorNumber": "342",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ce711943-c1a1-43a0-8b89-8d169cfb8e06",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.55,
+        "foil": 1.75,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "fa340683-e523-511d-8c98-ea498d69da0c",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "84",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6fb94c1b-8002-4d79-add0-c4dfef9019ee",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 9.12,
+        "foil": 7.9,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "e5abdbe7-26fb-59dd-8260-9e45ecf3080a",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "IFIYW-2",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "dc12105d-7536-429b-9510-4f56bfc0c497",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 4.36,
+        "foil": 4.59,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "d0d3db4c-6c60-5625-b2ab-bfe8f4185f88",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "IFIYW-7",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "bde26955-6de3-4212-9e1a-5e11f73ebf44",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 5.07,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "ced5be96-f250-5734-b2f8-2d374569c606",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1871",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "5a763474-5ce9-48cc-aaf8-8ca363df4430",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 5.17,
+        "foil": 6.76,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "94a799db-acfa-5331-a678-5ce13a0c8499",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1638",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "4f43c378-9e6a-4ece-9c24-5dc08c977746",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 4.59,
+        "foil": 5.45,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "6787846a-9e3d-52cb-a190-24f29331c62d",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "86",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "c3eb3895-b64c-46ab-b704-3c46963920ba",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 7.62,
+        "foil": 8.3,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "670e2919-0145-5657-b4fa-2ac40890222a",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1822",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "5fbb6751-1072-4fc0-8b54-836d05950914",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 3.82,
+        "foil": 3.52,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "28774c48-654f-5fdc-9547-42a187ff57c8",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "675",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "27740ea5-79c8-420f-bc49-6d5eac58dac5",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 7.29,
+        "foil": 7.5,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "26bb9b31-fc82-54b3-b13e-56dd1dba312a",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "83",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "45184cd7-b037-4a85-a063-e622ca928d17",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 8.35,
+        "foil": 6.88,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "26417c0e-18ca-5cdc-98a6-726a94fccf78",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "2289",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "3c738171-d0dc-4cc2-8af8-1d306143db37",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 7.41,
+        "foil": 9.36,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "20446d8e-c01e-5d05-93c1-488efb00087c",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "85",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6ab06973-6440-4b12-8947-8c412500fa41",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 5.39,
+        "foil": 7.07,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "19afaf76-fd5c-5a14-bbc7-c1a8fb31de32",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "901",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "0277c0b1-da97-49c1-a539-7fbaa1f77419",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 20.68,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "19765667-ab55-5eb2-8453-ab52a6c4b8ff",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1638★",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "54199d7c-02f8-4ff0-9e43-e7bf66ef9715",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0cd9f7eb-8a7d-5cbb-aee9-c66e0b40ce83",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1879",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "719d571c-0740-4212-86c2-e9ef38516f6c",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 3.68,
+        "foil": 5.21,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0a31c1e5-968f-5e6f-bbef-3e1f2317d088",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SLD",
+      "setName": "Secret Lair Drop",
+      "collectorNumber": "1743",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "24484578-7885-4125-b95f-e677d970a5a1",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 3.35,
+        "foil": 3.4,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "5e7c2039-a072-5907-8053-74f518384e8a",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PF19",
+      "setName": "MagicFest 2019",
+      "collectorNumber": "1",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ff204024-20a5-4bb9-82b6-f6b4337efd60",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 4.59,
+        "foil": 6.12,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "88d7451f-97a3-51cc-8e8e-722c951d783b",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "A25",
+      "setName": "Masters 25",
+      "collectorNumber": "141",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "e3285e6b-3e79-4d7c-bf96-d920f973b122",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.35,
+        "foil": 3.78,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "be977738-775e-52d6-a151-eaae951762a4",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "E01",
+      "setName": "Archenemy: Nicol Bolas",
+      "collectorNumber": "54",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ccee0b4c-0cb0-4c0f-8ddc-bc74b8b97273",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.03,
+        "foil": 2.32,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "90382a47-3cdf-511d-8965-342d00e37672",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "MM2",
+      "setName": "Modern Masters 2015",
+      "collectorNumber": "122",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "677da834-7f4a-4f60-9151-de7ddcf29622",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.46,
+        "foil": 2.27,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "e0503809-1924-5cf6-bb5a-810d61b25fb7",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "OLGC",
+      "setName": "Legacy Championship",
+      "collectorNumber": "2023",
+      "rarity": "special",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ddaa110c-ee6e-4df5-a6c8-3fdf4b89293f",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "8cc1ad54-423e-5851-b201-baef7b893718",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PD2",
+      "setName": "Premium Deck Series: Fire and Lightning",
+      "collectorNumber": "17",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6773a3cf-707f-4bc0-b64d-2a96b70f7975",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 1.52,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1fdb8db7-66cc-51b3-93fe-391173993a61",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "TD0",
+      "setName": "Magic Online Theme Decks",
+      "collectorNumber": "A60",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "dabcac3f-59e9-42e0-8c29-fbfb059a506e",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0fde306e-4277-53a8-816c-dfcd76ec150e",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "TD0",
+      "setName": "Magic Online Theme Decks",
+      "collectorNumber": "B21",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "d7dbd871-dc5e-4bda-9670-9e734a79b065",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "6ca7af0b-4b6a-59ba-90be-6da4f62bcff1",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "M11",
+      "setName": "Magic 2011",
+      "collectorNumber": "149",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "e768c957-3a1f-42f5-853a-96942f645df5",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.1,
+        "foil": 4.57,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "d7621fd8-dfff-526d-908b-32faad3eef69",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "P10",
+      "setName": "Magic Player Rewards 2010",
+      "collectorNumber": "1",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "28708c8c-4336-4d04-b43a-59a31471a9f6",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 13.43,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "78380203-7623-50bc-ab48-577cd655ee9a",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "M10",
+      "setName": "Magic 2010",
+      "collectorNumber": "146",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "435589bb-27c6-4a6d-9d63-394d5092b9d8",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 1.34,
+        "foil": 5.73,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "36ef3448-d5b3-5687-a0b1-972d37dc9ff7",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "P09",
+      "setName": "Magic Player Rewards 2009",
+      "collectorNumber": "146",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "b539a9de-037a-4b7a-80a5-0514680af095",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.18,
+        "foil": 17.81,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "1fd3d506-7308-55cd-b599-aaa915c574ff",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "ME1",
+      "setName": "Masters Edition",
+      "collectorNumber": "102",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "4dbd1cd7-521d-4a59-af53-e5cae451712f",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "6df3c130-0787-5571-ab01-3e8f0270db5e",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PRM",
+      "setName": "Magic Online Promos",
+      "collectorNumber": "36224",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "404a819c-8b9a-4527-a312-5e0df9c27be0",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "33d0b2e4-d5b0-50bb-81a8-669f15afcfc0",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PRM",
+      "setName": "Magic Online Promos",
+      "collectorNumber": "72886",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "07883c5d-1732-4322-8c67-b6dcc74bb629",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "2c0d37b2-aecd-534e-98b6-b32017098226",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PRM",
+      "setName": "Magic Online Promos",
+      "collectorNumber": "102261",
+      "rarity": "uncommon",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "8abac1f3-bdf5-42e2-b881-8023588978a0",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "0e22e990-cf79-5608-88e5-01221b6157d0",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PRM",
+      "setName": "Magic Online Promos",
+      "collectorNumber": "35932",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "9874de35-e062-48f4-ad45-75df3e2e12b2",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "9d662600-92b0-574a-8d4b-183bb9581536",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "BTD",
+      "setName": "Beatdown Box Set",
+      "collectorNumber": "41",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "a9f447d7-bd08-4f35-bc09-ed335b09a0f8",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 4.1,
+        "foil": 3.59,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "ca5e7cb9-eea8-54e0-8c16-c5c83955d4cf",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "ATH",
+      "setName": "Anthologies",
+      "collectorNumber": "43",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "52f85017-c88b-4302-96f2-e27b23fd702f",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.91,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "b4372b46-219c-5eec-b03e-760f13275671",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "JGP",
+      "setName": "Judge Gift Cards 1998",
+      "collectorNumber": "1",
+      "rarity": "rare",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "6e8b2951-3c66-4042-add9-b2615951ba52",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 483.95,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "d02f4451-57b5-51c4-830f-604daff649fc",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PTC",
+      "setName": "Pro Tour Collector Set",
+      "collectorNumber": "mj208",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "9809473d-f793-476f-ae7e-e535b6725d65",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 7.75,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "62c8d817-d46a-5390-bd3e-0b5b39fe7b61",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PTC",
+      "setName": "Pro Tour Collector Set",
+      "collectorNumber": "et208",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "02e20655-321c-4194-ab72-b4a5473238d1",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 15.94,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "4eee1090-c8cc-5a44-9856-2fc6bd79338e",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "PTC",
+      "setName": "Pro Tour Collector Set",
+      "collectorNumber": "gb208",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "edd88c4f-58bd-4920-b41f-037462b54915",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 5.99,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "7148e05b-25b6-5310-93f6-aae141a2077e",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "4BB",
+      "setName": "Fourth Edition Foreign Black Border",
+      "collectorNumber": "208",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "310de1ef-f1b6-4b61-9d6c-6b70382a7f95",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 22.93,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "61aa652c-e307-5b1c-9332-9025ebbcb504",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "4ED",
+      "setName": "Fourth Edition",
+      "collectorNumber": "208",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "9521375e-0bc1-45ef-b513-6d332a25f9d2",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.15,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "f11f7e4d-76a2-56d6-89d4-b636aea49f81",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "SUM",
+      "setName": "Summer Magic / Edgar",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "fc8f431d-b7eb-4848-99dd-a5f896248145",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 885.89,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "983bb171-9ffa-5252-b7ed-49b3f6988369",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "3ED",
+      "setName": "Revised Edition",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "cb9b9a9d-ae4c-4e04-bf9d-cae48f01292c",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.92,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "095866d8-baf8-5e2e-8a51-ba0849ce9503",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "FBB",
+      "setName": "Foreign Black Border",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "fcf2ea50-44af-46d7-80c9-36fc18606748",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 12.19,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "dada6168-ea97-5916-a749-8300dff232e9",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "CEI",
+      "setName": "Intl. Collectors' Edition",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ef9047f6-5e5d-49bf-a183-4d1490b291fb",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 32.95,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "14ef4844-7e63-53bf-950c-0e88c8bf21d3",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "CED",
+      "setName": "Collectors' Edition",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "1ddc5922-f62a-4f91-809e-f959edfcfc6a",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 49.95,
+        "foil": 50.04,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "d944340c-4fa8-5bd1-8abd-ad42cb1d2ae4",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "2ED",
+      "setName": "Unlimited Edition",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "ff1b8fc5-604a-4449-a73d-861e53642a70",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 16.94,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "50654227-37ac-56b0-a2fb-a1a804dc9133",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "LEB",
+      "setName": "Limited Edition Beta",
+      "collectorNumber": "162",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "b5d3dcab-2260-479d-9ef6-dfb92d4f6061",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 260.19,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "c65fcd18-dc47-50d4-bdb1-518bbf0ef820",
+      "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+      "name": "Lightning Bolt",
+      "setCode": "LEA",
+      "setName": "Limited Edition Alpha",
+      "collectorNumber": "161",
+      "rarity": "common",
+      "manaCost": "{R}",
+      "manaValue": 1,
+      "colors": [
+        "R"
+      ],
+      "colorIdentity": [
+        "R"
+      ],
+      "typeLine": "Instant",
+      "scryfallId": "d573ef03-4730-45aa-93dd-e45ac1dbaf4a",
+      "finishes": {
+        "foil": false,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 409.41,
+        "foil": null,
+        "etched": null
+      }
+    }
+  ],
+  "nextCursor": null
+}

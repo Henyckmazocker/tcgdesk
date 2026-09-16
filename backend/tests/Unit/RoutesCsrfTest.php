@@ -6,6 +6,7 @@ namespace Tests\Unit;
 
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CsrfMiddleware;
+use App\Middleware\RateLimitMiddleware;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -79,6 +80,15 @@ final class RoutesCsrfTest extends TestCase
         // protegerlas.
         'follow_add',
         'follow_remove',
+        // M1 del Plan - Reconocimiento de la Impresión por su Arte. **Es la
+        // primera acción del proyecto en la que un CLIENTE sube un binario que
+        // acaba en una tabla compartida del catálogo**, y por eso su CSRF no es
+        // una formalidad: sin él, una página cualquiera podría sembrar el índice
+        // visual del catálogo con la sesión de la víctima, y lo sembrado no se
+        // sobrescribe nunca — `INSERT IGNORE` significa que el primero que
+        // envenena una impresión la envenena para siempre, hasta que alguien
+        // vacíe la tabla. Su hermana de lectura, `scan_orb_refs`, está abajo.
+        'vision_orb_store',
     ];
 
     /** Acciones de lectura: sin CSRF a propósito, no hay estado que falsificar. */
@@ -119,6 +129,20 @@ final class RoutesCsrfTest extends TestCase
         // `AuthMiddleware`: un buscador de personas abierto a internet sería el
         // directorio que ese hito existe para no publicar.
         'user_search',
+        // M2 del Plan - Escáner de Cartas por Cámara: la única acción del
+        // escáner, y es lectura. Resuelve contra el catálogo lo que el OCR leyó
+        // y devuelve veredictos; meter la carta sigue siendo `collection_add` y
+        // `deck_card_add`, que ya llevan su Csrf. Va sin Csrf por el mismo
+        // criterio que `import_preview`, del que es hermana: las dos resuelven y
+        // ninguna escribe una fila.
+        'scan_resolve',
+        // M1 del Plan - Reconocimiento de la Impresión por su Arte: las
+        // referencias ORB de las impresiones de una carta, o `orb: null` para
+        // las que aún no se han sembrado. **No escribe una fila** —quien siembra
+        // es `vision_orb_store`, que sí lleva Csrf— así que va sin él por el
+        // mismo criterio que `scan_resolve`, de la que es hermana: las dos leen
+        // el catálogo para el bucle de la cámara.
+        'scan_orb_refs',
     ];
 
     /** @return array<string, array> */
@@ -220,5 +244,95 @@ final class RoutesCsrfTest extends TestCase
             array_values($sobran),
             'Acción nueva sin clasificar como lectura o escritura: decide si necesita CSRF.'
         );
+    }
+
+    /**
+     * **`scan_resolve` declara su propio limitador, y son 300/min.**
+     *
+     * El bucle de la cámara da ~2 vueltas por segundo. Con el limitador global
+     * de 60/min que `ActionRouter` le ponía por no declarar ninguno, el escáner
+     * empezaba a comer 429 **a los treinta segundos** de apuntar — y el síntoma
+     * en el móvil («deja de reconocer al rato») no se parece en nada a la causa.
+     *
+     * Este test existe porque ese límite es invisible en la ruta cuando no está
+     * escrito: quien lo borre «porque no hace falta» devuelve la acción al global
+     * sin que nada se ponga rojo salvo esto.
+     */
+    public function testScanResolveDeclaraSuPropioLimiteDeTrescientosPorMinuto(): void
+    {
+        $middleware = $this->rutas()['scan_resolve']['middleware'];
+
+        $limitador = null;
+        foreach ($middleware as $entrada) {
+            if (is_array($entrada) && $entrada[0] === RateLimitMiddleware::class) {
+                $limitador = $entrada[1];
+                break;
+            }
+        }
+
+        self::assertNotNull(
+            $limitador,
+            'Sin limitador propio hereda el global de 60/min y el bucle muere a los 30 s.'
+        );
+        self::assertSame(300, $limitador['limit']);
+        self::assertSame(60, $limitador['window']);
+        self::assertSame('ip', $limitador['by']);
+    }
+
+    /**
+     * **`scan_orb_refs` declara el suyo por el mismo motivo, y son los mismos
+     * 300/min.**
+     *
+     * Va enganchada al mismo bucle de cámara que `scan_resolve` —~2 vueltas por
+     * segundo— así que hereda su problema entero: con el global de 60/min
+     * empezaría a comer 429 a los treinta segundos y el síntoma sería «el
+     * escáner deja de reconocer al rato». Que las dos declaren el mismo número
+     * no es duplicación: es que las dos las llama la misma vuelta del bucle.
+     *
+     * **Y `vision_orb_store` declara los mismos 300 desde el M4** (2026-09-16).
+     * Nació heredando el global de 60/min con el argumento de que la siembra va
+     * fuera del camino de la respuesta y un 429 ahí no rompe nada. El modo
+     * binder lo invalidó: una página de nueve bolsillos son **~28 siembras de
+     * golpe** —3,15 impresiones de media por carta—, así que una página cabe en
+     * 60/min y **dos seguidas no**, y el síntoma sería «la detección de
+     * rectángulos ha fallado» en vez de un límite de tasa.
+     */
+    public function testScanOrbRefsYLaSiembraDeclaranElMismoLimiteQueElBucleDelEscaner(): void
+    {
+        $limitador = $this->limitadorDe('scan_orb_refs');
+
+        self::assertNotNull(
+            $limitador,
+            'Sin limitador propio hereda el global de 60/min y el bucle muere a los 30 s.'
+        );
+        self::assertSame(300, $limitador['limit']);
+        self::assertSame(60, $limitador['window']);
+        self::assertSame('ip', $limitador['by']);
+
+        $siembra = $this->limitadorDe('vision_orb_store');
+
+        self::assertNotNull(
+            $siembra,
+            'Sin limitador propio, dos páginas de binder seguidas comen 429 en la siembra.'
+        );
+        self::assertSame(300, $siembra['limit']);
+        self::assertSame(60, $siembra['window']);
+        self::assertSame('ip', $siembra['by']);
+    }
+
+    /**
+     * El `RateLimitMiddleware` declarado por una ruta, o null si hereda el global.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function limitadorDe(string $accion): ?array
+    {
+        foreach ($this->rutas()[$accion]['middleware'] as $entrada) {
+            if (is_array($entrada) && $entrada[0] === RateLimitMiddleware::class) {
+                return $entrada[1];
+            }
+        }
+
+        return null;
     }
 }

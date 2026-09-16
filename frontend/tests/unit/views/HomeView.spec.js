@@ -47,6 +47,31 @@ vi.mock('@/services/api', async (importarOriginal) => ({
   catalogGet: vi.fn()
 }))
 
+/**
+ * LA PLATAFORMA, que aquí es un interruptor.
+ *
+ * La vista y el router preguntan a `Capacitor.isNativePlatform()` —el mismo
+ * patrón de `composables/useGoogleAuth.js:25`— y de esa respuesta depende si
+ * `/scan` existe. Se dobla el módulo entero porque jsdom siempre diría «web»: sin
+ * esto, la cara nativa no se podría probar y el enlace del APK quedaría sin red.
+ *
+ * `vi.hoisted` porque el factory de `vi.mock` se iza por encima de las
+ * constantes del fichero. Y se dobla **solo** `isNativePlatform`, conservando el
+ * resto del módulo: `registerPlugin` lo llama todo plugin de Capacitor al
+ * importarse —`@codetrix-studio/capacitor-google-auth` desde `LoginView.vue`, a
+ * donde llega el test de salir—, y un doble sin él revienta esa navegación.
+ */
+const plataforma = vi.hoisted(() => ({ nativo: false }))
+
+vi.mock('@capacitor/core', async (importarOriginal) => {
+  const original = await importarOriginal()
+
+  return {
+    ...original,
+    Capacitor: { ...original.Capacitor, isNativePlatform: () => plataforma.nativo }
+  }
+})
+
 /** Copia profunda: el store muta lo que recibe y las fixturas son de todos. */
 function fixtura(json) {
   return structuredClone(json)
@@ -83,6 +108,9 @@ async function montarHome(opciones = {}) {
 }
 
 beforeEach(() => {
+  // Web por defecto, que es donde corre la suite y donde corre el navegador.
+  // Quien pruebe la cara nativa lo enciende en su propio test.
+  plataforma.nativo = false
   apiCall.mockReset()
   catalogGet.mockReset()
   respondeSegunAccion({
@@ -112,9 +140,20 @@ describe('el primer render', () => {
     // URL, y va aquí y no en `App.vue` a propósito (`HomeView.vue:6-11`).
     // Siete desde la lista de deseos, que es una RUTA y no un filtro de
     // `/collection`: si dejara de estar en el menú, no habría forma de llegar.
-    // Y ocho desde `/friends`, por lo mismo: es la única puerta a esa pantalla.
-    expect(wrapper.findAll('.home__nav a')).toHaveLength(8)
-    expect(wrapper.findAll('.home__nav a').map((a) => a.attributes('href')))
+    // Ocho desde `/friends`, por lo mismo: es la única puerta a esa pantalla.
+    //
+    // El noveno, `/scan`, DEPENDE DE LA PLATAFORMA y por eso no se cuenta aquí
+    // sino en los dos tests de abajo. Las dos caras siguen siendo ciertas a la
+    // vez: en el APK el enlace es obligatorio —el webview de Capacitor no tiene
+    // barra de direcciones ni deep link, así que una ruta sin enlace es
+    // **inalcanzable allí**—, y en web no debe existir, porque la vista vive de
+    // dos plugins nativos que el navegador no tiene.
+    //
+    // El enlace del spike M0 se excluye a propósito: es temporal y se va con
+    // `src/spike/`, así que contarlo pondría este test en rojo el día que se
+    // borre por hacer justo lo que está escrito que hay que hacer.
+    const definitivos = wrapper.findAll('.home__nav a:not(.home__link--spike)')
+    expect(definitivos.map((a) => a.attributes('href')))
       .toEqual(expect.arrayContaining(['#/wishlist', '#/friends']))
     expect(wrapper.find('.home__user').text()).toContain(SESION.auth.user.display_name)
   })
@@ -397,5 +436,176 @@ describe('salir', () => {
     // no vaciara el estado, `router/index.js:91-93` rebotaría a `/`.
     await vi.waitFor(() => expect(router.currentRoute.value.name).toBe('login'))
     expect(pinia.state.value.auth.isAuthenticated).toBe(false)
+  })
+})
+
+/**
+ * EL ESCÁNER, QUE SOLO SE OFRECE DONDE FUNCIONA.
+ *
+ * `/scan` vive de `CameraPreview` y del OCR de ML Kit, dos plugins **nativos**:
+ * en el navegador no hay nada que enseñar. Las dos caras son ciertas a la vez y
+ * por eso van dos tests y no uno —el comentario del recuento de arriba explica
+ * el porqué de cada una—:
+ *
+ *  - **en el APK**, el enlace es obligatorio: el webview de Capacitor no tiene
+ *    barra de direcciones ni deep link, así que una ruta sin enlace es
+ *    inalcanzable;
+ *  - **en web**, ni enlace ni ruta.
+ *
+ * La plataforma se dobla arriba (`plataforma.nativo`), nunca por `userAgent` ni
+ * por ancho de pantalla: un móvil con el navegador tampoco tiene los plugins.
+ */
+describe('el escáner solo donde funciona', () => {
+  /** Los `href` del menú de escritorio, que es la lista de destinos ofrecidos. */
+  function destinos(wrapper) {
+    return wrapper.findAll('.home__nav a:not(.home__link--spike)').map((a) => a.attributes('href'))
+  }
+
+  it('en web el menú son OCHO enlaces y ninguno es /scan', async () => {
+    const { wrapper } = await montarHome()
+
+    const enlaces = destinos(wrapper)
+
+    expect(enlaces).toHaveLength(8)
+    expect(enlaces).not.toContain('#/scan')
+    expect(enlaces).toEqual(expect.arrayContaining(['#/wishlist', '#/friends']))
+  })
+
+  it('en nativo son NUEVE, con /scan entre ellos', async () => {
+    plataforma.nativo = true
+
+    const { wrapper } = await montarHome()
+
+    const enlaces = destinos(wrapper)
+
+    expect(enlaces).toHaveLength(9)
+    expect(enlaces).toContain('#/scan')
+  })
+
+  it('en web, teclear #/scan devuelve a la portada', async () => {
+    // El enlace escondido no basta: el hash se teclea y un enlace viejo sigue en
+    // el historial. Sin el guard, la vista se monta y muere con un error de
+    // plugin que no explica nada.
+    const { router } = await montarHome()
+
+    await router.push('/scan')
+
+    expect(router.currentRoute.value.name).toBe('home')
+  })
+
+  it('en nativo, el guard de /scan deja pasar', async () => {
+    plataforma.nativo = true
+
+    const { router } = await montarHome()
+
+    // Se llama al guard DIRECTAMENTE en vez de navegar: `router.push('/scan')`
+    // resolvería el `import()` perezoso de `ScanView.vue`, que arrastra tres
+    // plugins de Capacitor y pediría doblarlos aquí para probar una línea del
+    // router. Lo que importa es lo que devuelve el guard.
+    const scan = router.getRoutes().find((ruta) => ruta.name === 'scan')
+    const guardas = [scan.beforeEnter].flat().filter(Boolean)
+
+    expect(guardas).toHaveLength(1)
+    expect(guardas[0]()).toBe(true)
+
+    plataforma.nativo = false
+    expect(guardas[0]()).toEqual({ name: 'home' })
+  })
+})
+
+/**
+ * LA NAVEGACIÓN RECOGIDA, para pantallas estrechas.
+ *
+ * Los nueve enlaces en una fila con `flex-wrap` se apilan y se comen la pantalla
+ * de un móvil antes de que se vea un euro de la colección. Por debajo de los
+ * 800px la fila se esconde por CSS y sale un botón que abre un `Menu` de
+ * PrimeVue en modo `popup`.
+ *
+ * Quién se ve lo decide el media query, así que **los dos bloques están siempre
+ * montados**: aquí no se mide el ancho —`css: false` en `vitest.config.js`, y
+ * jsdom no hace layout—, se comprueba que el desplegable ofrece lo mismo que la
+ * fila y que el aviso de solicitudes no se pierde dentro.
+ *
+ * OJO: el popup se teletransporta al `document.body` y NO está en
+ * `wrapper.html()`. Se monta con `attachTo` y se busca allí.
+ */
+describe('la navegación recogida en móvil', () => {
+  /** Abre el desplegable de verdad y devuelve sus enlaces, ya en el `body`. */
+  async function abrirMenu(wrapper) {
+    await wrapper.find('.home__hamburguesa').trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    return [...document.body.querySelectorAll('.home__menu a')]
+  }
+
+  it('cerrado no pinta nada: el popup no existe hasta que se abre', async () => {
+    const { wrapper } = await montarHome({ attachTo: document.body })
+
+    expect(wrapper.find('.home__hamburguesa').exists()).toBe(true)
+    expect(document.body.querySelectorAll('.home__menu a')).toHaveLength(0)
+  })
+
+  it('abierto ofrece los MISMOS destinos que la fila, y con sus href', async () => {
+    const { wrapper } = await montarHome({ attachTo: document.body })
+
+    const fila = wrapper.findAll('.home__nav a').map((a) => a.attributes('href'))
+    const menu = (await abrirMenu(wrapper)).map((a) => a.getAttribute('href'))
+
+    // La misma lista y en el mismo orden: las dos caras salen de `DESTINOS`, y
+    // dos listas escritas a mano se desincronizan solas.
+    expect(menu).toEqual(fila)
+    expect(menu).toHaveLength(8)
+    expect(menu).not.toContain('#/scan')
+  })
+
+  it('en nativo el desplegable también lleva /scan', async () => {
+    plataforma.nativo = true
+
+    const { wrapper } = await montarHome({ attachTo: document.body })
+
+    expect((await abrirMenu(wrapper)).map((a) => a.getAttribute('href'))).toContain('#/scan')
+  })
+
+  it('un destino del desplegable navega de verdad', async () => {
+    const { wrapper, router } = await montarHome({ attachTo: document.body })
+
+    const enlaces = await abrirMenu(wrapper)
+    const amigos = enlaces.find((a) => a.getAttribute('href') === '#/friends')
+
+    amigos.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+
+    // `vi.waitFor` y no `flushPromises`: el componente de destino es un
+    // `import()` perezoso (`router/index.js`).
+    await vi.waitFor(() => expect(router.currentRoute.value.name).toBe('friends'))
+  })
+
+  it('con solicitudes esperando, el número sale en el BOTÓN cerrado', async () => {
+    // Un aviso que hay que abrir un menú para ver no avisa: el badge va también
+    // sobre la hamburguesa, y es el mismo número que el del enlace de Amigos.
+    respondeSegunAccion({
+      collection_value: fixtura(valorFixture),
+      deck_list: fixtura(deckListFixture),
+      privacy_get: fixtura(privacyGetFixture),
+      friend_list: fixtura(friendListFixture)
+    })
+
+    const { wrapper } = await montarHome({ attachTo: document.body })
+
+    const cuentas = fixtura(friendListFixture).data.counts
+
+    expect(wrapper.find('.home__badge--boton').text()).toBe(String(cuentas.pending))
+
+    // Y dentro, junto a su destino, para saber de qué es el aviso.
+    const dentro = (await abrirMenu(wrapper))
+      .find((a) => a.getAttribute('href') === '#/friends')
+
+    expect(dentro.querySelector('.home__badge').textContent.trim()).toBe(String(cuentas.pending))
+  })
+
+  it('sin solicitudes, el botón va limpio', async () => {
+    const { wrapper } = await montarHome({ attachTo: document.body })
+
+    expect(wrapper.find('.home__badge--boton').exists()).toBe(false)
   })
 })

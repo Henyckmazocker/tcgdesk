@@ -66,6 +66,27 @@ class MySqlCardRepository implements CardRepositoryInterface
         LEFT JOIN mtg_price_current pe ON pe.printing_uuid = p.uuid AND pe.finish = 'etched'
     ";
 
+
+    /**
+     * La fecha por la que se ordenan las impresiones de una carta.
+     *
+     * `mtg_set.release_date` admite NULL, y un NULL dentro de una comparación de
+     * tuplas vuelve la condición entera desconocida: la fila no entra en NINGUNA
+     * página y desaparece del desplegable sin dar un solo error. El centinela la
+     * devuelve a la comparación, y con `DESC` se va al final, que es justo donde
+     * MySQL ya mandaba los NULL.
+     *
+     * Tiene que ser la MISMA expresión en el `ORDER BY` y en el cursor, o la
+     * paginación repite filas o se las salta. Y por eso esta constante es la
+     * **única** definición del centinela en la clase: la consumen las tres
+     * consultas que ordenan por fecha —`impresionesDe()`, `clausulaDeOrden()` y
+     * `columnaDeCursor()`—. Nacieron con dos valores distintos, `0001-01-01` y
+     * `1993-01-01`; ordenaban igual —ninguna edición real es anterior a *Alpha*,
+     * 1993-08-05— pero codificaban **cursores distintos para la misma fila**, y
+     * cruzar un cursor de un listado al otro se habría saltado filas en silencio.
+     */
+    private const FECHA_DE_ORDEN = "COALESCE(s.release_date, '0001-01-01')";
+
     public function __construct(
         private readonly PDO $db,
         private readonly BooleanExpressionBuilder $expresion
@@ -141,6 +162,175 @@ class MySqlCardRepository implements CardRepositoryInterface
         $carta['priceHistory']   = $this->historicoDe($uuid);
 
         return $carta;
+    }
+
+    /**
+     * Todas las impresiones de la carta a la que pertenece un printing.
+     *
+     * El uuid que entra es de una **impresión**, no de una carta, así que lo
+     * primero es resolver su `oracle_id` —una fila por la PK—: es el `oracle_id`
+     * lo que hermana a las ediciones entre sí, y no el nombre, que ni siquiera
+     * es único. Esa consulta de una línea es además la que decide el 404, y por
+     * eso vive aquí y no en el router: null significa "este uuid no existe",
+     * nunca "esta carta no tiene más ediciones". Confundirlos haría que una
+     * carta jamás reimpresa —que devuelve una página de UN item— pareciese un
+     * uuid roto.
+     *
+     * La impresión pedida viene DENTRO de la lista, a propósito: excluirla
+     * obligaría a cada cliente a recomponerla para enseñar "la que tienes ahora"
+     * junto a las alternativas.
+     *
+     * El orden es el de elegir edición —la más nueva primero— y sale barato pese
+     * a no ir por el índice: el acceso es `ref` por `oracle_id`, así que el
+     * filesort ordena las impresiones de UNA carta y no las 110.384 de la tabla.
+     * Medido en el M0 contra el peor caso real (`Forest`, 949 impresiones): 8-10
+     * ms la primera página de 60.
+     *
+     * Acotar `$limite` entre 1 y 100 es cosa del router, que es quien recibe el
+     * dato del cliente; aquí solo se impone el suelo, porque un `LIMIT` negativo
+     * no es un límite extraño sino un error de sintaxis de MySQL.
+     *
+     * @return array{items: list<array<string, mixed>>, nextCursor: string|null}|null
+     *         null si el uuid no existe en mtg_printing
+     */
+    public function impresionesDe(string $uuid, ?string $cursor, int $limite): ?array
+    {
+        $oracleId = $this->oracleIdDe($uuid);
+
+        if ($oracleId === null) {
+            return null;
+        }
+
+        $where  = ['p.oracle_id = :oracle_id'];
+        $params = ['oracle_id' => $oracleId];
+
+        $datos = Cursor::decodificar($cursor);
+
+        // Un cursor ilegible es "empieza por el principio", nunca un error: lo
+        // dice Cursor devolviendo null, y aquí se respeta no añadiendo filtro.
+        // Solo se compara si trae las DOS mitades: con la fecha sola, una
+        // edición entera —que comparte release_date— se saltaría de golpe.
+        if ($datos !== null && isset($datos['v'], $datos['u'])) {
+            $where[]            = '(' . self::FECHA_DE_ORDEN . ', p.uuid) < (:cursor_v, :cursor_u)';
+            $params['cursor_v'] = $datos['v'];
+            $params['cursor_u'] = $datos['u'];
+        }
+
+        $porPagina = max(1, $limite);
+
+        // Misma treta que search(): se pide una fila de más para saber si hay
+        // página siguiente sin pagar un COUNT(*) sobre el mismo conjunto. El
+        // LIMIT va interpolado y no por marcador porque con
+        // ATTR_EMULATE_PREPARES a false MySQL lo recibiría como cadena.
+        $stmt = $this->db->prepare(
+            'SELECT ' . self::COLUMNAS . ', ' . self::FECHA_DE_ORDEN . ' AS cursorValue
+               FROM mtg_printing p
+               JOIN mtg_card c ON c.oracle_id = p.oracle_id
+               JOIN mtg_set  s ON s.code      = p.set_code
+               ' . self::JOINS_PRECIO . '
+              WHERE ' . implode(' AND ', $where) . '
+              ORDER BY ' . self::FECHA_DE_ORDEN . ' DESC, p.uuid DESC
+              LIMIT ' . ($porPagina + 1)
+        );
+        $stmt->execute($params);
+
+        $filas  = $stmt->fetchAll();
+        $hayMas = count($filas) > $porPagina;
+
+        if ($hayMas) {
+            array_pop($filas);
+        }
+
+        $ultima = $filas === [] ? null : $filas[count($filas) - 1];
+
+        return [
+            'items'      => array_map([$this, 'aContrato'], $filas),
+            'nextCursor' => $hayMas && $ultima !== null
+                ? Cursor::porColumna($ultima['cursorValue'], (string) $ultima['uuid'])
+                : null,
+        ];
+    }
+
+    /**
+     * El `oracle_id` de un printing, o null si el uuid no existe.
+     *
+     * Sale aparte de la consulta grande porque son dos preguntas distintas: esta
+     * decide si hay 404 y cuesta un acceso a la PK; aquella lista ediciones. Con
+     * una sola consulta habría que distinguir "cero filas porque el uuid no
+     * existe" de "cero filas porque el cursor ya llegó al final", que es
+     * exactamente la confusión que convierte la última página en un 404.
+     */
+    private function oracleIdDe(string $uuid): ?string
+    {
+        $stmt = $this->db->prepare('SELECT oracle_id FROM mtg_printing WHERE uuid = :uuid LIMIT 1');
+        $stmt->execute(['uuid' => $uuid]);
+
+        $oracleId = $stmt->fetchColumn();
+
+        return $oracleId === false ? null : (string) $oracleId;
+    }
+
+    /**
+     * Las fichas de N impresiones de golpe, indexadas por uuid.
+     *
+     * Es la MISMA consulta de siempre —`COLUMNAS` y `JOINS_PRECIO`, que es lo
+     * que garantiza que la ficha que ve el escáner es la que ve el catálogo—
+     * con un `IN` en vez de un filtro de búsqueda. Sin `ORDER BY` a propósito:
+     * el orden lo pone quien preguntó, que sabe en qué orden tenía sus uuid; y
+     * sin `LIMIT`, porque el techo de cuántos se preguntan lo pone el
+     * controller, que es quien recibe el dato del cliente.
+     *
+     * **Cada uuid va con su propio marcador nombrado** (`:uuid_0`, `:uuid_1`…).
+     * Con `ATTR_EMULATE_PREPARES = false` MySQL no admite reutilizar un mismo
+     * nombre en dos puntos de la sentencia, y un `IN` es exactamente eso: N
+     * puntos. No se interpolan los valores, que vienen del cliente.
+     *
+     * Los uuid se deduplican antes de preguntar —el escáner puede leer la misma
+     * carta dos veces en la misma tanda— y los vacíos se caen: `IN ('')` no
+     * casa nada pero gasta un marcador.
+     *
+     * @param  list<string> $uuids
+     * @return array<string, array<string, mixed>>
+     */
+    public function porUuids(array $uuids): array
+    {
+        $limpios = [];
+
+        foreach ($uuids as $uuid) {
+            if (is_string($uuid) && $uuid !== '') {
+                $limpios[$uuid] = true;
+            }
+        }
+
+        if ($limpios === []) {
+            return [];
+        }
+
+        $marcadores = [];
+        $params     = [];
+
+        foreach (array_keys($limpios) as $i => $uuid) {
+            $marcadores[]          = ':uuid_' . $i;
+            $params['uuid_' . $i]  = $uuid;
+        }
+
+        $stmt = $this->db->prepare(
+            'SELECT ' . self::COLUMNAS . '
+               FROM mtg_printing p
+               JOIN mtg_card c ON c.oracle_id = p.oracle_id
+               JOIN mtg_set  s ON s.code      = p.set_code
+               ' . self::JOINS_PRECIO . '
+              WHERE p.uuid IN (' . implode(', ', $marcadores) . ')'
+        );
+        $stmt->execute($params);
+
+        $salida = [];
+
+        foreach ($stmt->fetchAll() as $fila) {
+            $salida[(string) $fila['uuid']] = $this->aContrato($fila);
+        }
+
+        return $salida;
     }
 
     public function allSets(): array
@@ -300,11 +490,11 @@ class MySqlCardRepository implements CardRepositoryInterface
         // en clausulaDeCursor(), o la paginación se salta filas o las repite.
         $orden = match ($criterios->sort) {
             'name'       => 'c.name ASC',
-            'release'    => "COALESCE(s.release_date, '0001-01-01') DESC",
+            'release'    => self::FECHA_DE_ORDEN . ' DESC',
             'rarity'     => "FIELD(p.rarity, 'mythic', 'rare', 'uncommon', 'common', 'special', 'bonus')",
             'price_asc'  => "{$precio} IS NULL, {$precio} ASC",
             'price_desc' => "{$precio} IS NULL, {$precio} DESC",
-            default      => $relevancia ?? "COALESCE(s.release_date, '0001-01-01') DESC",
+            default      => $relevancia ?? self::FECHA_DE_ORDEN . ' DESC',
         };
 
         // `uuid` como desempate final, en el mismo sentido que la columna: sin un
@@ -326,7 +516,7 @@ class MySqlCardRepository implements CardRepositoryInterface
     {
         return match ($criterios->sort) {
             'name'    => 'c.name',
-            'release' => "COALESCE(s.release_date, '0001-01-01')",
+            'release' => self::FECHA_DE_ORDEN,
             default   => 'p.uuid',
         };
     }

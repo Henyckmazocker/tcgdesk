@@ -1,0 +1,36 @@
+{
+  "items": [
+    {
+      "uuid": "6869d699-5f2b-5a41-886c-4e74b52ca763",
+      "oracleId": "a2c5ee76-6084-413c-bb70-45490d818374",
+      "name": "\"Ach! Hans, Run!\"",
+      "setCode": "UNH",
+      "setName": "Unhinged",
+      "collectorNumber": "116",
+      "rarity": "rare",
+      "manaCost": "{2}{R}{R}{G}{G}",
+      "manaValue": 6,
+      "colors": [
+        "G",
+        "R"
+      ],
+      "colorIdentity": [
+        "G",
+        "R"
+      ],
+      "typeLine": "Enchantment",
+      "scryfallId": "84f2c8f5-8e11-4639-b7de-00e4a2cbabee",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 2.88,
+        "foil": 27.34,
+        "etched": null
+      }
+    }
+  ],
+  "nextCursor": null
+}

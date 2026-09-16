@@ -16,9 +16,9 @@ namespace App\Domain\Import;
  *
  * ## `printingUuid` puede ser null en una fila RESUELTA
  *
- * No es un descuido. Los pasos 1 y 2 identifican **la impresión** (Scryfall ID, o
- * set + número, único en las 110.384 filas de `mtg_printing`), así que traen
- * `printingUuid`. Los pasos 3 y 4 identifican **la carta** —el usuario tecleó un
+ * No es un descuido. Los pasos 1, 2 y 2b identifican **la impresión** (Scryfall ID;
+ * set + número, único en las 110.384 filas de `mtg_printing`; o nombre + número
+ * cuando el par tiene una sola impresión detrás), así que traen `printingUuid`. Los pasos 3 y 4 identifican **la carta** —el usuario tecleó un
  * nombre y nada más—, y ahí solo hay una impresión evidente cuando la carta se
  * imprimió una sola vez. En el resto, la carta está resuelta y la edición sigue
  * sin decidir: elegir una por su cuenta sería inventarse un dato que el fichero
@@ -46,9 +46,10 @@ final class CardResolution
 
     /**
      * @param string|null                     $setCode    Edición, solo si se conoce la impresión
-     * @param string|null                     $paso       '1', '2', '3', '3b' o '4'; null si no resolvió
+     * @param string|null                     $paso       '1', '2', '2b', '3', '3b' o '4'; null si no resolvió
      * @param string|null                     $motivo     AMBIGUA | NO_ENCONTRADA | INVALIDA | DESACUERDO; null si resolvió
      * @param list<array<string, mixed>>      $candidatos Lo que el usuario tendrá que desempatar
+     * @param string|null                     $language   Idioma DETECTADO por el nombre; ver abajo
      */
     private function __construct(
         public readonly ParsedRow $fila,
@@ -59,14 +60,23 @@ final class CardResolution
         public readonly ?string $paso,
         public readonly ?string $motivo,
         public readonly array $candidatos,
+        public readonly ?string $language = null,
     ) {
     }
 
     /**
-     * @param array<string, mixed> $carta Candidato único: oracleId, name y, si se
-     *                                    conoce, printingUuid
+     * @param array<string, mixed> $carta    Candidato único: oracleId, name y, si se
+     *                                       conoce, printingUuid
+     * @param string|null          $language El idioma que **detectó el nombre**, del
+     *                                       vocabulario largo de MTGJSON, o null si
+     *                                       no se pudo decidir. NUNCA es el ajuste
+     *                                       del usuario: el respaldo es cosa del
+     *                                       cliente, y mezclarlos aquí haría
+     *                                       indistinguible «lo detecté» de «me
+     *                                       rendí». Lo decide `CardResolver`, que es
+     *                                       quien sabe por qué paso se resolvió.
      */
-    public static function resuelta(ParsedRow $fila, array $carta, string $paso): self
+    public static function resuelta(ParsedRow $fila, array $carta, string $paso, ?string $language = null): self
     {
         return new self(
             $fila,
@@ -77,13 +87,20 @@ final class CardResolution
             $paso,
             null,
             [],
+            $language,
         );
     }
 
-    /** @param list<array<string, mixed>> $candidatos */
+    /**
+     * Una fila en conflicto **no detecta idioma**, y no por falta de dato: no se
+     * sabe ni qué carta es, así que declarar un idioma sería declararlo de una
+     * lectura que no se ha entendido.
+     *
+     * @param list<array<string, mixed>> $candidatos
+     */
     public static function conflicto(ParsedRow $fila, string $motivo, array $candidatos = []): self
     {
-        return new self($fila, null, null, null, null, null, $motivo, $candidatos);
+        return new self($fila, null, null, null, null, null, $motivo, $candidatos, null);
     }
 
     public function estaResuelta(): bool

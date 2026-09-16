@@ -8,46 +8,80 @@
         tiene ya su propia barra con su botón de volver a `/`, así que un menú
         global se duplicaría con ellas (y con el login, que no debe tenerlo).
         Desde aquí se llega a las tres zonas sin teclear una URL.
+
+        ESTA ES LA FILA DE ENLACES, que es lo que se ve en escritorio. Se pinta de
+        `destinos`, la MISMA lista de la que sale el desplegable de móvil: dos
+        listas de destinos escritas a mano se desincronizan solas y entonces el
+        móvil pierde una zona sin que nadie lo note.
+
+        EL CONTADOR DE SOLICITUDES PENDIENTES cuelga del enlace de Amigos y sale
+        SOLO con solicitudes esperando: un cero permanente enseña a no mirarlo, y
+        entonces el día que haya un uno tampoco se mira. Y son las recibidas y no
+        las enviadas —`stores/friends.js`, getter `pendientes`—: las enviadas
+        esperan a la otra persona y no piden nada de ti.
       -->
       <nav class="home__nav">
-        <router-link :to="{ name: 'catalog' }" class="home__link">
-          <i class="pi pi-search"></i> Catálogo
-        </router-link>
-        <router-link :to="{ name: 'collection' }" class="home__link">
-          <i class="pi pi-th-large"></i> Mi colección
-        </router-link>
-        <router-link :to="{ name: 'wishlist' }" class="home__link">
-          <i class="pi pi-heart"></i> Lista de deseos
-        </router-link>
-        <router-link :to="{ name: 'decks' }" class="home__link">
-          <i class="pi pi-clone"></i> Mis mazos
-        </router-link>
-        <router-link :to="{ name: 'precons' }" class="home__link">
-          <i class="pi pi-box"></i> Precons
-        </router-link>
-        <router-link :to="{ name: 'sets' }" class="home__link">
-          <i class="pi pi-book"></i> Ediciones
-        </router-link>
-        <router-link :to="{ name: 'import' }" class="home__link">
-          <i class="pi pi-upload"></i> Importar
-        </router-link>
-
-        <!--
-          EL CONTADOR DE SOLICITUDES PENDIENTES, y va aquí porque este menú ES la
-          barra de la app: `App.vue` son veinte líneas con un `<router-view />` y
-          nada más, así que la única navegación global que existe es esta rejilla
-          de enlaces. El plan lo pedía «en la barra»; esta es la barra.
-
-          Sale SOLO con solicitudes esperando: un cero permanente enseña a no
-          mirarlo, y entonces el día que haya un uno tampoco se mira. Y son las
-          recibidas y no las enviadas —`stores/friends.js`, getter `pendientes`—:
-          las enviadas esperan a la otra persona y no piden nada de ti.
-        -->
-        <router-link :to="{ name: 'friends' }" class="home__link">
-          <i class="pi pi-users"></i> Amigos
-          <span v-if="amigos.pendientes > 0" class="home__badge">{{ amigos.pendientes }}</span>
+        <router-link
+          v-for="destino in destinos"
+          :key="destino.name"
+          :to="{ name: destino.name }"
+          class="home__link"
+        >
+          <i :class="destino.icon"></i> {{ destino.label }}
+          <span v-if="pendientesDe(destino) > 0" class="home__badge">{{ amigos.pendientes }}</span>
         </router-link>
       </nav>
+
+      <!--
+        LA MISMA NAVEGACIÓN, RECOGIDA, para pantallas estrechas. Nueve enlaces en
+        una fila con `flex-wrap` se apilan y se comen la pantalla entera antes de
+        que se vea un solo euro de la colección, así que por debajo de los 800px
+        —el breakpoint que ya usa `ImportView.vue`— la fila se esconde y sale
+        este botón. Quién se ve lo decide el CSS y no un `v-if`: un `v-if` por
+        ancho necesitaría escuchar el `resize` y volvería a mentir en cuanto se
+        gire el móvil.
+
+        Y el BADGE va también en el botón cerrado: un aviso que hay que abrir un
+        menú para ver no avisa. Es el mismo número, con el mismo `v-if`.
+      -->
+      <div class="home__compacto">
+        <Button
+          class="home__hamburguesa"
+          icon="pi pi-bars"
+          severity="secondary"
+          text
+          aria-haspopup="true"
+          aria-controls="home-menu"
+          aria-label="Menú de navegación"
+          @click="alternarMenu"
+        />
+        <span v-if="amigos.pendientes > 0" class="home__badge home__badge--boton">
+          {{ amigos.pendientes }}
+        </span>
+
+        <!--
+          `Menu` en modo `popup`: es el componente de PrimeVue para exactamente
+          esto y se cierra solo al pulsar fuera. Los ítems se pintan con la
+          plantilla `#item` y un `router-link` de verdad —no con `item.url`— para
+          que el destino siga siendo una ruta con nombre y el enlace tenga su
+          `href`: con `url` habría que componer el hash a mano y se perdería el
+          `router-link` activo.
+
+          OJO AL TESTEARLO: el popup se teletransporta al `document.body`, así
+          que no está en `wrapper.html()`.
+        -->
+        <Menu id="home-menu" ref="menu" :model="itemsDelMenu" popup class="home__menu">
+          <template #item="{ item, props }">
+            <router-link v-slot="{ href, navigate }" :to="item.route" custom>
+              <a :href="href" v-bind="props.action" @click="navigate">
+                <i :class="item.icon"></i>
+                <span class="home__menu-etiqueta">{{ item.label }}</span>
+                <span v-if="item.badge" class="home__badge">{{ item.badge }}</span>
+              </a>
+            </router-link>
+          </template>
+        </Menu>
+      </div>
 
       <div class="home__user">
         <img v-if="auth.user?.avatar_url" :src="auth.user.avatar_url" class="home__avatar" alt="">
@@ -301,9 +335,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Capacitor } from '@capacitor/core'
 import Button from 'primevue/button'
+import Menu from 'primevue/menu'
 import Skeleton from 'primevue/skeleton'
 
 import CardImage from '@/components/CardImage.vue'
@@ -330,11 +366,71 @@ import { useFriendsStore } from '@/stores/friends'
 /** Cuántas ediciones se enseñan aquí antes de mandar a `/sets`. */
 const EDICIONES_EN_PORTADA = 6
 
+/**
+ * LOS DESTINOS DE LA NAVEGACIÓN, en un único sitio.
+ *
+ * De aquí salen las dos caras del menú —la fila de enlaces de escritorio y el
+ * desplegable de móvil—, y es a propósito: mantenerlas como dos listas paralelas
+ * acaba con una zona alcanzable solo en una de las dos.
+ *
+ * `soloNativo` marca lo que no existe fuera del APK; `contador`, el único
+ * destino que enseña el número de solicitudes pendientes.
+ */
+const DESTINOS = [
+  { name: 'catalog', label: 'Catálogo', icon: 'pi pi-search' },
+  { name: 'collection', label: 'Mi colección', icon: 'pi pi-th-large' },
+  { name: 'wishlist', label: 'Lista de deseos', icon: 'pi pi-heart' },
+  { name: 'decks', label: 'Mis mazos', icon: 'pi pi-clone' },
+  { name: 'precons', label: 'Precons', icon: 'pi pi-box' },
+  { name: 'sets', label: 'Ediciones', icon: 'pi pi-book' },
+  { name: 'import', label: 'Importar', icon: 'pi pi-upload' },
+  // `/scan` vive de dos plugins NATIVOS —`CameraPreview` y el OCR de ML Kit—,
+  // así que en el navegador no hay nada que enseñar: el enlace solo se pinta en
+  // el APK, y la ruta se protege igual en `router/index.js` porque el hash se
+  // puede teclear.
+  //
+  // Dentro del APK sigue siendo obligatorio: el webview de Capacitor no tiene
+  // barra de direcciones y el manifest solo declara el intent-filter
+  // `MAIN`/`LAUNCHER`, así que **una ruta sin enlace es inalcanzable allí**.
+  { name: 'scan', label: 'Escanear', icon: 'pi pi-camera', soloNativo: true },
+  { name: 'friends', label: 'Amigos', icon: 'pi pi-users', contador: true }
+]
+
 const auth = useAuthStore()
 const router = useRouter()
 const coleccion = useCollectionStore()
 const mazos = useDeckStore()
 const amigos = useFriendsStore()
+
+/**
+ * La plataforma se pregunta a Capacitor y a nada más, igual que en
+ * `composables/useGoogleAuth.js:25`: ni el `userAgent` ni el ancho de pantalla
+ * valen, porque un móvil con el navegador tampoco tiene los plugins nativos.
+ */
+const esNativo = Capacitor.isNativePlatform()
+
+const destinos = computed(() => DESTINOS.filter((destino) => !destino.soloNativo || esNativo))
+
+/** El número del badge de un destino; 0 en todos menos en Amigos. */
+function pendientesDe(destino) {
+  return destino.contador ? amigos.pendientes : 0
+}
+
+/** El mismo menú para el desplegable, con su `route` y su badge. */
+const itemsDelMenu = computed(() =>
+  destinos.value.map((destino) => ({
+    label: destino.label,
+    icon: destino.icon,
+    route: { name: destino.name },
+    badge: pendientesDe(destino) > 0 ? amigos.pendientes : null
+  }))
+)
+
+const menu = ref(null)
+
+function alternarMenu(evento) {
+  menu.value?.toggle(evento)
+}
 
 const resumen = computed(() => coleccion.resumen)
 const totales = computed(() => coleccion.resumen?.totals ?? {})
@@ -437,6 +533,54 @@ onMounted(() => {
 
 .home__link:hover {
   color: var(--p-primary-color);
+}
+
+/* ---- La navegación recogida (móvil) -------------------------------------- */
+/*
+  Quién se ve lo decide el CSS: los dos bloques están siempre montados y el
+  media query enseña uno u otro. El popup de PrimeVue no pinta nada mientras
+  está cerrado, así que el desplegable no cuesta DOM en escritorio.
+*/
+.home__compacto {
+  display: none;
+  position: relative;
+  margin-left: auto;
+}
+
+.home__badge--boton {
+  position: absolute;
+  top: -0.15rem;
+  right: -0.25rem;
+  pointer-events: none;
+}
+
+.home__menu-etiqueta {
+  margin-left: 0.5rem;
+}
+
+.home__menu .home__badge {
+  margin-left: auto;
+}
+
+@media (max-width: 800px) {
+  .home__nav {
+    display: none;
+  }
+
+  .home__compacto {
+    display: flex;
+    align-items: center;
+  }
+
+  /*
+    La zona de usuario NO se recoge: el avatar, el nombre y «Salir» siguen
+    donde están. Lo único que cambia es que la barra puede repartirse en dos
+    líneas si el nombre es largo, en vez de empujar el botón fuera.
+  */
+  .home__bar {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
 }
 
 .home__badge {

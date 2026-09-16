@@ -11,7 +11,9 @@ use App\Controllers\ImportController;
 use App\Controllers\PingController;
 use App\Controllers\PreconController;
 use App\Controllers\PrivacyController;
+use App\Controllers\ScanController;
 use App\Controllers\UserSearchController;
+use App\Controllers\VisionController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\CsrfMiddleware;
 use App\Middleware\LoggingMiddleware;
@@ -283,6 +285,139 @@ return [
         'middleware' => [
             LoggingMiddleware::class,
             AuthMiddleware::class,
+        ],
+    ],
+
+    // ========================================================================
+    // ESCÁNER DE CÁMARA — una sola acción, y de lectura
+    // ========================================================================
+    // `scan_resolve` es la ÚNICA acción que añade el escáner. Meter la carta en
+    // la colección o en el mazo sigue siendo `collection_add` y `deck_card_add`,
+    // que ya existían: el escáner es una puerta de entrada nueva, no un camino
+    // de escritura nuevo.
+    //
+    // La pila es la de las lecturas —`collection_wished_uuids`, `collection_value`,
+    // `import_preview`—: **sin `CsrfMiddleware`**, porque no escribe una sola
+    // fila y no hay estado que falsificar, y **sin `ValidationMiddleware`**,
+    // porque lo que llega no es un campo obligatorio sino un ARRAY de longitud
+    // arbitraria, y ese middleware solo sabe mirar si un campo está. El acotado
+    // —`ScanController::MAXIMO_LECTURAS`— lo hace el controller, que es lo que
+    // impide que una petición con 10.000 lecturas ate el resolvedor.
+    //
+    // Con `AuthMiddleware` aunque no escriba: lo que devuelve alimenta una
+    // escritura en la colección de quien pregunta, y el `user_id` es además lo
+    // que hace útil el log de esta acción.
+    //
+    // ## EL LÍMITE PROPIO NO ES UN AFLOJE, ES LA ÚNICA FORMA DE QUE EL BUCLE VIVA
+    //
+    // Esta acción **no declaraba el suyo y por eso heredaba el global de 60/min**
+    // que `ActionRouter` le pone a toda ruta que no traiga uno. El escáner no es
+    // una pantalla que pregunta cuando el usuario pulsa: es un bucle de cámara
+    // que da ~2 vueltas por segundo mientras apuntas, así que a los TREINTA
+    // SEGUNDOS empezaba a comer 429. El síntoma en el móvil es «el escáner deja
+    // de reconocer al rato», y quien lo depure mirando esta ruta no habría
+    // encontrado ningún limitador que lo explicara.
+    //
+    // **300 y no subir `RATE_LIMIT_MAX_REQUESTS`:** esa variable gobierna las
+    // otras 38 acciones, escrituras incluidas, y aflojarlas todas para que quepa
+    // un bucle de lectura es pagar en el sitio equivocado. 300/min son cinco
+    // vueltas por segundo, muy por encima de las ~2 medidas.
+    'scan_resolve' => [
+        'controller' => [ScanController::class, 'resolve'],
+        'middleware' => [
+            [RateLimitMiddleware::class, ['limit' => 300, 'window' => 60, 'by' => 'ip']],
+            LoggingMiddleware::class,
+            AuthMiddleware::class,
+        ],
+    ],
+
+    // ========================================================================
+    // ÍNDICE ORB — una lectura y una escritura, y CERO visión en PHP
+    // ========================================================================
+    // Las dos acciones del Plan - Reconocimiento de la Impresión por su Arte.
+    // PHP no ejecuta ni una línea de ORB: el móvil extrae los descriptores con
+    // opencv.js y aquí solo se guardan y se sirven bytes opacos. Es la única
+    // garantía fuerte de que la consulta y la referencia salen del MISMO código
+    // — la lección del dHash, que acabó escrito a mano dos veces y se
+    // desincronizaba 7 bits contra un umbral de 4.
+    //
+    // ## `scan_orb_refs` es lectura, y por eso no lleva Csrf
+    //
+    // Devuelve las referencias ya sembradas de las impresiones de una carta, o
+    // `orb: null` para las que faltan. No escribe una fila: quien siembra es
+    // `vision_orb_store`, aquí abajo. Mismo criterio que `scan_resolve` y que
+    // `import_preview`.
+    //
+    // **Su límite propio son 300/min por el mismo motivo que el de
+    // `scan_resolve`**: va enganchada al bucle de la cámara, que da ~2 vueltas
+    // por segundo, y con el global de 60/min que `ActionRouter` pone a toda ruta
+    // que no declare el suyo empezaría a comer 429 a los treinta segundos. El
+    // síntoma sería «el escáner deja de reconocer al rato» y no se parecería en
+    // nada a la causa.
+    //
+    // Con `AuthMiddleware` aunque no escriba, igual que `scan_resolve`: lo que
+    // devuelve alimenta una escritura en la colección de quien pregunta.
+    'scan_orb_refs' => [
+        'controller' => [VisionController::class, 'orbRefs'],
+        'middleware' => [
+            [RateLimitMiddleware::class, ['limit' => 300, 'window' => 60, 'by' => 'ip']],
+            LoggingMiddleware::class,
+            AuthMiddleware::class,
+        ],
+    ],
+
+    // ## `vision_orb_store` ESCRIBE, y va con Auth **y** Csrf
+    //
+    // Es la primera acción del proyecto en la que un cliente sube un binario que
+    // acaba en una tabla COMPARTIDA del catálogo. Csrf no es una formalidad
+    // aquí: sin él, una página cualquiera podría sembrar el índice visual del
+    // catálogo con la sesión de la víctima. Va después de AuthMiddleware, como
+    // las 23 escrituras que ya existen, porque CsrfMiddleware se salta a sí mismo
+    // mirando el `auth_method` que pone Auth y sin él el cliente Capacitor
+    // —que no tiene cookie— comería 403 en cada siembra.
+    //
+    // ## EL LÍMITE PROPIO, 300/min, LO TRAJO EL MODO BINDER (M4, 2026-09-16)
+    //
+    // Esta acción nació **sin límite propio y heredando el global de 60/min**,
+    // con este razonamiento escrito: la siembra va fuera del camino de la
+    // respuesta, así que un 429 aquí no rompe nada — retrasa que esa impresión se
+    // vuelva rápida y la siguiente vuelta lo reintenta. Con el escáner de UNA
+    // carta era cierto.
+    //
+    // **Con el modo binder deja de serlo, y quedó anotado en el Log del plan el
+    // 2026-09-15 antes de que mordiera.** Una página de nueve bolsillos son
+    // ~28 siembras de golpe —3,15 impresiones de media por carta, medido— así
+    // que una sola página cabe en 60/min pero **dos seguidas no**. Y el fallo no
+    // se parece a su causa: las cartas de la segunda página se quedan sin
+    // certificar por `art` y el síntoma en pantalla es «la detección de
+    // rectángulos ha fallado».
+    //
+    // **300 y por el mismo criterio que `scan_resolve` y `scan_orb_refs`**, que
+    // es el precedente: el límite lo declara la acción que un bucle o un disparo
+    // llama en ráfaga, en vez de aflojar `RATE_LIMIT_MAX_REQUESTS` para las
+    // otras 40 acciones. Son 300 siembras por minuto = **diez páginas de binder
+    // seguidas**, muy por encima de lo que un humano fotografía.
+    //
+    // La otra mitad de la respuesta es del cliente y está en
+    // `stores/scan.js::sembrarLasQueFaltan()`: una cola global que encadena
+    // todas las siembras de la sesión, para que los 28 POST salgan repartidos en
+    // vez de en un pico de nueve cadenas paralelas. Hacen falta las dos —subir
+    // solo el límite dejaría al móvil subiendo nueve ficheros a la vez por la
+    // misma antena; espaciar solo en el cliente seguiría pasando de 60 con dos
+    // páginas—.
+    //
+    // **Sin ValidationMiddleware**, y no por descuido: ese middleware solo sabe
+    // mirar si un campo está, y aquí lo que hay que validar es que el bloque
+    // mida EXACTAMENTE `keypoints * 40` bytes con `0 < keypoints <= nfeatures`.
+    // Esa comprobación es la contención contra el envenenamiento del índice y
+    // vive en el controller, que es quien puede hacerla.
+    'vision_orb_store' => [
+        'controller' => [VisionController::class, 'orbStore'],
+        'middleware' => [
+            [RateLimitMiddleware::class, ['limit' => 300, 'window' => 60, 'by' => 'ip']],
+            LoggingMiddleware::class,
+            AuthMiddleware::class,
+            CsrfMiddleware::class,
         ],
     ],
 

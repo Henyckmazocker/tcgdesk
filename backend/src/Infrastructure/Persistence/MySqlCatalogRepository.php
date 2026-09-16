@@ -61,6 +61,89 @@ class MySqlCatalogRepository implements CatalogRepositoryInterface
         return $this->upsert('mtg_legality', $filas, ['oracle_id', 'format']);
     }
 
+    public function escribirIdsLocalizados(array $filas): int
+    {
+        if ($filas === []) {
+            return 0;
+        }
+
+        $enviadas = 0;
+
+        foreach (array_chunk($filas, self::TAMANO_LOTE) as $lote) {
+            // Un `CASE columna WHEN ?` no vale sobre una PK compuesta: hay que
+            // casar las DOS columnas a la vez o una impresión con diez idiomas
+            // se llevaría el id del primero en los diez. Es el mismo motivo por
+            // el que `escribirClavesLocalizadas()` se fue a un ODKU; aquí no
+            // puede irse ahí, porque insertar filas que no existen es justo lo
+            // que este backfill no puede hacer (ver la interfaz), así que el
+            // `CASE` va **buscado**, con las dos columnas en cada `WHEN`.
+            //
+            // Todos los marcadores son POSICIONALES: cada par (uuid, idioma)
+            // aparece dos veces —en el CASE y en el WHERE— y con
+            // ATTR_EMULATE_PREPARES = false reutilizar un marcador NOMBRADO da
+            // SQLSTATE[HY093].
+            $casos  = str_repeat('WHEN printing_uuid = ? AND language = ? THEN ? ', count($lote));
+            $tuplas = implode(', ', array_fill(0, count($lote), '(?, ?)'));
+
+            $valores = [];
+            foreach ($lote as $fila) {
+                $valores[] = $fila['printingUuid'];
+                $valores[] = $fila['language'];
+                $valores[] = $fila['scryfallId'];
+            }
+            foreach ($lote as $fila) {
+                $valores[] = $fila['printingUuid'];
+                $valores[] = $fila['language'];
+            }
+
+            $stmt = $this->db->prepare(
+                'UPDATE mtg_printing_localized
+                    SET scryfall_id = CASE ' . $casos . 'ELSE scryfall_id END
+                  WHERE (printing_uuid, language) IN (' . $tuplas . ')'
+            );
+            $stmt->execute($valores);
+
+            $enviadas += count($lote);
+        }
+
+        return $enviadas;
+    }
+
+    public function contarLocalizadosSinId(array $claves): int
+    {
+        if ($claves === []) {
+            return 0;
+        }
+
+        $pendientes = 0;
+
+        foreach (array_chunk($claves, self::TAMANO_LOTE) as $lote) {
+            $tuplas = implode(', ', array_fill(0, count($lote), '(?, ?)'));
+
+            $valores = [];
+            foreach ($lote as $clave) {
+                $valores[] = $clave['printingUuid'];
+                $valores[] = $clave['language'];
+            }
+
+            // La comparación por tuplas es la que usa el índice de la PK. Las
+            // claves que no existan en la tabla simplemente no cuentan: una
+            // traducción que MTGJSON publica y que nuestro catálogo no tiene
+            // ingerida no es una fila sin id, es una fila que no está.
+            $stmt = $this->db->prepare(
+                'SELECT COUNT(*)
+                   FROM mtg_printing_localized
+                  WHERE (printing_uuid, language) IN (' . $tuplas . ')
+                    AND scryfall_id IS NULL'
+            );
+            $stmt->execute($valores);
+
+            $pendientes += (int) $stmt->fetchColumn();
+        }
+
+        return $pendientes;
+    }
+
     public function refrescarFormatos(): int
     {
         // `REPLACE INTO` y no `TRUNCATE` + `INSERT`: el `TRUNCATE` deja la tabla

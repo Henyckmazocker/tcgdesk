@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import { createTestingPinia } from '@pinia/testing'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
@@ -141,4 +142,136 @@ export async function montarVista(Componente, opciones = {}) {
   })
 
   return { wrapper, router, pinia, errores }
+}
+
+/* ── Gestos de puntero sobre `CardImage` ──────────────────────────────────── */
+
+/**
+ * Los dos retardos que `CardImage.vue` espera antes de ampliar: 450 ms con el
+ * dedo (`RETARDO_PULSACION`) y 350 ms con el ratón (`RETARDO_HOVER`). Se repiten
+ * aquí a propósito: el componente no los exporta y un test que los importara del
+ * SFC estaría afirmando el valor contra sí mismo.
+ */
+export const RETARDO_PULSACION = 450
+export const RETARDO_HOVER = 350
+
+/**
+ * **Los `PointerEvent` se disparan con `dispatchEvent` y NO con el `trigger()` de
+ * `@vue/test-utils`**, y no es una manía: `trigger` asigna las propiedades extra
+ * DESPUÉS de construir el evento, y en jsdom 30 `clientX` y `clientY` son
+ * captadores de solo lectura heredados de `MouseEvent.prototype`, así que la
+ * asignación **lanza** (`Cannot set property clientX`). Por el constructor entran
+ * sin problema. `CardImage` escucha con `addEventListener` sobre su raíz, así que
+ * un evento nativo le llega igual.
+ */
+function dispararPuntero(elemento, tipo, extra = {}) {
+  return elemento.dispatchEvent(
+    new PointerEvent(tipo, {
+      bubbles: true,
+      cancelable: true,
+      clientX: 0,
+      clientY: 0,
+      ...extra
+    })
+  )
+}
+
+/** El nodo real detrás de un `DOMWrapper` de VTU, o el nodo tal cual. */
+const nodoDe = (objetivo) => objetivo.element ?? objetivo
+
+/**
+ * Una pulsación larga en táctil sobre `objetivo`, entera: `pointerdown` con
+ * `pointerType: 'touch'`, el reloj adelantado hasta pasar los 450 ms y
+ * `pointerup`. Con `arrastre` en píxeles, mete un `pointermove` a mitad del
+ * camino — que es como se prueba el aborto por scroll.
+ *
+ * Los temporizadores falsos se encienden y se apagan aquí dentro: fuera de este
+ * helper hacen falta los de verdad, porque el `flushPromises` de VTU espera a un
+ * `setTimeout` y con el reloj congelado no vuelve nunca.
+ *
+ * Con `soltar: false` el gesto se queda **vivo**, sin el `pointerup` final, y lo
+ * que se devuelve es la función que lo suelta. Es la única forma de mirar la
+ * ampliación mientras está abierta: soltar el dedo la cierra, así que un test que
+ * solo mire el final no distingue «se abrió y se cerró» de «no se abrió nunca».
+ *
+ * @param {object|Element} objetivo  Un `DOMWrapper` de VTU o un nodo del DOM.
+ * @param {object} [opciones]
+ * @param {number} [opciones.arrastre=0]  Píxeles que se desplaza el dedo.
+ * @param {boolean} [opciones.soltar=true]  `false` deja el dedo abajo.
+ * @returns {Promise<Function|undefined>} Con `soltar: false`, la función que
+ *   dispara el `pointerup` pendiente.
+ */
+export async function pulsacionLarga(objetivo, { arrastre = 0, soltar = true } = {}) {
+  const elemento = nodoDe(objetivo)
+
+  const disparar = (tipo, extra = {}) =>
+    dispararPuntero(elemento, tipo, { pointerType: 'touch', ...extra })
+
+  vi.useFakeTimers()
+
+  try {
+    disparar('pointerdown')
+
+    if (arrastre) {
+      vi.advanceTimersByTime(RETARDO_PULSACION / 2)
+      disparar('pointermove', { clientX: arrastre })
+    }
+
+    vi.advanceTimersByTime(RETARDO_PULSACION)
+  } finally {
+    vi.useRealTimers()
+  }
+
+  await nextTick()
+
+  const soltarDedo = async () => {
+    disparar('pointerup')
+    await nextTick()
+  }
+
+  if (!soltar) {
+    return soltarDedo
+  }
+
+  await soltarDedo()
+}
+
+/**
+ * El hermano del anterior para el ratón: el `pointerenter` con
+ * `pointerType: 'mouse'` —el único que `CardImage.vue` atiende en
+ * `alEntrarPuntero()`— y el reloj adelantado `espera` ms, 350 por defecto. Lo que
+ * devuelve es la función que saca el cursor (`pointerleave`), que es lo que
+ * cierra la ampliación.
+ *
+ * Vale lo dicho arriba sobre `dispatchEvent`, y una cosa más: `pointerenter` y
+ * `pointerleave` **no burbujean** —tampoco en un navegador—, así que el objetivo
+ * tiene que ser la **raíz** del componente (`.carta-img`), que es donde
+ * `onMounted` registró los listeners, y no el `<img>` de dentro.
+ *
+ * @param {object|Element} objetivo  La raíz `.carta-img`, no la imagen.
+ * @param {object} [opciones]
+ * @param {number} [opciones.espera=RETARDO_HOVER]  ms que el cursor se queda.
+ * @returns {Promise<Function>} La función que dispara el `pointerleave`.
+ */
+export async function hoverDeRaton(objetivo, { espera = RETARDO_HOVER } = {}) {
+  const elemento = nodoDe(objetivo)
+
+  const disparar = (tipo) =>
+    dispararPuntero(elemento, tipo, { bubbles: false, pointerType: 'mouse' })
+
+  vi.useFakeTimers()
+
+  try {
+    disparar('pointerenter')
+    vi.advanceTimersByTime(espera)
+  } finally {
+    vi.useRealTimers()
+  }
+
+  await nextTick()
+
+  return async () => {
+    disparar('pointerleave')
+    await nextTick()
+  }
 }

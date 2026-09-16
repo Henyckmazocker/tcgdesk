@@ -36,6 +36,15 @@ export default defineConfig({
     // cuenta también las llamadas del test anterior del mismo fichero.
     clearMocks: true,
 
+    // Sin esto, el pool por defecto (`forks`) abre un worker por núcleo: en
+    // esta máquina de 16 son 16 procesos al 100 % y un load average por encima
+    // de 17, que deja el equipo inservible mientras corre la suite. Con 4 el
+    // paralelismo sigue compensando y quedan núcleos libres para trabajar.
+    //
+    // Es `maxWorkers` y no `poolOptions.forks.maxForks`: esa opción se eliminó
+    // en Vitest 5 y se ignora en silencio si se deja puesta.
+    maxWorkers: 4,
+
     coverage: {
       // `v8` y no `istanbul`: no necesita instrumentar el código en el build.
       // Se eligió cuando el bundler de producción era Vue CLI; desde que es Vite

@@ -5,14 +5,25 @@ FROM php:8.2-apache
 WORKDIR /var/www/html
 
 # Install system dependencies required for pdo_mysql, xdebug, and other common extensions
+#
+# gd entra SOLO como DECODIFICADOR de JPEG/PNG para el índice visual del catálogo
+# (`Domain/Vision/PerceptualHash`): `imagecreatefromstring()` y nada más. NINGUNA
+# función de GD toca el tamaño de una imagen — la reducción a 9x8 es aritmética a
+# mano en PHP y en JS, y tiene que dar el mismo entero en los dos. Medido el
+# 2026-09-15: cambiar solo el algoritmo de reescalado mueve el hash de la MISMA
+# imagen 7 bits (BILINEAR) y 31 (NEAREST) contra un umbral de decisión de 4. Un
+# `imagescale()` colado aquí rompe el índice entero en silencio.
 RUN apt-get update && apt-get install -y \
     libzip-dev \
+    libjpeg-dev \
+    libpng-dev \
     zip \
     nano \
     git \
     curl \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql zip \
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql zip gd \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
 

@@ -11,20 +11,32 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 /**
- * Índice de nombres de mentira, en memoria y paginado por `oracle_id` igual que
- * el de verdad.
+ * Índice de nombres de mentira, en memoria y paginado igual que el de verdad:
+ * por `oracle_id` las cartas, y por la PK compuesta `(printing_uuid, language)`
+ * los nombres localizados.
  *
  * Lo que hace falta reproducir es el bucle: el comando pide lotes hasta que uno
  * viene vacío, y si la paginación no avanza el bucle no termina nunca sobre las
- * 34.992 filas reales.
+ * 34.992 filas reales —ni sobre las 410.604 de la tabla localizada—.
  */
 class IndiceDeNombresFalso implements CardNameIndexRepositoryInterface
 {
     /** @var array<string, array{name: string, clave: string|null}> oracle_id → carta */
     public array $cartas = [];
 
+    /**
+     * Nombres localizados, indexados por 'uuid|idioma' para que el orden de
+     * iteración sea el mismo que el `ORDER BY printing_uuid, language` real.
+     *
+     * @var array<string, array{printingUuid: string, language: string, name: string, clave: string|null}>
+     */
+    public array $localizados = [];
+
     /** @var list<int> Tamaño de cada lote servido, para ver que se pagina */
     public array $lotesServidos = [];
+
+    /** @var list<int> Lo mismo, para los localizados */
+    public array $lotesLocalizadosServidos = [];
 
     /** @param array<string, string> $nombresPorOracleId */
     public function __construct(array $nombresPorOracleId)
@@ -34,6 +46,23 @@ class IndiceDeNombresFalso implements CardNameIndexRepositoryInterface
         }
 
         ksort($this->cartas);
+    }
+
+    /** @param list<array{printingUuid: string, language: string, name: string}> $filas */
+    public function conLocalizados(array $filas): self
+    {
+        foreach ($filas as $fila) {
+            $this->localizados[$fila['printingUuid'] . '|' . $fila['language']] = [
+                'printingUuid' => $fila['printingUuid'],
+                'language'     => $fila['language'],
+                'name'         => $fila['name'],
+                'clave'        => null,
+            ];
+        }
+
+        ksort($this->localizados);
+
+        return $this;
     }
 
     public function contarSinNormalizar(): int
@@ -72,6 +101,55 @@ class IndiceDeNombresFalso implements CardNameIndexRepositoryInterface
         }
 
         return count($porOracleId);
+    }
+
+    public function contarLocalizadosSinNormalizar(): int
+    {
+        return count(array_filter($this->localizados, static fn (array $l): bool => $l['clave'] === null));
+    }
+
+    public function loteLocalizadoPorNormalizar(
+        string $desdeUuid,
+        string $desdeIdioma,
+        int $limite,
+        bool $todas
+    ): array {
+        $lote   = [];
+        $cursor = $desdeUuid . '|' . $desdeIdioma;
+
+        foreach ($this->localizados as $clave => $fila) {
+            // La comparación de tuplas del repositorio real, con la misma forma:
+            // 'uuid|idioma' ordena igual que `(printing_uuid, language)`.
+            if ($cursor !== '|' && $clave <= $cursor) {
+                continue;
+            }
+            if (!$todas && $fila['clave'] !== null) {
+                continue;
+            }
+
+            $lote[] = [
+                'printingUuid' => $fila['printingUuid'],
+                'language'     => $fila['language'],
+                'name'         => $fila['name'],
+            ];
+
+            if (count($lote) >= $limite) {
+                break;
+            }
+        }
+
+        $this->lotesLocalizadosServidos[] = count($lote);
+
+        return $lote;
+    }
+
+    public function escribirClavesLocalizadas(array $filas): int
+    {
+        foreach ($filas as $fila) {
+            $this->localizados[$fila['printingUuid'] . '|' . $fila['language']]['clave'] = $fila['clave'];
+        }
+
+        return count($filas);
     }
 }
 

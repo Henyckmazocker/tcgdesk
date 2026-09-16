@@ -1,0 +1,1732 @@
+{
+  "_procedencia": "Ver `tests/fixtures/README.md`, sección «La fixture que no sale de curl». Sesión del 2026-09-14/15 en un Realme RMX1993 (arm64-v8a, Android 11) con la vista /scan del APK de debug: captureSample({quality: 85}) → JPEG en cache/scan/ → TextRecognition.processImage({path, script: LATIN}). 250 vueltas del bucle, 56 lecturas con texto, 67 vacías, 0 crashes, 3 cartas.",
+  "_truncado": "logcat corta cada mensaje en 4023 caracteres. El campo `text` va primero en el JSON y sobrevivió ENTERO en las 56 lecturas; el array `blocks` —con sus boundingBox y cornerPoints— solo sobrevivió en las lecturas cortas. Por eso cada entrada trae siempre `text` y `lineas` (verbatim) y solo a veces `blocks`.",
+  "_prohibido": "NADA de aquí se escribe ni se corrige a mano, erratas del OCR incluidas. Si una fixture se queda corta, se vuelve a capturar con el móvil.",
+  "lecturas": [
+    {
+      "id": "tom_bombadil_numero_ilegible",
+      "carta": "Tom Bombadil — LTR, marco M15, inglés",
+      "nota": "Tercera carta de la sesión. La línea de edición·idioma se lee perfecta (`LTR EN MARKO MANEV`) pero el número sale como `MO331`: hay edición e idioma y NO hay par (set, número).",
+      "vuelta": 14,
+      "hora": "09-15 08:32:03.990",
+      "truncadoEnLogcat": true,
+      "text": "Tom Bombadil\nchosz\nLegendary Creature- God Bard\nAs long as there are four or more lore counters\namong Sagas you control, Tom Bombadil has\nhexproof and indestructible.\nWhenever the final chapter ability of a Saga you\ncontrol resolves, reveal cards from the top of\nyour library until you reveal a Saga card. Put\nthat card onto the battlefield and the rest on the\nbottom of your library in a random order. This\nability triggers only once each turn.\nMO331\nLTR EN MARKO MANEV\nOMEE\n4/4\nM & C 2023 Wizards of the Coast\nPlanetary\nOuter",
+      "lineas": [
+        "Tom Bombadil",
+        "chosz",
+        "Legendary Creature- God Bard",
+        "As long as there are four or more lore counters",
+        "among Sagas you control, Tom Bombadil has",
+        "hexproof and indestructible.",
+        "Whenever the final chapter ability of a Saga you",
+        "control resolves, reveal cards from the top of",
+        "your library until you reveal a Saga card. Put",
+        "that card onto the battlefield and the rest on the",
+        "bottom of your library in a random order. This",
+        "ability triggers only once each turn.",
+        "MO331",
+        "LTR EN MARKO MANEV",
+        "OMEE",
+        "4/4",
+        "M & C 2023 Wizards of the Coast",
+        "Planetary",
+        "Outer"
+      ]
+    },
+    {
+      "id": "llanura_degradada_tlanura",
+      "carta": "Llanura (Plains) — 7ª/8ª edición española, ~2002",
+      "nota": "Otra degradación: `Tlanura` / `Tier` / `Ilst Rob Alexander`.",
+      "vuelta": 16,
+      "hora": "09-15 08:32:20.154",
+      "truncadoEnLogcat": false,
+      "text": "Tlanura\nTier\nIlst Rob Alexander\nary\nJte",
+      "lineas": [
+        "Tlanura",
+        "Tier",
+        "Ilst Rob Alexander",
+        "ary",
+        "Jte"
+      ],
+      "blocks": [
+        {
+          "text": "Tlanura",
+          "boundingBox": {
+            "left": 42,
+            "top": 497,
+            "right": 199,
+            "bottom": 546
+          },
+          "cornerPoints": [
+            {
+              "x": 45,
+              "y": 497
+            },
+            {
+              "x": 199,
+              "y": 504
+            },
+            {
+              "x": 196,
+              "y": 546
+            },
+            {
+              "x": 42,
+              "y": 539
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Tlanura",
+              "boundingBox": {
+                "left": 42,
+                "top": 497,
+                "right": 199,
+                "bottom": 546
+              },
+              "cornerPoints": [
+                {
+                  "x": 45,
+                  "y": 497
+                },
+                {
+                  "x": 199,
+                  "y": 504
+                },
+                {
+                  "x": 196,
+                  "y": 546
+                },
+                {
+                  "x": 42,
+                  "y": 539
+                }
+              ],
+              "recognizedLanguage": "en",
+              "elements": [
+                {
+                  "text": "Tlanura",
+                  "boundingBox": {
+                    "left": 42,
+                    "top": 497,
+                    "right": 199,
+                    "bottom": 546
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 45,
+                      "y": 497
+                    },
+                    {
+                      "x": 199,
+                      "y": 504
+                    },
+                    {
+                      "x": 196,
+                      "y": 546
+                    },
+                    {
+                      "x": 42,
+                      "y": 539
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Tier",
+          "boundingBox": {
+            "left": 37,
+            "top": 1116,
+            "right": 148,
+            "bottom": 1153
+          },
+          "cornerPoints": [
+            {
+              "x": 39,
+              "y": 1116
+            },
+            {
+              "x": 148,
+              "y": 1119
+            },
+            {
+              "x": 146,
+              "y": 1153
+            },
+            {
+              "x": 37,
+              "y": 1150
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Tier",
+              "boundingBox": {
+                "left": 37,
+                "top": 1116,
+                "right": 148,
+                "bottom": 1153
+              },
+              "cornerPoints": [
+                {
+                  "x": 39,
+                  "y": 1116
+                },
+                {
+                  "x": 148,
+                  "y": 1119
+                },
+                {
+                  "x": 146,
+                  "y": 1153
+                },
+                {
+                  "x": 37,
+                  "y": 1150
+                }
+              ],
+              "recognizedLanguage": "und-Latn",
+              "elements": [
+                {
+                  "text": "Tier",
+                  "boundingBox": {
+                    "left": 37,
+                    "top": 1116,
+                    "right": 148,
+                    "bottom": 1153
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 39,
+                      "y": 1116
+                    },
+                    {
+                      "x": 148,
+                      "y": 1119
+                    },
+                    {
+                      "x": 146,
+                      "y": 1153
+                    },
+                    {
+                      "x": 37,
+                      "y": 1150
+                    }
+                  ],
+                  "recognizedLanguage": "und-Latn"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Ilst Rob Alexander",
+          "boundingBox": {
+            "left": 226,
+            "top": 1535,
+            "right": 530,
+            "bottom": 1566
+          },
+          "cornerPoints": [
+            {
+              "x": 226,
+              "y": 1535
+            },
+            {
+              "x": 530,
+              "y": 1535
+            },
+            {
+              "x": 530,
+              "y": 1566
+            },
+            {
+              "x": 226,
+              "y": 1566
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Ilst Rob Alexander",
+              "boundingBox": {
+                "left": 226,
+                "top": 1535,
+                "right": 530,
+                "bottom": 1566
+              },
+              "cornerPoints": [
+                {
+                  "x": 226,
+                  "y": 1535
+                },
+                {
+                  "x": 530,
+                  "y": 1535
+                },
+                {
+                  "x": 530,
+                  "y": 1566
+                },
+                {
+                  "x": 226,
+                  "y": 1566
+                }
+              ],
+              "recognizedLanguage": "nl",
+              "elements": [
+                {
+                  "text": "Ilst",
+                  "boundingBox": {
+                    "left": 226,
+                    "top": 1535,
+                    "right": 288,
+                    "bottom": 1566
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 226,
+                      "y": 1535
+                    },
+                    {
+                      "x": 288,
+                      "y": 1535
+                    },
+                    {
+                      "x": 288,
+                      "y": 1566
+                    },
+                    {
+                      "x": 226,
+                      "y": 1566
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                },
+                {
+                  "text": "Rob",
+                  "boundingBox": {
+                    "left": 314,
+                    "top": 1535,
+                    "right": 372,
+                    "bottom": 1566
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 314,
+                      "y": 1535
+                    },
+                    {
+                      "x": 372,
+                      "y": 1535
+                    },
+                    {
+                      "x": 372,
+                      "y": 1566
+                    },
+                    {
+                      "x": 314,
+                      "y": 1566
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                },
+                {
+                  "text": "Alexander",
+                  "boundingBox": {
+                    "left": 385,
+                    "top": 1535,
+                    "right": 530,
+                    "bottom": 1566
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 385,
+                      "y": 1535
+                    },
+                    {
+                      "x": 530,
+                      "y": 1535
+                    },
+                    {
+                      "x": 530,
+                      "y": 1566
+                    },
+                    {
+                      "x": 385,
+                      "y": 1566
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "ary",
+          "boundingBox": {
+            "left": 846,
+            "top": 1345,
+            "right": 1028,
+            "bottom": 1458
+          },
+          "cornerPoints": [
+            {
+              "x": 846,
+              "y": 1350
+            },
+            {
+              "x": 1026,
+              "y": 1345
+            },
+            {
+              "x": 1028,
+              "y": 1453
+            },
+            {
+              "x": 848,
+              "y": 1458
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "ary",
+              "boundingBox": {
+                "left": 846,
+                "top": 1345,
+                "right": 1028,
+                "bottom": 1458
+              },
+              "cornerPoints": [
+                {
+                  "x": 846,
+                  "y": 1350
+                },
+                {
+                  "x": 1026,
+                  "y": 1345
+                },
+                {
+                  "x": 1028,
+                  "y": 1453
+                },
+                {
+                  "x": 848,
+                  "y": 1458
+                }
+              ],
+              "recognizedLanguage": "und-Latn",
+              "elements": [
+                {
+                  "text": "ary",
+                  "boundingBox": {
+                    "left": 846,
+                    "top": 1345,
+                    "right": 1028,
+                    "bottom": 1458
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 846,
+                      "y": 1350
+                    },
+                    {
+                      "x": 1026,
+                      "y": 1345
+                    },
+                    {
+                      "x": 1028,
+                      "y": 1453
+                    },
+                    {
+                      "x": 848,
+                      "y": 1458
+                    }
+                  ],
+                  "recognizedLanguage": "und-Latn"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Jte",
+          "boundingBox": {
+            "left": 741,
+            "top": 1508,
+            "right": 1053,
+            "bottom": 1719
+          },
+          "cornerPoints": [
+            {
+              "x": 741,
+              "y": 1516
+            },
+            {
+              "x": 1048,
+              "y": 1508
+            },
+            {
+              "x": 1053,
+              "y": 1711
+            },
+            {
+              "x": 746,
+              "y": 1719
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Jte",
+              "boundingBox": {
+                "left": 741,
+                "top": 1508,
+                "right": 1053,
+                "bottom": 1719
+              },
+              "cornerPoints": [
+                {
+                  "x": 741,
+                  "y": 1516
+                },
+                {
+                  "x": 1048,
+                  "y": 1508
+                },
+                {
+                  "x": 1053,
+                  "y": 1711
+                },
+                {
+                  "x": 746,
+                  "y": 1719
+                }
+              ],
+              "recognizedLanguage": "und-Latn",
+              "elements": [
+                {
+                  "text": "Jte",
+                  "boundingBox": {
+                    "left": 741,
+                    "top": 1508,
+                    "right": 1053,
+                    "bottom": 1719
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 741,
+                      "y": 1516
+                    },
+                    {
+                      "x": 1048,
+                      "y": 1508
+                    },
+                    {
+                      "x": 1053,
+                      "y": 1711
+                    },
+                    {
+                      "x": 746,
+                      "y": 1719
+                    }
+                  ],
+                  "recognizedLanguage": "und-Latn"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llanura_ilust_sin_punto",
+      "carta": "Llanura (Plains) — 7ª/8ª edición española, ~2002",
+      "nota": "La misma carta con `Ilust Rob Alexander` sin punto, y la línea de copyright entera con su `331350`, que tiene forma de número de coleccionista y no lo es.",
+      "vuelta": 22,
+      "hora": "09-15 08:32:24.302",
+      "truncadoEnLogcat": true,
+      "text": "Llanura\nTierra\nIlust Rob Alexander\nTH & O 1993-2002 Wizards of the Coast, Inc 331350\nar\nte",
+      "lineas": [
+        "Llanura",
+        "Tierra",
+        "Ilust Rob Alexander",
+        "TH & O 1993-2002 Wizards of the Coast, Inc 331350",
+        "ar",
+        "te"
+      ]
+    },
+    {
+      "id": "llanura_ilust_con_punto",
+      "carta": "Llanura (Plains) — 7ª/8ª edición española, ~2002",
+      "nota": "LA LECTURA DEL BUG. `Ilust. Rob Alexander` con el punto de la abreviatura: con la regex del plan daba set=«Ilust» idioma=«Rob», y el idioma aparecía y desaparecía en pantalla según el OCR leyera `Ilust.` o `Ilust`.",
+      "vuelta": 33,
+      "hora": "09-15 08:32:30.775",
+      "truncadoEnLogcat": false,
+      "text": "Llanura\nTierra\nIlust. Rob Alexander\nTW&19-2002Wiards of the Cost, Inc 3s0",
+      "lineas": [
+        "Llanura",
+        "Tierra",
+        "Ilust. Rob Alexander",
+        "TW&19-2002Wiards of the Cost, Inc 3s0"
+      ],
+      "blocks": [
+        {
+          "text": "Llanura",
+          "boundingBox": {
+            "left": 264,
+            "top": 353,
+            "right": 402,
+            "bottom": 390
+          },
+          "cornerPoints": [
+            {
+              "x": 266,
+              "y": 353
+            },
+            {
+              "x": 402,
+              "y": 357
+            },
+            {
+              "x": 400,
+              "y": 390
+            },
+            {
+              "x": 264,
+              "y": 386
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Llanura",
+              "boundingBox": {
+                "left": 264,
+                "top": 353,
+                "right": 402,
+                "bottom": 390
+              },
+              "cornerPoints": [
+                {
+                  "x": 266,
+                  "y": 353
+                },
+                {
+                  "x": 402,
+                  "y": 357
+                },
+                {
+                  "x": 400,
+                  "y": 390
+                },
+                {
+                  "x": 264,
+                  "y": 386
+                }
+              ],
+              "recognizedLanguage": "es",
+              "elements": [
+                {
+                  "text": "Llanura",
+                  "boundingBox": {
+                    "left": 264,
+                    "top": 353,
+                    "right": 402,
+                    "bottom": 390
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 266,
+                      "y": 353
+                    },
+                    {
+                      "x": 402,
+                      "y": 357
+                    },
+                    {
+                      "x": 400,
+                      "y": 390
+                    },
+                    {
+                      "x": 264,
+                      "y": 386
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Tierra",
+          "boundingBox": {
+            "left": 270,
+            "top": 916,
+            "right": 371,
+            "bottom": 952
+          },
+          "cornerPoints": [
+            {
+              "x": 272,
+              "y": 916
+            },
+            {
+              "x": 371,
+              "y": 921
+            },
+            {
+              "x": 369,
+              "y": 952
+            },
+            {
+              "x": 270,
+              "y": 947
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Tierra",
+              "boundingBox": {
+                "left": 270,
+                "top": 916,
+                "right": 371,
+                "bottom": 952
+              },
+              "cornerPoints": [
+                {
+                  "x": 272,
+                  "y": 916
+                },
+                {
+                  "x": 371,
+                  "y": 921
+                },
+                {
+                  "x": 369,
+                  "y": 952
+                },
+                {
+                  "x": 270,
+                  "y": 947
+                }
+              ],
+              "recognizedLanguage": "es",
+              "elements": [
+                {
+                  "text": "Tierra",
+                  "boundingBox": {
+                    "left": 270,
+                    "top": 916,
+                    "right": 371,
+                    "bottom": 952
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 272,
+                      "y": 916
+                    },
+                    {
+                      "x": 371,
+                      "y": 921
+                    },
+                    {
+                      "x": 369,
+                      "y": 952
+                    },
+                    {
+                      "x": 270,
+                      "y": 947
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Ilust. Rob Alexander\nTW&19-2002Wiards of the Cost, Inc 3s0",
+          "boundingBox": {
+            "left": 372,
+            "top": 1285,
+            "right": 797,
+            "bottom": 1342
+          },
+          "cornerPoints": [
+            {
+              "x": 372,
+              "y": 1289
+            },
+            {
+              "x": 797,
+              "y": 1285
+            },
+            {
+              "x": 797,
+              "y": 1338
+            },
+            {
+              "x": 372,
+              "y": 1342
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Ilust. Rob Alexander",
+              "boundingBox": {
+                "left": 446,
+                "top": 1288,
+                "right": 726,
+                "bottom": 1314
+              },
+              "cornerPoints": [
+                {
+                  "x": 446,
+                  "y": 1288
+                },
+                {
+                  "x": 726,
+                  "y": 1288
+                },
+                {
+                  "x": 726,
+                  "y": 1314
+                },
+                {
+                  "x": 446,
+                  "y": 1314
+                }
+              ],
+              "recognizedLanguage": "nl",
+              "elements": [
+                {
+                  "text": "Ilust.",
+                  "boundingBox": {
+                    "left": 446,
+                    "top": 1288,
+                    "right": 512,
+                    "bottom": 1314
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 446,
+                      "y": 1288
+                    },
+                    {
+                      "x": 512,
+                      "y": 1288
+                    },
+                    {
+                      "x": 512,
+                      "y": 1314
+                    },
+                    {
+                      "x": 446,
+                      "y": 1314
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                },
+                {
+                  "text": "Rob",
+                  "boundingBox": {
+                    "left": 524,
+                    "top": 1288,
+                    "right": 579,
+                    "bottom": 1314
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 524,
+                      "y": 1288
+                    },
+                    {
+                      "x": 579,
+                      "y": 1288
+                    },
+                    {
+                      "x": 579,
+                      "y": 1314
+                    },
+                    {
+                      "x": 524,
+                      "y": 1314
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                },
+                {
+                  "text": "Alexander",
+                  "boundingBox": {
+                    "left": 588,
+                    "top": 1288,
+                    "right": 726,
+                    "bottom": 1314
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 588,
+                      "y": 1288
+                    },
+                    {
+                      "x": 726,
+                      "y": 1288
+                    },
+                    {
+                      "x": 726,
+                      "y": 1314
+                    },
+                    {
+                      "x": 588,
+                      "y": 1314
+                    }
+                  ],
+                  "recognizedLanguage": "nl"
+                }
+              ]
+            },
+            {
+              "text": "TW&19-2002Wiards of the Cost, Inc 3s0",
+              "boundingBox": {
+                "left": 372,
+                "top": 1311,
+                "right": 797,
+                "bottom": 1342
+              },
+              "cornerPoints": [
+                {
+                  "x": 372,
+                  "y": 1318
+                },
+                {
+                  "x": 797,
+                  "y": 1311
+                },
+                {
+                  "x": 797,
+                  "y": 1335
+                },
+                {
+                  "x": 372,
+                  "y": 1342
+                }
+              ],
+              "recognizedLanguage": "en",
+              "elements": [
+                {
+                  "text": "TW&19-2002Wiards",
+                  "boundingBox": {
+                    "left": 372,
+                    "top": 1314,
+                    "right": 586,
+                    "bottom": 1342
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 372,
+                      "y": 1318
+                    },
+                    {
+                      "x": 586,
+                      "y": 1314
+                    },
+                    {
+                      "x": 586,
+                      "y": 1338
+                    },
+                    {
+                      "x": 372,
+                      "y": 1342
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                },
+                {
+                  "text": "of",
+                  "boundingBox": {
+                    "left": 592,
+                    "top": 1314,
+                    "right": 608,
+                    "bottom": 1338
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 592,
+                      "y": 1315
+                    },
+                    {
+                      "x": 608,
+                      "y": 1314
+                    },
+                    {
+                      "x": 608,
+                      "y": 1337
+                    },
+                    {
+                      "x": 592,
+                      "y": 1338
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                },
+                {
+                  "text": "the",
+                  "boundingBox": {
+                    "left": 615,
+                    "top": 1314,
+                    "right": 639,
+                    "bottom": 1338
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 615,
+                      "y": 1315
+                    },
+                    {
+                      "x": 639,
+                      "y": 1314
+                    },
+                    {
+                      "x": 639,
+                      "y": 1337
+                    },
+                    {
+                      "x": 615,
+                      "y": 1338
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                },
+                {
+                  "text": "Cost,",
+                  "boundingBox": {
+                    "left": 649,
+                    "top": 1313,
+                    "right": 692,
+                    "bottom": 1338
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 649,
+                      "y": 1314
+                    },
+                    {
+                      "x": 692,
+                      "y": 1313
+                    },
+                    {
+                      "x": 692,
+                      "y": 1337
+                    },
+                    {
+                      "x": 649,
+                      "y": 1338
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                },
+                {
+                  "text": "Inc",
+                  "boundingBox": {
+                    "left": 702,
+                    "top": 1313,
+                    "right": 726,
+                    "bottom": 1337
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 702,
+                      "y": 1314
+                    },
+                    {
+                      "x": 726,
+                      "y": 1313
+                    },
+                    {
+                      "x": 726,
+                      "y": 1336
+                    },
+                    {
+                      "x": 702,
+                      "y": 1337
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                },
+                {
+                  "text": "3s0",
+                  "boundingBox": {
+                    "left": 727,
+                    "top": 1311,
+                    "right": 797,
+                    "bottom": 1337
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 727,
+                      "y": 1313
+                    },
+                    {
+                      "x": 797,
+                      "y": 1311
+                    },
+                    {
+                      "x": 797,
+                      "y": 1335
+                    },
+                    {
+                      "x": 727,
+                      "y": 1337
+                    }
+                  ],
+                  "recognizedLanguage": "en"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "llanura_degradada_llasura",
+      "carta": "Llanura (Plains) — 7ª/8ª edición española, ~2002",
+      "nota": "Degradación fuerte: el nombre sale `Llasura` y el ilustrador `Sust Rob Aleande`. El parser devuelve el nombre mal leído, que es lo único honesto que puede hacer.",
+      "vuelta": 40,
+      "hora": "09-15 08:32:34.911",
+      "truncadoEnLogcat": false,
+      "text": "Llasura\nTierra\nSust Rob Aleande\nary\nte",
+      "lineas": [
+        "Llasura",
+        "Tierra",
+        "Sust Rob Aleande",
+        "ary",
+        "te"
+      ],
+      "blocks": [
+        {
+          "text": "Llasura",
+          "boundingBox": {
+            "left": 240,
+            "top": 507,
+            "right": 368,
+            "bottom": 539
+          },
+          "cornerPoints": [
+            {
+              "x": 240,
+              "y": 507
+            },
+            {
+              "x": 368,
+              "y": 507
+            },
+            {
+              "x": 368,
+              "y": 539
+            },
+            {
+              "x": 240,
+              "y": 539
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Llasura",
+              "boundingBox": {
+                "left": 240,
+                "top": 507,
+                "right": 368,
+                "bottom": 539
+              },
+              "cornerPoints": [
+                {
+                  "x": 240,
+                  "y": 507
+                },
+                {
+                  "x": 368,
+                  "y": 507
+                },
+                {
+                  "x": 368,
+                  "y": 539
+                },
+                {
+                  "x": 240,
+                  "y": 539
+                }
+              ],
+              "recognizedLanguage": "es",
+              "elements": [
+                {
+                  "text": "Llasura",
+                  "boundingBox": {
+                    "left": 240,
+                    "top": 507,
+                    "right": 368,
+                    "bottom": 539
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 240,
+                      "y": 507
+                    },
+                    {
+                      "x": 368,
+                      "y": 507
+                    },
+                    {
+                      "x": 368,
+                      "y": 539
+                    },
+                    {
+                      "x": 240,
+                      "y": 539
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Tierra",
+          "boundingBox": {
+            "left": 237,
+            "top": 1015,
+            "right": 330,
+            "bottom": 1044
+          },
+          "cornerPoints": [
+            {
+              "x": 238,
+              "y": 1015
+            },
+            {
+              "x": 330,
+              "y": 1018
+            },
+            {
+              "x": 329,
+              "y": 1044
+            },
+            {
+              "x": 237,
+              "y": 1041
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Tierra",
+              "boundingBox": {
+                "left": 237,
+                "top": 1015,
+                "right": 330,
+                "bottom": 1044
+              },
+              "cornerPoints": [
+                {
+                  "x": 238,
+                  "y": 1015
+                },
+                {
+                  "x": 330,
+                  "y": 1018
+                },
+                {
+                  "x": 329,
+                  "y": 1044
+                },
+                {
+                  "x": 237,
+                  "y": 1041
+                }
+              ],
+              "recognizedLanguage": "es",
+              "elements": [
+                {
+                  "text": "Tierra",
+                  "boundingBox": {
+                    "left": 237,
+                    "top": 1015,
+                    "right": 330,
+                    "bottom": 1044
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 238,
+                      "y": 1015
+                    },
+                    {
+                      "x": 330,
+                      "y": 1018
+                    },
+                    {
+                      "x": 329,
+                      "y": 1044
+                    },
+                    {
+                      "x": 237,
+                      "y": 1041
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Sust Rob Aleande",
+          "boundingBox": {
+            "left": 391,
+            "top": 1355,
+            "right": 661,
+            "bottom": 1388
+          },
+          "cornerPoints": [
+            {
+              "x": 391,
+              "y": 1355
+            },
+            {
+              "x": 661,
+              "y": 1355
+            },
+            {
+              "x": 661,
+              "y": 1388
+            },
+            {
+              "x": 391,
+              "y": 1388
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "Sust Rob Aleande",
+              "boundingBox": {
+                "left": 391,
+                "top": 1355,
+                "right": 661,
+                "bottom": 1388
+              },
+              "cornerPoints": [
+                {
+                  "x": 391,
+                  "y": 1355
+                },
+                {
+                  "x": 661,
+                  "y": 1355
+                },
+                {
+                  "x": 661,
+                  "y": 1388
+                },
+                {
+                  "x": 391,
+                  "y": 1388
+                }
+              ],
+              "recognizedLanguage": "es",
+              "elements": [
+                {
+                  "text": "Sust",
+                  "boundingBox": {
+                    "left": 391,
+                    "top": 1355,
+                    "right": 462,
+                    "bottom": 1388
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 391,
+                      "y": 1355
+                    },
+                    {
+                      "x": 462,
+                      "y": 1355
+                    },
+                    {
+                      "x": 462,
+                      "y": 1388
+                    },
+                    {
+                      "x": 391,
+                      "y": 1388
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                },
+                {
+                  "text": "Rob",
+                  "boundingBox": {
+                    "left": 469,
+                    "top": 1355,
+                    "right": 524,
+                    "bottom": 1388
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 469,
+                      "y": 1355
+                    },
+                    {
+                      "x": 524,
+                      "y": 1355
+                    },
+                    {
+                      "x": 524,
+                      "y": 1388
+                    },
+                    {
+                      "x": 469,
+                      "y": 1388
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                },
+                {
+                  "text": "Aleande",
+                  "boundingBox": {
+                    "left": 526,
+                    "top": 1355,
+                    "right": 661,
+                    "bottom": 1388
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 526,
+                      "y": 1355
+                    },
+                    {
+                      "x": 661,
+                      "y": 1355
+                    },
+                    {
+                      "x": 661,
+                      "y": 1388
+                    },
+                    {
+                      "x": 526,
+                      "y": 1388
+                    }
+                  ],
+                  "recognizedLanguage": "es"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "ary",
+          "boundingBox": {
+            "left": 925,
+            "top": 1194,
+            "right": 1083,
+            "bottom": 1292
+          },
+          "cornerPoints": [
+            {
+              "x": 925,
+              "y": 1202
+            },
+            {
+              "x": 1079,
+              "y": 1194
+            },
+            {
+              "x": 1083,
+              "y": 1284
+            },
+            {
+              "x": 929,
+              "y": 1292
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "ary",
+              "boundingBox": {
+                "left": 925,
+                "top": 1194,
+                "right": 1083,
+                "bottom": 1292
+              },
+              "cornerPoints": [
+                {
+                  "x": 925,
+                  "y": 1202
+                },
+                {
+                  "x": 1079,
+                  "y": 1194
+                },
+                {
+                  "x": 1083,
+                  "y": 1284
+                },
+                {
+                  "x": 929,
+                  "y": 1292
+                }
+              ],
+              "recognizedLanguage": "und-Latn",
+              "elements": [
+                {
+                  "text": "ary",
+                  "boundingBox": {
+                    "left": 925,
+                    "top": 1194,
+                    "right": 1083,
+                    "bottom": 1292
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 925,
+                      "y": 1202
+                    },
+                    {
+                      "x": 1079,
+                      "y": 1194
+                    },
+                    {
+                      "x": 1083,
+                      "y": 1284
+                    },
+                    {
+                      "x": 929,
+                      "y": 1292
+                    }
+                  ],
+                  "recognizedLanguage": "und-Latn"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "te",
+          "boundingBox": {
+            "left": 952,
+            "top": 1342,
+            "right": 1159,
+            "bottom": 1531
+          },
+          "cornerPoints": [
+            {
+              "x": 952,
+              "y": 1350
+            },
+            {
+              "x": 1152,
+              "y": 1342
+            },
+            {
+              "x": 1159,
+              "y": 1523
+            },
+            {
+              "x": 959,
+              "y": 1531
+            }
+          ],
+          "recognizedLanguage": "und",
+          "lines": [
+            {
+              "text": "te",
+              "boundingBox": {
+                "left": 952,
+                "top": 1342,
+                "right": 1159,
+                "bottom": 1531
+              },
+              "cornerPoints": [
+                {
+                  "x": 952,
+                  "y": 1350
+                },
+                {
+                  "x": 1152,
+                  "y": 1342
+                },
+                {
+                  "x": 1159,
+                  "y": 1523
+                },
+                {
+                  "x": 959,
+                  "y": 1531
+                }
+              ],
+              "recognizedLanguage": "und-Latn",
+              "elements": [
+                {
+                  "text": "te",
+                  "boundingBox": {
+                    "left": 952,
+                    "top": 1342,
+                    "right": 1159,
+                    "bottom": 1531
+                  },
+                  "cornerPoints": [
+                    {
+                      "x": 952,
+                      "y": 1350
+                    },
+                    {
+                      "x": 1152,
+                      "y": 1342
+                    },
+                    {
+                      "x": 1159,
+                      "y": 1523
+                    },
+                    {
+                      "x": 959,
+                      "y": 1531
+                    }
+                  ],
+                  "recognizedLanguage": "und-Latn"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rampant_growth_set_mal_leido_212",
+      "carta": "Rampant Growth — 2X2 leído «212», marco M15, inglés",
+      "nota": "El OCR lee `212 EN SCOTE M SscHER`: la edición sale con un código que no existe. El parser lo manda tal cual en mayúsculas y el paso 2 no casará, que es el comportamiento correcto.",
+      "vuelta": 50,
+      "hora": "09-15 08:32:59.136",
+      "truncadoEnLogcat": true,
+      "text": "Rampant Growth\nSorcery\nSearch your library for a basic\nland card, put that card onto the\nbartiefielid tapped, then shufie.\nNature groos solutions to its problems.\n155/331C\n212 EN SCOTE M SscHER\nM&C 2022 Wizards of the Coast\nPlanet\nOU",
+      "lineas": [
+        "Rampant Growth",
+        "Sorcery",
+        "Search your library for a basic",
+        "land card, put that card onto the",
+        "bartiefielid tapped, then shufie.",
+        "Nature groos solutions to its problems.",
+        "155/331C",
+        "212 EN SCOTE M SscHER",
+        "M&C 2022 Wizards of the Coast",
+        "Planet",
+        "OU"
+      ]
+    },
+    {
+      "id": "rampant_growth_155_331C_sin_espacio",
+      "carta": "Rampant Growth — 2X2 155/331C, marco M15, inglés",
+      "nota": "La misma esquina con el espacio comido por el OCR: `155/331C`. Es el caso que la regex del plan (`\\s+`) no casaba, y sale casi la mitad de las veces.",
+      "vuelta": 51,
+      "hora": "09-15 08:32:59.816",
+      "truncadoEnLogcat": true,
+      "text": "Rampant Growth\nSorcery\nSearch your library for a basic\nland card, put that card onto the\nbattlefield tapped, then shuffle.\nNature grows solutions to its problems.\n155/331C\n2X2 EN ScoTT M. FIscHER\nM&62022 Wzards of dhe Caoat\nPlane\nOUT",
+      "lineas": [
+        "Rampant Growth",
+        "Sorcery",
+        "Search your library for a basic",
+        "land card, put that card onto the",
+        "battlefield tapped, then shuffle.",
+        "Nature grows solutions to its problems.",
+        "155/331C",
+        "2X2 EN ScoTT M. FIscHER",
+        "M&62022 Wzards of dhe Caoat",
+        "Plane",
+        "OUT"
+      ]
+    },
+    {
+      "id": "rampant_growth_edicion_pegada_al_artista",
+      "carta": "Rampant Growth — 2X2, marco M15, inglés",
+      "nota": "`2X2 ENScoTT M. FIscHER`: el OCR pega el idioma al artista y desaparece el separador. La edición NO se lee, el número sí. Queda documentado que esta lectura cae al paso 3 por nombre.",
+      "vuelta": 53,
+      "hora": "09-15 08:33:01.130",
+      "truncadoEnLogcat": true,
+      "text": "Rampant Growth\nSorcery\nSearch your library for a basic\nland card, put that card onto the\nbattlefield tapped, then shuffle.\nNature grows solutions to its problems.\n155/331 C\n2X2 ENScoTT M. FIscHER\nIM&O 2022 Wizards of the Coast\nPlane\nOUT",
+      "lineas": [
+        "Rampant Growth",
+        "Sorcery",
+        "Search your library for a basic",
+        "land card, put that card onto the",
+        "battlefield tapped, then shuffle.",
+        "Nature grows solutions to its problems.",
+        "155/331 C",
+        "2X2 ENScoTT M. FIscHER",
+        "IM&O 2022 Wizards of the Coast",
+        "Plane",
+        "OUT"
+      ]
+    },
+    {
+      "id": "rampant_growth_155_331_C_con_espacio",
+      "carta": "Rampant Growth — 2X2 155/331 C, marco M15, inglés",
+      "nota": "La lectura limpia: la esquina entera, con el espacio antes de la letra de rareza y la línea de edición·idioma tal cual la entrega ML Kit, SIN punto medio.",
+      "vuelta": 54,
+      "hora": "09-15 08:33:01.772",
+      "truncadoEnLogcat": true,
+      "text": "Rampant Growth\nSorcery\nSearch your library for a basic\nland card, put that card onto the\nbattlefield tapped, then shuffie.\nNature grows solutions to its problems.\n155/331 C\n2X2 EN ScoTT M. FIscHER\nM&C 2022 Wzards of the Coast\nPlanet\nOUE",
+      "lineas": [
+        "Rampant Growth",
+        "Sorcery",
+        "Search your library for a basic",
+        "land card, put that card onto the",
+        "battlefield tapped, then shuffie.",
+        "Nature grows solutions to its problems.",
+        "155/331 C",
+        "2X2 EN ScoTT M. FIscHER",
+        "M&C 2022 Wzards of the Coast",
+        "Planet",
+        "OUE"
+      ]
+    },
+    {
+      "id": "rampant_growth_solo_nombre",
+      "carta": "Rampant Growth — fotograma movido",
+      "nota": "Tres líneas degradadas y ni rastro de la esquina. No es un error: es un fotograma de los que el bucle descarta.",
+      "vuelta": 56,
+      "hora": "09-15 08:33:02.994",
+      "truncadoEnLogcat": true,
+      "text": "Rampant Growth\nSorcery\nSearch our library for a\nland card, put that card\nattlefield tappd, then",
+      "lineas": [
+        "Rampant Growth",
+        "Sorcery",
+        "Search our library for a",
+        "land card, put that card",
+        "attlefield tappd, then"
+      ]
+    },
+    {
+      "id": "fotograma_vacio",
+      "carta": "—",
+      "nota": "Una de las 67 vueltas en que ML Kit no leyó nada. No es un error: es más de la cuarta parte de la sesión.",
+      "vuelta": null,
+      "hora": "09-15 08:32:04.523",
+      "truncadoEnLogcat": false,
+      "text": "",
+      "lineas": [],
+      "blocks": []
+    }
+  ]
+}

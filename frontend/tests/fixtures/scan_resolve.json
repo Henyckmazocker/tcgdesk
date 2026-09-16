@@ -1,0 +1,176 @@
+{
+  "status": "success",
+  "message": "Lecturas resueltas.",
+  "data": {
+    "results": [
+      {
+        "id": "d1",
+        "resolved": true,
+        "printingUuid": "5f98cebb-739a-5499-8166-35c201cc6f84",
+        "oracleId": "8539f295-5d58-4436-a73a-b9277c4c7795",
+        "name": "Rampant Growth",
+        "setCode": "2X2",
+        "collectorNumber": "155",
+        "finishes": {
+          "foil": true,
+          "nonfoil": true,
+          "etched": false
+        },
+        "priceEur": {
+          "normal": 0.56,
+          "foil": 0.52,
+          "etched": null
+        },
+        "assumedPrinting": false,
+        "printingCount": 1,
+        "step": "2",
+        "reason": null,
+        "candidates": [],
+        "printingCertain": true,
+        "certaintySource": "corner",
+        "language": null
+      },
+      {
+        "id": "d2",
+        "resolved": true,
+        "printingUuid": "be977738-775e-52d6-a151-eaae951762a4",
+        "oracleId": "4457ed35-7c10-48c8-9776-456485fdf070",
+        "name": "Lightning Bolt",
+        "setCode": "E01",
+        "collectorNumber": "54",
+        "finishes": {
+          "foil": false,
+          "nonfoil": true,
+          "etched": false
+        },
+        "priceEur": {
+          "normal": 1.03,
+          "foil": 2.32,
+          "etched": null
+        },
+        "assumedPrinting": true,
+        "printingCount": 71,
+        "step": "3",
+        "reason": null,
+        "candidates": [],
+        "printingCertain": false,
+        "certaintySource": null,
+        "language": "English"
+      },
+      {
+        "id": "d3",
+        "resolved": false,
+        "printingUuid": null,
+        "oracleId": null,
+        "name": "Lim-Dûl's Vault",
+        "setCode": null,
+        "collectorNumber": null,
+        "finishes": null,
+        "priceEur": null,
+        "assumedPrinting": false,
+        "printingCount": 0,
+        "step": null,
+        "reason": "mismatch",
+        "candidates": [
+          {
+            "oracleId": "3f8e7a45-4c6e-4ee6-93d0-b7de9715ec97",
+            "name": "Lim-Dûl's Vault",
+            "impresiones": 5,
+            "printingUuid": "36a70bd8-be17-56ed-84e3-911d69ee19b9",
+            "setCode": "ALL",
+            "assumedPrinting": true,
+            "printingCount": 5
+          },
+          {
+            "printingUuid": "662d53a0-8a76-538e-9033-3179df8c99ff",
+            "oracleId": "40c3007a-be6c-4400-9139-12b9ca098ac4",
+            "name": "Shyft",
+            "nameNormalized": "shyft",
+            "setCode": "ICE",
+            "collectorNumber": "96",
+            "impresiones": 1,
+            "assumedPrinting": false,
+            "printingCount": 1
+          }
+        ],
+        "printingCertain": false,
+        "certaintySource": null,
+        "language": null
+      },
+      {
+        "id": "d4",
+        "resolved": false,
+        "printingUuid": null,
+        "oracleId": null,
+        "name": "Estaznoesunacarta",
+        "setCode": null,
+        "collectorNumber": null,
+        "finishes": null,
+        "priceEur": null,
+        "assumedPrinting": false,
+        "printingCount": 0,
+        "step": null,
+        "reason": "not_found",
+        "candidates": [],
+        "printingCertain": false,
+        "certaintySource": null,
+        "language": null
+      },
+      {
+        "id": "d5",
+        "resolved": true,
+        "printingUuid": "b748d169-c818-510c-81d4-3d3d1b5aba13",
+        "oracleId": "bc71ebf6-2056-41f7-be35-b2e5c34afa99",
+        "name": "Plains",
+        "setCode": "THS",
+        "collectorNumber": "232",
+        "finishes": {
+          "foil": true,
+          "nonfoil": true,
+          "etched": false
+        },
+        "priceEur": {
+          "normal": 0.02,
+          "foil": 0.43,
+          "etched": null
+        },
+        "assumedPrinting": true,
+        "printingCount": 910,
+        "step": "3c",
+        "reason": null,
+        "candidates": [],
+        "printingCertain": false,
+        "certaintySource": null,
+        "language": "Spanish"
+      },
+      {
+        "id": "d6",
+        "resolved": true,
+        "printingUuid": "b748d169-c818-510c-81d4-3d3d1b5aba13",
+        "oracleId": "bc71ebf6-2056-41f7-be35-b2e5c34afa99",
+        "name": "Plains",
+        "setCode": "THS",
+        "collectorNumber": "232",
+        "finishes": {
+          "foil": true,
+          "nonfoil": true,
+          "etched": false
+        },
+        "priceEur": {
+          "normal": 0.02,
+          "foil": 0.43,
+          "etched": null
+        },
+        "assumedPrinting": true,
+        "printingCount": 910,
+        "step": "5",
+        "reason": null,
+        "candidates": [],
+        "printingCertain": false,
+        "certaintySource": null,
+        "language": "Spanish"
+      }
+    ]
+  },
+  "http_code": 200
+}

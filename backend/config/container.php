@@ -15,6 +15,7 @@ use App\Domain\Repository\DeckRepositoryInterface;
 use App\Domain\Repository\FollowRepositoryInterface;
 use App\Domain\Repository\FriendshipRepositoryInterface;
 use App\Domain\Repository\ImageCacheRepositoryInterface;
+use App\Domain\Repository\OrbDescriptorRepositoryInterface;
 use App\Domain\Repository\PreconRepositoryInterface;
 use App\Domain\Repository\PriceRepositoryInterface;
 use App\Domain\Repository\TransactionManagerInterface;
@@ -38,6 +39,7 @@ use App\Infrastructure\Persistence\MySqlDeckRepository;
 use App\Infrastructure\Persistence\MySqlFollowRepository;
 use App\Infrastructure\Persistence\MySqlFriendshipRepository;
 use App\Infrastructure\Persistence\MySqlImageCacheRepository;
+use App\Infrastructure\Persistence\MySqlOrbDescriptorRepository;
 use App\Infrastructure\Persistence\MySqlPreconRepository;
 use App\Infrastructure\Persistence\MySqlPriceRepository;
 use App\Infrastructure\Persistence\MySqlUserPrivacyRepository;
@@ -46,6 +48,7 @@ use App\Infrastructure\Persistence\PdoTransactionManager;
 use App\Infrastructure\Persistence\Search\BooleanExpressionBuilder;
 use App\Infrastructure\RateLimit\FileRateLimitStore;
 use App\Infrastructure\Scryfall\ScryfallImageDownloader;
+use App\Infrastructure\Vision\OrbDescriptorStore;
 use App\Router\ActionRouter;
 use DI\ContainerBuilder;
 use GuzzleHttp\Client as GuzzleClient;
@@ -108,6 +111,16 @@ return function (): ContainerInterface {
         ): ScryfallImageDownloader {
             $dir = $_ENV['STORAGE_PATH'] ?? __DIR__ . '/../storage';
             return new ScryfallImageDownloader($http, $logger, $dir);
+        },
+
+        // Los bloques ORB caen bajo el MISMO storage/ y por el mismo motivo:
+        // `mtg_printing_orb.local_path` guarda una ruta RELATIVA a este
+        // directorio. No hay cliente HTTP en su constructor y no lo va a haber:
+        // PHP no baja imágenes para esto ni ejecuta visión: los bytes llegan ya
+        // extraídos desde opencv.js en el móvil.
+        OrbDescriptorStore::class => function (): OrbDescriptorStore {
+            $dir = $_ENV['STORAGE_PATH'] ?? __DIR__ . '/../storage';
+            return new OrbDescriptorStore($dir);
         },
 
         // ====================================================================
@@ -222,6 +235,16 @@ return function (): ContainerInterface {
         DeckRepositoryInterface::class => DI\get(MySqlDeckRepository::class),
 
         ImageCacheRepositoryInterface::class => DI\get(MySqlImageCacheRepository::class),
+
+        // El índice ORB del Plan - Reconocimiento de la Impresión por su Arte.
+        // Puerto aparte del de imágenes aunque las dos tablas sean zona 1
+        // derivada y las dos guarden rutas bajo storage/: `mtg_image_cache` la
+        // llena NUESTRO comando bajando del CDN, y `mtg_printing_orb` la llenan
+        // los CLIENTES. Eso cambia las reglas —se inserta y nunca se
+        // sobrescribe, y la forma del binario se valida antes— y mezclarlos
+        // haría que la próxima escritura naciera con la duda de cuál de las dos
+        // políticas le toca.
+        OrbDescriptorRepositoryInterface::class => DI\get(MySqlOrbDescriptorRepository::class),
 
         // Los precons de MTGJSON. Puerto aparte del catálogo y de los mazos
         // aunque las tres escriban tablas `mtg_*`: no se ingieren del mismo

@@ -1,0 +1,49 @@
+-- Migration: 20260916_130000_drop_mtg_printing_hash.sql
+-- Descripción: se va el índice visual del catálogo, entero. Es el M1 del
+--              Plan - Escáner de Cartas por Cámara.
+--
+-- ============================================================================
+-- POR QUÉ SE BORRA UN ÍNDICE QUE SE ACABABA DE CONSTRUIR
+-- ============================================================================
+-- Porque está MEDIDO y no sirve, y dejarlo cuesta más que quitarlo.
+--
+-- La tabla la creó `20260916_120000_mtg_printing_hash.sql` con 111.819 filas y
+-- ~883 KB: un hash perceptual de 64 bits por impresión y cara, con el que el
+-- escáner tenía que identificar una carta POR CÓMO SE VE. La idea era buena y el
+-- índice se construyó bien — el barrido Hamming encuentra las 398 filas de
+-- control a distancia 0 de sí mismas y ninguna tiene compañía a d <= 4.
+--
+-- Lo que falla es la FOTO, no el índice. Medido el 2026-09-15 con el móvil en la
+-- mano: una foto real queda a 11-12 bits de la referencia de su propia carta,
+-- contra un margen mediano de 6 bits entre vecinos distintos del índice. Sobre 8
+-- cartas reales la correcta salió en los puestos #5 a #3218 — CERO aciertos en
+-- el puesto 1. Y no lo rescata nada de lo evidente: a 256 bits el error de la
+-- foto sube en la misma proporción, y restringir el barrido a las impresiones de
+-- un nombre tampoco lo arregla, porque el error es mayor que la distancia entre
+-- impresiones hermanas.
+--
+-- Las siete tandas de medidas, con sus cifras una a una, están íntegras en el
+-- `## 📅 Log` del Plan - Escáner de Cartas por Cámara. Es el único documento del
+-- proyecto que dice POR QUÉ NO HAY QUE VOLVER A INTENTAR ESTO, y por eso no se
+-- toca nunca.
+--
+-- ============================================================================
+-- ESTO NO TIENE VUELTA ATRÁS, Y SE HACE A SABIENDAS
+-- ============================================================================
+-- No hay ficheros de rollback en este proyecto (regla 4 del README de esta
+-- carpeta), pero aquí hay algo más: el comando que reconstruiría la tabla,
+-- `catalog:hash`, se borra en el MISMO hito junto con `App\Domain\Vision\
+-- PerceptualHash` y `MySqlPrintingHashRepository`. Recuperar el índice no sería
+-- relanzar un comando: sería reescribir el algoritmo, y reescribirlo es
+-- exactamente lo que estas medidas dicen que no se haga.
+--
+-- Lo que se pierde son ~883 KB y ~3 horas de descargas a 10 req/s contra el CDN
+-- de Scryfall. Lo que se gana es que las ~300 líneas de `ScanController` que
+-- resolvían por esta vía dejen de estorbar al camino que sí funciona: el NOMBRE,
+-- que el OCR lee bien el 80 % de las veces.
+--
+-- `mtg_image_cache` es OTRA COSA y esta migración NO la toca: aquella guarda la
+-- imagen que se le enseña al usuario, tiene su propia PK y sigue en pie.
+-- ============================================================================
+
+DROP TABLE IF EXISTS mtg_printing_hash;

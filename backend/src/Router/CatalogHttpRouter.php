@@ -40,6 +40,23 @@ class CatalogHttpRouter
     /** El catálogo cambia cuando se reingiere, no entre peticiones. */
     private const CACHE_SEGUNDOS = 300;
 
+    /**
+     * El techo y el defecto de `limit` de `/printings`, acotados AQUÍ.
+     *
+     * Las otras rutas paginadas los llevan en su criteria —`SearchCriteria` y
+     * `PreconSearchCriteria`, los dos con el mismo 100/60— porque tienen una
+     * capa de dominio que normaliza `$_GET` entero. Esta no la tiene: le pasa
+     * tres valores sueltos al repositorio, y el repositorio solo impone el
+     * suelo. Y **no hay red debajo**: `ValidationMiddleware` no ve esta ruta
+     * porque `public/index.php` desvía el catálogo antes de construir
+     * `Application`, así que lo que no acote el router no lo acota nadie —un
+     * `limit=100000` sería un `LIMIT` de seis cifras sobre las 949 impresiones
+     * del peor caso—.
+     */
+    private const LIMITE_MAXIMO = 100;
+
+    private const LIMITE_POR_DEFECTO = 60;
+
     public function __construct(
         private readonly SearchCards $buscar,
         private readonly CardRepositoryInterface $cartas,
@@ -63,6 +80,11 @@ class CatalogHttpRouter
             $respuesta = match (true) {
                 $ruta === '/api/catalog/sets'                       => $this->sets(),
                 $ruta === '/api/catalog/cards'                      => $this->cards(),
+                // Va ANTES que la ficha a propósito: `([^/]+)` no casa con barras, así
+                // que hoy el orden da igual, pero ponerla después invita a que el día
+                // que alguien relaje ese patrón a `(.+)` la ficha se coma esta ruta y
+                // conteste `printing_not_found` sin que nadie entienda por qué.
+                (bool) preg_match('#^/api/catalog/cards/([^/]+)/printings$#', $ruta, $m) => $this->printings($m[1]),
                 (bool) preg_match('#^/api/catalog/cards/([^/]+)$#', $ruta, $m) => $this->card($m[1]),
                 $ruta === '/api/catalog/decks'                      => $this->decks(),
                 (bool) preg_match('#^/api/catalog/decks/([^/]+)$#', $ruta, $m) => $this->deck($m[1]),
@@ -97,6 +119,47 @@ class CatalogHttpRouter
         return [200, [
             'items'      => $resultado['items'],
             'nextCursor' => $resultado['nextCursor'],
+        ]];
+    }
+
+    /**
+     * Las impresiones hermanas de una carta, paginadas por cursor.
+     *
+     * Mismo par `items` + `nextCursor` que `/api/catalog/cards` y
+     * `/api/catalog/decks`, por el motivo escrito abajo en `decks()`: que el
+     * scroll infinito del frontend sea el mismo código. Y los `items` traen el
+     * contrato de carta tal cual, sin inventar uno nuevo, así que quien ya pinta
+     * una fila de catálogo pinta una impresión sin tocar nada.
+     *
+     * **El 404 es del `uuid`, no de la carta.** El repositorio devuelve `null`
+     * solo cuando el uuid no está en `mtg_printing`; una carta que nunca se
+     * reimprimió devuelve 200 con un único item. Confundirlos haría que
+     * `/import` leyese «esta carta no se puede corregir» como «este uuid está
+     * roto», que es un fallo distinto y con otra salida.
+     *
+     * El `cursor` viaja crudo: `Cursor::decodificar()` trata cualquier cosa mal
+     * formada como «empieza por el principio», así que validarlo aquí solo
+     * serviría para convertir un cursor caducado en un error que no lo es.
+     *
+     * @return array{0: int, 1: array<string, mixed>}
+     */
+    private function printings(string $uuid): array
+    {
+        $limite = isset($_GET['limit']) && is_numeric($_GET['limit'])
+            ? max(1, min(self::LIMITE_MAXIMO, (int) $_GET['limit']))
+            : self::LIMITE_POR_DEFECTO;
+
+        $cursor = isset($_GET['cursor']) && is_string($_GET['cursor']) ? $_GET['cursor'] : null;
+
+        $pagina = $this->cartas->impresionesDe(rawurldecode($uuid), $cursor, $limite);
+
+        if ($pagina === null) {
+            return [404, ['error' => 'printing_not_found']];
+        }
+
+        return [200, [
+            'items'      => $pagina['items'],
+            'nextCursor' => $pagina['nextCursor'],
         ]];
     }
 

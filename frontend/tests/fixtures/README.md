@@ -7,11 +7,20 @@ una fixture redactada a mano traería el mismo error y el test certificaría el 
 
 Si una fixture se queda desfasada, **se vuelve a capturar**, no se edita.
 
+**Hay dos excepciones a lo de «del backend», y solo dos**, las dos con sección propia más abajo y
+las dos respetando la regla de fondo (nada se escribe a mano):
+
+1. `scan_mlkit_lecturas.json` no sale de `curl` sino de la cámara de un móvil — es lo que ML Kit
+   devolvió sobre cartas reales. Sección «📷 La única que no sale de `curl`».
+2. `recorte_37x53.ppm` **no es una respuesta de nada**: es una imagen, y el backend no sirve
+   ninguna. La genera un comando determinista de tres líneas, escrito verbatim abajo, y la copia
+   del backend tiene el mismo `md5sum`. Sección «🖼 La fixture que no es una respuesta».
+
 ---
 
 ## Cómo autenticarse para capturar (lo que cuesta)
 
-Las **5 rutas GET** del catálogo no necesitan sesión (`backend/public/index.php:33-42` las desvía
+Las **6 rutas GET** del catálogo no necesitan sesión (`backend/public/index.php:33-42` las desvía
 a `CatalogHttpRouter` antes de construir `Application`): son `curl` directo.
 
 Las **~21 acciones POST** pasan por `AuthMiddleware`, y `login` exige un ID token de Google real
@@ -80,7 +89,10 @@ DELETE FROM users WHERE id = <id>;   -- CASCADE se lleva colección y mazos
 
 ---
 
-## Las 5 rutas `GET` (`catalogGet`, sin sesión)
+## Las 6 rutas `GET` (`catalogGet`, sin sesión)
+
+Cinco desde el principio; la sexta —`/cards/{uuid}/printings`— entró el 2026-09-14 y va en su
+propio apartado, abajo.
 
 | Fichero | Ruta | Comando |
 |---|---|---|
@@ -102,6 +114,35 @@ DELETE FROM users WHERE id = <id>;   -- CASCADE se lleva colección y mazos
   candidato (`AragornAtHelmSDeep_LTC`) se descartó: es un *Box Set* de 6 cartas y no ejercita nada.
 - `catalog_decks.json` trae también `deckTypes` y `sets`, que solo viajan en la primera página
   (`stores/precons.js:145-153`), y el `nextCursor` opaco.
+
+### La sexta ruta `GET` — `/cards/{uuid}/printings` (2026-09-14)
+
+Las impresiones hermanas de una carta, que es lo que consume `components/PrintingSelect.vue`. Son
+`curl` directo como las otras cinco: catálogo público, sin sesión.
+
+| Fichero | Ruta | Comando |
+|---|---|---|
+| `catalog_printings.json` | `/cards/{uuid}/printings` | `get '/cards/095866d8-baf8-5e2e-8a51-ba0849ce9503/printings?limit=100'` |
+| `catalog_printings_paginadas.json` | ídem, 1ª página | `get '/cards/001b516c-09a3-5776-92d3-944fee7c18e6/printings?limit=3'` |
+| `catalog_printings_paginadas_2.json` | ídem, 2ª página | `get '/cards/001b516c-…/printings?limit=3&cursor=<el nextCursor de la anterior>'` |
+| `catalog_printings_unica.json` | ídem | `get '/cards/6869d699-5f2b-5a41-886c-4e74b52ca763/printings?limit=5'` |
+| `catalog_printing_not_found.json` | ídem | `get '/cards/no-existe-este-uuid/printings'` → **404** |
+
+- `catalog_printings.json` es **la llamada literal de `PrintingSelect.vue`**: pide `limit: 100` —el
+  `LIMITE_MAXIMO` del router, no su defecto de 60— y sin cursor. El uuid es un `Lightning Bolt`, que
+  devuelve sus **71** impresiones y `nextCursor: null`. Se eligió por lo que trae dentro: **11
+  impresiones sin cotizar en ningún acabado** (el «sin precio») y **7 que solo cotizan en foil** (la
+  caída al siguiente acabado), que es justo lo que distingue leer `priceEur` de leer los alias del
+  SQL. Y la impresión **pedida está en la lista** (posición 66), como manda el contrato.
+- Las dos `paginadas` son el peor caso del M0 —`Forest`, **949** impresiones— y son las únicas que
+  **no** se capturaron con el `limit` que manda el componente: con `limit=100` harían falta 100
+  items × 2 páginas, ~140 KB de fixtura, para probar un pie de página. Con `limit=3` son 2 KB cada
+  una y el `nextCursor` es el mismo mecanismo. Siguen siendo respuestas literales del backend.
+- `catalog_printings_unica.json` es `"Ach! Hans, Run!"` (UNH), una carta **nunca reimpresa**: la
+  respuesta es **200 con un item** y `nextCursor: null`, no un 404. Es la distinción que sostiene el
+  404 del router — «esta carta no tiene hermanas» no es «este uuid no existe».
+- `catalog_printing_not_found.json` es lo que `catalogGet` devuelve tal cual ante un 404
+  (`api.js:143-146`): `{"error": "printing_not_found"}`, sin `items`.
 
 ---
 
@@ -691,6 +732,194 @@ dimensiones intactas** se comprobó en SQL sobre las filas escritas:
 Y el ciclo entero, medido contra la BD de dev antes de borrar el usuario `9005`: con los tres
 deseos puestos el mazo seguía en `missing: 3` —querer no es tener—, y tras tres
 `collection_fulfill_wish` bajó a `missing: 0` y `deck_list[].missingCount: 0`.
+
+### El escáner por cámara — `scan_resolve.json` (recapturada el 2026-09-16)
+
+`scan_resolve` es **lectura pura** (su pila es `Logging + Auth`, sin CSRF ni Validation), así que
+se captura con la sesión forjada y sin token. **`lecturas` va al primer nivel** del cuerpo, no
+dentro de `data`: `api.js` manda `{action, ...payload}` y `ActionRouter` mete el cuerpo entero
+bajo `data`.
+
+```bash
+post '{"action":"scan_resolve","lecturas":[
+ {"id":"d1","name":"Rampant Growth","setCode":"2X2","collectorNumber":"155","language":"English","rarity":"common"},
+ {"id":"d2","name":"Lightning Bolt","setCode":null,"collectorNumber":null,"language":"English","rarity":null},
+ {"id":"d3","name":"Lim-Dûl'\''s Vault","setCode":"ICE","collectorNumber":"96","language":"English","rarity":null},
+ {"id":"d4","name":"Estaznoesunacarta","setCode":null,"collectorNumber":null,"language":"English","rarity":null},
+ {"id":"d5","name":"Llanura","setCode":null,"collectorNumber":null,"language":"English","rarity":null},
+ {"id":"d6","name":"Tlanura","setCode":null,"collectorNumber":null,"language":"English","rarity":null}
+]}' | jq . > tests/fixtures/scan_resolve.json
+```
+
+**Las seis lecturas son seis casos distintos y por eso están juntas en una sola fixtura**, que
+es como el escáner las va a recibir de verdad:
+
+| `id` | Qué es | Lo que enseña |
+|---|---|---|
+| `d1` | Esquina leída entera (`2X2` 155) | Resuelve por el paso **2**, `foil` y `nonfoil` a `true`; `language: null` |
+| `d2` | Solo el nombre, carta muy reimpresa | `assumedPrinting: true`, `printingCount: 71` y **un solo acabado** (`nonfoil`), que es lo que hace que el ajuste de sesión NO se aplique; `language: "English"` |
+| `d3` | Nombre y `(SET) número` que se contradicen | `mismatch` con **los dos** candidatos: *Lim-Dûl's Vault (ALL)* y *Shyft (ICE)* |
+| `d4` | Un nombre que no existe | `not_found` sin candidatos |
+| `d5` | Un nombre **en español** (`Llanura`) | Resuelve *Plains* por el paso **3c** y detecta `language: "Spanish"` |
+| `d6` | El mismo con una errata del OCR (`Tlanura`) | Resuelve por el paso **5** (distancia de edición) y detecta igualmente `"Spanish"` |
+
+**`language` es el idioma DETECTADO por el nombre, del M8 (2026-09-16), y puede ser `null`.** No es
+el que se mandó en la lectura: `d1` manda `"English"` y el veredicto contesta `null` —el par
+`(edición, número)` no dice en qué idioma está impresa la carta—, mientras que `d5` manda
+`"English"` y el veredicto contesta `"Spanish"`, que es literalmente el hito. `null` significa «no
+hay señal» y el cliente cae en su ajuste; **no se rellena con el ajuste en el backend**, porque eso
+haría indistinguible «lo detecté» de «me rendí».
+
+Lo que hay que mirar al leerla, porque es donde el proyecto ya se equivocó dos veces: **`finishes`
+habla de `{foil, nonfoil, etched}` y `priceEur` de `{normal, foil, etched}`**. Son dos vocabularios
+para lo mismo y cruzarlos no da error, da un precio de otra cosa. Y el `d2` trae `priceEur.foil`
+con valor **aunque `finishes.foil` sea `false`**: el precio que vale es el del acabado que se va a
+guardar, nunca el más alto.
+
+**`step` viaja como cadena** (`"2"`, `"3"`, `"3b"`), no como el entero que dibujaba el plan.
+
+---
+
+---
+
+## 📷 La única que no sale de `curl` — `scan_mlkit_lecturas.json`
+
+**Sale del móvil, no del backend.** Es lo que `TextRecognition.processImage()` —el plugin
+`@capacitor-mlkit/text-recognition`— devolvió al apuntar la cámara a tres cartas de verdad, y la
+consume `tests/unit/services/scanParser.spec.js`. La regla de esta carpeta vale igual: **no se
+escribe ni se corrige a mano**, erratas del OCR incluidas. Y aquí el motivo es todavía más fuerte
+que en las demás, porque lo exige la sección ✅ del
+[[TCGDesk/Planes/En progreso/Plan - Escáner de Cartas por Cámara]]: *una fixture redactada por quien
+escribió el parser trae los mismos errores que el parser*. Las dos regex del plan se escribieron
+contra la carta ideal (`BLB · EN · 🖌 Artista`) y **ninguna de ellas casaba lo que ML Kit entrega**;
+el bug vivió en pantalla hasta que hubo captura.
+
+### De dónde salió
+
+Sesión del **2026-09-14/15** en el **Realme RMX1993** (arm64-v8a, Android 11), con el APK de debug
+instalado y la vista `/scan` abierta. El bucle es
+`captureSample({quality: 85})` → JPEG en `cache/scan/` → `processImage({path, script: 'LATIN'})`, y
+la vista vuelca el resultado entero con `console.log`. **250 vueltas: 56 lecturas con texto, 67
+vacías, 0 crashes.** Tres cartas:
+
+| Carta | Edición | Marco | Qué aporta |
+|---|---|---|---|
+| *Rampant Growth* | `2X2` (Double Masters 2022) | M15, inglés | La esquina entera: `155/331 C` y `155/331C`, `2X2 EN ScoTT M. FIscHER` |
+| *Tom Bombadil* | `LTR` | M15, inglés | Edición e idioma legibles (`LTR EN MARKO MANEV`) y número **no** (`MO331`) |
+| *Llanura* (*Plains*) | 7ª/8ª ed. española | viejo, ~2002 | Sin bloque de esquina: `Llanura`, `Tierra`, `Ilust. Rob Alexander` |
+
+### Cómo repetirlo
+
+```bash
+cd /home/david/Documents/workspace/tcgdesk/frontend
+npm run build:mobile && npx cap sync android
+JAVA_HOME=/home/david/.jdks/jbr-21.0.11 ./android/gradlew -p android assembleDebug
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+
+# El buffer por defecto se da la vuelta antes de que acabes: hay que ampliarlo ANTES.
+adb logcat -G 16M
+adb logcat -c
+# … abrir /scan en el móvil y sostener la carta ~30 s por carta …
+adb logcat -d > sesion.log
+```
+
+Cada lectura es una línea `Capacitor/Console … Msg: {"text":…,"blocks":[…]}`. Se extraen con un
+`indexOf('Msg: ')` + `JSON.parse`, y las vacías son literalmente `{"text":"","blocks":[]}`.
+
+### ⚠️ `logcat` corta los mensajes en 4023 caracteres, y eso se nota en la fixture
+
+De las 56 lecturas con texto, **48 llegaron cortadas**. El recorte cae siempre dentro del array
+`blocks`, que es lo largo —cada bloque arrastra su `boundingBox` y sus cuatro `cornerPoints`—,
+así que:
+
+- **`text` sobrevivió entero en las 56**: va primero en el JSON y son ~300 caracteres.
+- **`blocks` sobrevivió solo en las lecturas cortas**, tres de las once que se guardaron.
+
+Por eso cada entrada trae siempre `text` y `lineas` (literales, `text` partido por `\n`) y **solo a
+veces `blocks`**. El spec reconstruye la forma `{text, blocks}` desde `lineas` cuando no hay
+`blocks`, **sin inventarse coordenadas**, y tiene un test que contrasta esa reconstrucción contra
+las tres lecturas que sí llegaron enteras: en ellas, aplanar `blocks[].lines[].text` da exactamente
+`lineas`. Si algún día hacen falta las cajas de una lectura larga, **la salida es volver a capturar
+con el buffer ampliado y un `console.log` que parta el JSON en trozos**, no rellenarlas a mano.
+
+### Por qué once lecturas y no las 233
+
+Un volcado en bruto es ruido: la sesión repite la misma carta decenas de veces con erratas distintas.
+Se guardaron **once** —diez con texto más una vacía—, elegidas por caso cubierto y en orden
+cronológico de la sesión:
+
+| `id` | Qué caso cubre |
+|---|---|
+| `tom_bombadil_numero_ilegible` | Edición e idioma sí, número no |
+| `llanura_degradada_tlanura` | Degradación del OCR (`Tlanura`, `Ilst`) — **con `blocks` reales** |
+| `llanura_ilust_sin_punto` | `Ilust Rob Alexander` + la línea de copyright con su `331350` |
+| `llanura_ilust_con_punto` | **El bug**: `Ilust. Rob Alexander` — **con `blocks` reales** |
+| `llanura_degradada_llasura` | Degradación del nombre (`Llasura`) — **con `blocks` reales** |
+| `rampant_growth_set_mal_leido_212` | El OCR lee `212` donde pone `2X2` |
+| `rampant_growth_155_331C_sin_espacio` | Número **sin** espacio antes de la rareza |
+| `rampant_growth_edicion_pegada_al_artista` | `2X2 ENScoTT M. FIscHER`: sin separador, sin edición |
+| `rampant_growth_155_331_C_con_espacio` | La lectura limpia, esquina entera |
+| `rampant_growth_solo_nombre` | Fotograma movido: solo nombre |
+| `fotograma_vacio` | Una de las 67 vueltas sin texto |
+
+Las 233 líneas únicas del volcado completo **no están en el repo**: no aportan casos nuevos —son
+`of`, `the`, `Coast,`, `Wlzards`, `3s0` y demás fragmentos sueltos— y su sitio es el `logcat`, que se
+vuelve a generar en dos minutos con los comandos de arriba.
+
+---
+
+## 🖼 La fixture que no es una respuesta — `recorte_37x53.ppm`
+
+**No sale de `curl` porque no hay ninguna acción que devuelva una imagen**, y no se ha escrito a
+mano: la escupe entera el comando determinista de abajo. La consume
+`tests/unit/services/cardHash.spec.js`, y **su copia byte a byte vive en
+`backend/tests/fixtures/recorte_37x53.ppm`**, que consume `backend/tests/Unit/PerceptualHashTest.php`.
+
+**Por qué existen las dos copias.** Los dos tests escriben el mismo entero literal
+(`1732088766646957941`) y ese par de constantes **es** el contrato entre `src/services/cardHash.js` y
+`backend/src/Domain/Vision/PerceptualHash.php`: PHP hashea las 110.384 impresiones del catálogo y
+JavaScript hashea lo que ve la cámara, así que si la reducción de los dos no coincide bit a bit el
+barrido `BIT_COUNT(hash ^ ?)` no encuentra nada **y no salta ningún error**. Una sola copia no vale:
+el contenedor del backend monta solo `backend/`, así que no ve esta carpeta. Lo que las ata es el
+`md5sum`.
+
+**Por qué PPM y no PNG.** Porque los dos lados tienen que leerla **sin decodificar nada**: no hay
+`ext/gd` ni `ext/imagick` en el contenedor del backend (`php -m`, 2026-09-15) y Vitest corre en
+jsdom, donde `getContext('2d')` devuelve `null`. Un `P6` son trece bytes de cabecera
+(`P6\n37 53\n255\n`) y detrás los píxeles RGB en crudo: cuatro líneas de parser en cada idioma y
+cero dependencias.
+
+**Por qué 37 × 53 y por qué un patrón sintético.** Ni 37 es múltiplo de 9 ni 53 lo es de 8, así que
+las celdas de la rejilla miden 4 o 5 píxeles de ancho y 6 o 7 de alto: los bordes en enteros de la
+media de área se ejercitan de verdad, que es justo lo que una imagen de dimensiones redondas no
+probaría. Y el contenido es un patrón de alta frecuencia generado con aritmética entera, **no un
+recorte de una carta real**, por dos motivos: las imágenes de Scryfall son copyright de Wizards y
+[[TCGDesk/Fuentes de Datos]] prohíbe guardar derivados (`ScryfallImageDownloader.php:20-28`), y un
+patrón con detalle en cada píxel es más duro con la reducción que una ilustración suave. Pesa 5.896
+bytes, que es lo que cabe en un `memory_limit` de 128M sin pensarlo.
+
+### Cómo se regeneró (2026-09-15)
+
+```bash
+cd /home/david/Documents/workspace/tcgdesk
+
+docker compose exec -T backend php -r '
+$w = 37; $h = 53; $b = "";
+for ($y = 0; $y < $h; $y++) { for ($x = 0; $x < $w; $x++) {
+    $b .= chr(($x * 7 + $y * 3) % 256) . chr(($x * $x + $y * $y) % 256) . chr((($x * 13) ^ ($y * 5)) % 256);
+} }
+echo "P6\n$w $h\n255\n", $b;' > backend/tests/fixtures/recorte_37x53.ppm
+
+cp backend/tests/fixtures/recorte_37x53.ppm frontend/tests/fixtures/recorte_37x53.ppm
+
+md5sum backend/tests/fixtures/recorte_37x53.ppm frontend/tests/fixtures/recorte_37x53.ppm
+#   fab7986ac68593556929361e74f3aa43  — las dos, o el contrato no significa nada
+```
+
+Todo son enteros y todo es `% 256`: el comando da el mismo fichero en cualquier máquina y en
+cualquier versión de PHP. **Si se regenera, el entero literal de los dos tests cambia**, y hay que
+volver a escribirlo a mano en los dos sitios — que es el precio de que sea un contrato y no un
+detalle.
 
 ---
 

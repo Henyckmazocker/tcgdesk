@@ -56,6 +56,9 @@ class CatalogoFalso implements CatalogRepositoryInterface
 
     public int $vecesRefrescado = 0;
 
+    /** @var list<array{printingUuid: string, language: string, scryfallId: string}> */
+    public array $idsLocalizados = [];
+
     public function upsertSet(array $set): void
     {
         $this->sets[] = $set;
@@ -87,6 +90,22 @@ class CatalogoFalso implements CatalogRepositoryInterface
         $this->legalities            = array_merge($this->legalities, $filas);
         $this->lotes['legalities'][] = $filas;
         return count($filas);
+    }
+
+    public function escribirIdsLocalizados(array $filas): int
+    {
+        // El backfill de `scryfall_id` no pasa por la ingesta y este doble no lo
+        // prueba: aquí solo tiene que existir para que la clase siga
+        // implementando el puerto. Quien lo prueba es
+        // `CatalogLocalizedIdsCommandTest`.
+        $this->idsLocalizados = array_merge($this->idsLocalizados, $filas);
+
+        return count($filas);
+    }
+
+    public function contarLocalizadosSinId(array $claves): int
+    {
+        return 0;
     }
 
     public function refrescarFormatos(): int

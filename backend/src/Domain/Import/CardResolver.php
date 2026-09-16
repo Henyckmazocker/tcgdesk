@@ -4,22 +4,46 @@ declare(strict_types=1);
 
 namespace App\Domain\Import;
 
+use App\Domain\Collection\CardLanguage;
 use App\Domain\Repository\CardResolutionRepositoryInterface;
 
 /**
- * Los cuatro pasos del resolvedor de dos velocidades, en orden y con la regla de
+ * Los pasos del resolvedor de dos velocidades, en orden y con la regla de
  * oro: **ante la duda, conflicto**.
  *
  * ```
  * 1. ¿Hay scryfallId?     → mtg_printing.scryfall_id                    [EXACTO]
  * 2. ¿Hay set + número?   → (set_code, collector_number)                [EXACTO]
  *    → si la línea trae TAMBIÉN nombre y NO concuerda → CONFLICTO con las dos
+ * 2b. ¿Nombre + número SIN set? → (nombre normalizado, collector_number)[EXACTO]
+ *    → si el par tiene VARIAS impresiones detrás, CEDE EL TURNO al paso 3
  * 3. Nombre normalizado   → mtg_card.name_normalized                    [EXACTO]
  *    3b. si no casa, reintento por la CARA FRONTAL (parte por ' // ')   [EXACTO]
  *    → si la clave tiene MÁS DE UNA carta detrás → CONFLICTO con candidatos
+ * 3c. Nombre LOCALIZADO   → mtg_printing_localized.name_normalized      [EXACTO]
+ *    → la misma regla del 3, en los otros nueve idiomas
  * 4. FULLTEXT BOOLEAN     → si devuelve exactamente 1 resultado, resuelve
- *                           si devuelve varios o ninguno → CONFLICTO
+ *                           si devuelve varios → CONFLICTO y AQUÍ SE ACABA
+ * 5. Nombre APROXIMADO    → distancia de edición <= 2, solo sobre los
+ *                           `not_found` del 4. Un único candidato a la
+ *                           distancia mínima, o CONFLICTO
  * ```
+ *
+ * ## Por qué hay un paso por idioma y otro por parecido
+ *
+ * Los dos últimos nacieron el 2026-09-15 del escáner por cámara, y los dos
+ * arreglan un `not_found` que no era culpa de nadie:
+ *
+ *  - **El 3c**, porque el resolvedor era monolingüe. Las 410.604 filas de
+ *    nombres traducidos no las consultaba nadie, así que una Llanura española no
+ *    se encontraba ni fotografiada ni importada en un CSV.
+ *  - **El 5**, porque una errata de UN CARÁCTER tiraba la lectura entera. Es lo
+ *    que le pasa al OCR con «Tlanura» y «Llasura», los dos únicos fallos de
+ *    nombre de las fixturas reales.
+ *
+ * Los dos entran **para todos**, `/import` incluido: un nombre mal tecleado en un
+ * fichero es el mismo problema que uno mal leído en una foto.
+ *
  *
  * ## Por qué los pasos encadenan en vez de excluirse
  *
@@ -65,6 +89,20 @@ final class CardResolver
      */
     private const CANDIDATOS_FULLTEXT = 25;
 
+    /**
+     * Distancia de edición máxima del paso 5. **Es 2, y subirla es caro en la
+     * dirección peor.**
+     *
+     * Dos caracteres cubren lo que el OCR falla de verdad —una letra cambiada,
+     * una doble leída como simple— y dejan fuera lo que no es una errata sino
+     * otra carta. El catálogo está lleno de nombres que se diferencian en tres o
+     * cuatro caracteres (`Shock` / `Shocker`, las cinco tierras básicas en sus
+     * diez idiomas), y a distancia 3 empiezan a empatarse entre sí: como la regla
+     * es «uno o ninguno», el efecto de subirla no es resolver más, es convertir
+     * aciertos en `ambiguous`.
+     */
+    private const DISTANCIA_MAXIMA = 2;
+
     public function __construct(
         private readonly CardResolutionRepositoryInterface $catalogo,
         private readonly NameNormalizer $normalizador,
@@ -101,11 +139,71 @@ final class CardResolver
 
         $pendientes = $this->pasoScryfallId($pendientes, $veredictos);
         $pendientes = $this->pasoSetYNumero($pendientes, $veredictos, $desacuerdos);
+        $pendientes = $this->pasoNombreYNumero($pendientes, $veredictos);
         $pendientes = $this->pasoNombreNormalizado($pendientes, $veredictos, $desacuerdos);
-        $this->pasoFulltext($pendientes, $veredictos);
+        $pendientes = $this->pasoNombreLocalizado($pendientes, $veredictos);
+        $pendientes = $this->pasoFulltext($pendientes, $veredictos);
+        $this->pasoNombreAproximado($pendientes, $veredictos);
 
         /** @var list<CardResolution> */
         return array_values($veredictos);
+    }
+
+    /**
+     * El idioma que **declara el nombre que resolvió**, o `null` si ninguno lo
+     * declara. Es la cascada del M8, y aquí están sus tres escalones de abajo.
+     *
+     * El de arriba —el bloque impreso en la esquina— no pasa por aquí y **sigue
+     * mandando**: lo lee el móvil, llega en `ParsedRow::$language` y el cliente
+     * solo mira esto cuando aquel vino vacío. Es lo único impreso en la carta
+     * física, así que nada de lo que se decida aquí lo pisa.
+     *
+     * ```
+     * 2. El nombre casó en `mtg_printing_localized` y su clave apunta a UN
+     *    idioma                                              → ese idioma
+     * 3. El nombre casó en el índice INGLÉS (`mtg_card`)      → 'English'
+     * 4. No lo casó ningún nombre —pasos 1, 2 y 2b, que
+     *    resuelven por identificador o por (edición, número)— → null
+     * ```
+     *
+     * ## El escalón 4 es el que garantiza que esto no empeore nada
+     *
+     * `null` no es «no sé»: es «que decida el cliente», y el cliente hace
+     * exactamente lo de siempre —caer en `ajustes.language`—. Donde no hay
+     * señal, el comportamiento es el de antes del hito y no una adivinanza.
+     *
+     * ## Y por qué el 3 dice `English` en vez de callarse
+     *
+     * Porque la **ausencia** de coincidencia localizada es en sí misma la señal:
+     * `mtg_card.name_normalized` guarda el inglés, así que casar ahí es haber
+     * leído un nombre inglés. Sin este escalón, una carta inglesa heredaría el
+     * «Spanish» que el usuario dejó puesto en el selector, que es justo la
+     * mitad del problema que el hito arregla.
+     *
+     * El paso **5 no es un escalón nuevo**: busca el parecido en las dos tablas
+     * a la vez, así que se fía solo de la señal que traiga el candidato —la
+     * localizada la trae; la inglesa, no—. Un parecido a dos caracteres del
+     * índice inglés es demasiado poco para declarar un idioma.
+     *
+     * @param array<string, mixed> $carta El candidato con el que se resolvió
+     */
+    private function idiomaDetectado(string $paso, array $carta): ?string
+    {
+        $idioma = match ($paso) {
+            '3', '3b', '4' => CardLanguage::English->value,
+            '3c', '5'      => isset($carta['language']) && is_string($carta['language'])
+                ? $carta['language']
+                : null,
+            // 1, 2 y 2b: aquí no resolvió un nombre, resolvió un identificador.
+            default        => null,
+        };
+
+        // El vocabulario es el de `CardLanguage` porque lo que sale de aquí
+        // acaba en `mtg_collection_item.language`: un idioma que MTGJSON
+        // publicase mañana y el enum no conociera haría que `collection_add`
+        // contestara 422 a una lectura que el escáner dio por buena. Sin
+        // vocabulario, `null` y al ajuste del usuario.
+        return $idioma === null ? null : CardLanguage::intentar($idioma)?->value;
     }
 
     /**
@@ -135,7 +233,12 @@ final class CardResolver
             $clave = $fila->scryfallId !== null ? mb_strtolower($fila->scryfallId) : '';
 
             if (isset($impresiones[$clave])) {
-                $veredictos[$i] = CardResolution::resuelta($fila, $impresiones[$clave], '1');
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $impresiones[$clave],
+                    '1',
+                    $this->idiomaDetectado('1', $impresiones[$clave])
+                );
                 continue;
             }
 
@@ -191,7 +294,12 @@ final class CardResolver
             }
 
             if ($this->nombreConcuerda($fila, $impresiones[$clave])) {
-                $veredictos[$i] = CardResolution::resuelta($fila, $impresiones[$clave], '2');
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $impresiones[$clave],
+                    '2',
+                    $this->idiomaDetectado('2', $impresiones[$clave])
+                );
                 continue;
             }
 
@@ -200,6 +308,76 @@ final class CardResolver
             // nombre, y allí sale conflicto con las dos.
             $desacuerdos[$i] = $impresiones[$clave];
             $siguen[$i]      = $fila;
+        }
+
+        return $siguen;
+    }
+
+    /**
+     * Paso 2b — nombre + número de coleccionista **cuando la línea no trae
+     * edición**, el dato que hasta el 2026-09-15 se tiraba a la basura.
+     *
+     * `claveDeSet()` devuelve `null` en cuanto falta `setCode`, así que
+     * `Thoughtseize / 1117` caía al paso 3 —que solo mira el nombre— y entraba con
+     * edición asumida teniendo con qué acertar la impresión exacta. Lo pagaban
+     * `/import` y sobre todo las Secret Lair, que no imprimen el código de edición
+     * en la esquina. Medido en la BD viva: el par identifica de forma única el
+     * **90,42 %** del catálogo y el **98,54 %** de las 2.599 Secret Lair.
+     *
+     * ## Cede el turno; no conflictúa, y por eso no puede romper nada
+     *
+     * Un par ambiguo —`Plains 250` vive en 14 ediciones— no vuelve del catálogo, y
+     * la ausencia hace todo el trabajo: la fila sigue al paso 3 y se resuelve por
+     * nombre con edición asumida **exactamente igual que antes de que este paso
+     * existiera**. No hay rama de conflicto que escribir ni motivo nuevo que
+     * añadir al contrato.
+     *
+     * ## Aquí NO se contrasta el nombre, y el paso 2 sí
+     *
+     * En el paso 2 el nombre es un dato aparte que puede contradecir al par y por
+     * eso pasa por `nombreConcuerda()`. Aquí el nombre **es la clave de búsqueda**:
+     * la impresión que vuelve concuerda por construcción —el catálogo casa contra
+     * `name_normalized` y contra su cara frontal, la misma vara del paso 3—, así
+     * que un contraste posterior no podría fallar nunca.
+     *
+     * @param  array<int, ParsedRow>           $pendientes
+     * @param  array<int, CardResolution|null> $veredictos
+     * @return array<int, ParsedRow>
+     */
+    private function pasoNombreYNumero(array $pendientes, array &$veredictos): array
+    {
+        $pares = [];
+        foreach ($pendientes as $fila) {
+            $clave = $this->claveDeNombreYNumero($fila);
+            if ($clave !== null) {
+                $pares[$clave] = [
+                    'name'            => $this->normalizador->normalizar((string) $fila->name),
+                    'collectorNumber' => (string) $fila->collectorNumber,
+                ];
+            }
+        }
+
+        if ($pares === []) {
+            return $pendientes;
+        }
+
+        $impresiones = $this->catalogo->impresionesPorNombreYNumero(array_values($pares));
+        $siguen      = [];
+
+        foreach ($pendientes as $i => $fila) {
+            $clave = $this->claveDeNombreYNumero($fila);
+
+            if ($clave === null || !isset($impresiones[$clave])) {
+                $siguen[$i] = $fila;
+                continue;
+            }
+
+            $veredictos[$i] = CardResolution::resuelta(
+                $fila,
+                $impresiones[$clave],
+                '2b',
+                $this->idiomaDetectado('2b', $impresiones[$clave])
+            );
         }
 
         return $siguen;
@@ -304,7 +482,12 @@ final class CardResolver
             }
 
             if (count($candidatos) === 1) {
-                $veredictos[$i] = CardResolution::resuelta($fila, $candidatos[0], $porFila[$i]['paso']);
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $candidatos[0],
+                    $porFila[$i]['paso'],
+                    $this->idiomaDetectado($porFila[$i]['paso'], $candidatos[0])
+                );
                 continue;
             }
 
@@ -381,22 +564,105 @@ final class CardResolver
     }
 
     /**
-     * Paso 4 — FULLTEXT. El único inexacto, y por eso el único con la regla del
-     * «exactamente 1».
+     * Paso 3c — la clave normalizada **en los otros nueve idiomas**.
      *
-     * @param array<int, ParsedRow>           $pendientes
-     * @param array<int, CardResolution|null> $veredictos
+     * Misma regla que el 3 y el 3b, y por eso es el mismo código con otra
+     * consulta detrás: uno resuelve, varios son `ambiguous` y cero cede el turno.
+     * Lo que cambia es dónde mira — `mtg_printing_localized` en vez de
+     * `mtg_card`—, y eso basta para que una Llanura deje de ser `not_found`.
+     *
+     * Va **después** del 3b y no antes: el inglés es el idioma del catálogo y el
+     * de la inmensa mayoría de las colecciones, así que probarlo primero resuelve
+     * casi todo sin tocar una tabla de 410.604 filas. Y va **antes** del 4,
+     * porque esto es igualdad exacta y aquello es `FULLTEXT`: un paso exacto
+     * nunca se pone detrás de uno inexacto.
+     *
+     * **La clave la calcula la misma función que normalizó la columna.** Si
+     * alguien cambia `NameNormalizer` y no relanza `catalog:normalize --all`,
+     * este paso deja de encontrar nada sin un solo error — igual que el paso 3.
+     *
+     * @param  array<int, ParsedRow>           $pendientes
+     * @param  array<int, CardResolution|null> $veredictos
+     * @return array<int, ParsedRow>
      */
-    private function pasoFulltext(array $pendientes, array &$veredictos): void
+    private function pasoNombreLocalizado(array $pendientes, array &$veredictos): array
+    {
+        $claves = [];
+        foreach ($pendientes as $i => $fila) {
+            if ($fila->name === null || trim($fila->name) === '') {
+                continue;
+            }
+
+            $clave = $this->normalizador->normalizar($fila->name);
+            if ($clave !== '') {
+                $claves[$i] = $clave;
+            }
+        }
+
+        if ($claves === []) {
+            return $pendientes;
+        }
+
+        $porClave = $this->catalogo->cartasPorNombreLocalizado(array_values(array_unique($claves)));
+        $siguen   = [];
+
+        foreach ($pendientes as $i => $fila) {
+            $candidatos = isset($claves[$i]) ? ($porClave[$claves[$i]] ?? []) : [];
+
+            if (count($candidatos) === 1) {
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $candidatos[0],
+                    '3c',
+                    $this->idiomaDetectado('3c', $candidatos[0])
+                );
+                continue;
+            }
+
+            if (count($candidatos) > 1) {
+                // El mismo nombre traducido apuntando a dos cartas distintas. No
+                // se elige ninguna, exactamente como en el paso 3.
+                $veredictos[$i] = CardResolution::conflicto($fila, CardResolution::AMBIGUA, $candidatos);
+                continue;
+            }
+
+            $siguen[$i] = $fila;
+        }
+
+        return $siguen;
+    }
+
+    /**
+     * Paso 4 — FULLTEXT. El único inexacto hasta que llegó el 5, y por eso el
+     * primero con la regla del «exactamente 1».
+     *
+     * **Devuelve las filas que se quedaron en `not_found`** para que el paso 5
+     * las intente por parecido. Su veredicto ya está puesto: si el 5 tampoco
+     * encuentra nada, el `not_found` sigue ahí y nadie tiene que acordarse de
+     * volver a escribirlo.
+     *
+     * **Las `ambiguous` NO bajan al 5**, y es deliberado: un empate significa que
+     * lo leído sí casa con cartas del catálogo, y buscar además las que se le
+     * parecen solo puede convertir un empate honesto en una resolución falsa. El
+     * paso 5 es para cuando no se encontró nada, que es la forma que tiene una
+     * errata de presentarse.
+     *
+     * @param  array<int, ParsedRow>           $pendientes
+     * @param  array<int, CardResolution|null> $veredictos
+     * @return array<int, ParsedRow>           Las que quedaron sin encontrar
+     */
+    private function pasoFulltext(array $pendientes, array &$veredictos): array
     {
         /** @var array<string, list<array<string, mixed>>> $memoria */
         $memoria = [];
+        $siguen  = [];
 
         foreach ($pendientes as $i => $fila) {
             $nombre = $fila->name !== null ? trim($fila->name) : '';
 
             if ($nombre === '') {
-                // Sin nombre y sin identificador exacto no hay nada que buscar.
+                // Sin nombre y sin identificador exacto no hay nada que buscar,
+                // ni parecido que medir: esta no baja al paso 5.
                 $veredictos[$i] = CardResolution::conflicto($fila, CardResolution::NO_ENCONTRADA);
                 continue;
             }
@@ -410,7 +676,12 @@ final class CardResolver
             $candidatos = $memoria[$memo];
 
             if (count($candidatos) === 1) {
-                $veredictos[$i] = CardResolution::resuelta($fila, $candidatos[0], '4');
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $candidatos[0],
+                    '4',
+                    $this->idiomaDetectado('4', $candidatos[0])
+                );
                 continue;
             }
 
@@ -419,6 +690,71 @@ final class CardResolver
                 $candidatos === [] ? CardResolution::NO_ENCONTRADA : CardResolution::AMBIGUA,
                 $candidatos
             );
+
+            if ($candidatos === []) {
+                $siguen[$i] = $fila;
+            }
+        }
+
+        return $siguen;
+    }
+
+    /**
+     * Paso 5 — el nombre APROXIMADO, a distancia de edición `<= 2`.
+     *
+     * El último recurso, y existe por una medida concreta: los dos únicos fallos
+     * de nombre de las fixturas reales del OCR son erratas de **un solo
+     * carácter** —«Tlanura» por *Llanura*, «Llasura» por *Llanura*—, y ni la
+     * igualdad del paso 3 ni el `FULLTEXT` del 4 rescatan ninguna. Una letra mal
+     * leída tiraba la lectura entera.
+     *
+     * **La regla dura: un solo candidato a distancia mínima, o `ambiguous`.** El
+     * repositorio ya devuelve solo el escalón más cercano, así que dos aquí son
+     * dos cartas igual de parecidas a lo leído — y entre dos igual de parecidas
+     * no se elige nunca. Es lo que impide que un CSV con un nombre
+     * deliberadamente distinto entre por la puerta de atrás: con dos cartas a
+     * distancia 2, este paso no resuelve.
+     *
+     * **Entra para todos, `/import` incluido**, por decisión explícita: un nombre
+     * mal tecleado en un CSV es el mismo problema que uno mal leído en una foto.
+     *
+     * @param array<int, ParsedRow>           $pendientes Solo las `not_found` del 4
+     * @param array<int, CardResolution|null> $veredictos
+     */
+    private function pasoNombreAproximado(array $pendientes, array &$veredictos): void
+    {
+        /** @var array<string, list<array<string, mixed>>> $memoria */
+        $memoria = [];
+
+        foreach ($pendientes as $i => $fila) {
+            $clave = $fila->name !== null ? $this->normalizador->normalizar($fila->name) : '';
+
+            if ($clave === '') {
+                continue;
+            }
+
+            if (!isset($memoria[$clave])) {
+                $memoria[$clave] = $this->catalogo->cartasPorNombreAproximado($clave, self::DISTANCIA_MAXIMA);
+            }
+
+            $candidatos = $memoria[$clave];
+
+            if (count($candidatos) === 1) {
+                $veredictos[$i] = CardResolution::resuelta(
+                    $fila,
+                    $candidatos[0],
+                    '5',
+                    $this->idiomaDetectado('5', $candidatos[0])
+                );
+                continue;
+            }
+
+            if (count($candidatos) > 1) {
+                $veredictos[$i] = CardResolution::conflicto($fila, CardResolution::AMBIGUA, $candidatos);
+            }
+
+            // Con cero candidatos NO se toca el veredicto: el `not_found` que
+            // puso el paso 4 sigue siendo la respuesta correcta.
         }
     }
 
@@ -434,5 +770,36 @@ final class CardResolver
         }
 
         return strtoupper($fila->setCode) . '|' . $fila->collectorNumber;
+    }
+
+    /**
+     * 'clave normalizada|numero' del paso 2b, o null si la fila no da para él.
+     *
+     * **La condición que no es evidente es la primera: si la fila TRAE edición,
+     * este paso no se ejecuta.** Si el par `(set, número)` existió y no casó —o
+     * casó y se contradijo con el nombre—, insistir por nombre y número resolvería
+     * a **otra** impresión de la misma carta y taparía un dato contradictorio que
+     * hoy sale a la luz como conflicto `mismatch`. El paso 2b es para las líneas
+     * que no dicen edición, no para arreglar las que la dicen mal.
+     */
+    private function claveDeNombreYNumero(ParsedRow $fila): ?string
+    {
+        if ($fila->setCode !== null && $fila->setCode !== '') {
+            return null;
+        }
+
+        if ($fila->collectorNumber === null || $fila->collectorNumber === '') {
+            return null;
+        }
+
+        if ($fila->name === null || trim($fila->name) === '') {
+            return null;
+        }
+
+        // El MISMO normalizador del paso 3: comparar el nombre tecleado con el del
+        // catálogo letra a letra convertiría en fallo cada tilde y cada apóstrofo.
+        $clave = $this->normalizador->normalizar($fila->name);
+
+        return $clave === '' ? null : $clave . '|' . $fila->collectorNumber;
     }
 }

@@ -44,6 +44,37 @@ interface CatalogRepositoryInterface
     public function upsertLegalities(array $filas): int;
 
     /**
+     * Backfill de `mtg_printing_localized.scryfall_id`. **Solo actualiza: nunca
+     * crea filas.**
+     *
+     * Es lo que separa a este método de `upsertLocalized()`, que es un
+     * `INSERT ... ON DUPLICATE KEY UPDATE` y que insertaría una fila a medias
+     * —sin `name_normalized`— por cada traducción que MTGJSON publique y que
+     * nuestro catálogo todavía no tenga ingerida. Esa fila no daría ningún
+     * error: dejaría a `catalog:normalize` devolviendo 1 sin que nadie entendiera
+     * por qué.
+     *
+     * @param  list<array{printingUuid: string, language: string, scryfallId: string}> $filas
+     * @return int Filas enviadas
+     */
+    public function escribirIdsLocalizados(array $filas): int;
+
+    /**
+     * De esas claves, **cuántas existen en la tabla y siguen con `scryfall_id` a
+     * NULL**. Cero es el estado sano y es el código de salida del backfill.
+     *
+     * Se pregunta por un lote concreto y no por la tabla entera a propósito: un
+     * `COUNT(*) WHERE scryfall_id IS NULL` global cuenta también las traducciones
+     * para las que **MTGJSON no publica id**, que son NULL legítimos y lo van a
+     * ser siempre. Lo que hay que detectar es otra cosa: una fila que la fuente
+     * SÍ trae con id y que no llegó a escribirse.
+     *
+     * @param  list<array{printingUuid: string, language: string}> $claves
+     * @return int Filas que deberían tener id y no lo tienen
+     */
+    public function contarLocalizadosSinId(array $claves): int;
+
+    /**
      * Reconstruye `mtg_format` con los formatos que hay en `mtg_legality`.
      *
      * Es **el único sitio** donde se escribe esa tabla, y el `SELECT DISTINCT`

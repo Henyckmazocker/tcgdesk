@@ -10,6 +10,7 @@ use App\Application\UseCase\SearchPrecons;
 use App\Domain\Catalog\SearchCriteria;
 use App\Domain\Repository\CardRepositoryInterface;
 use App\Router\CatalogHttpRouter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Tests\Unit\Doubles\PreconesFalsos;
@@ -27,6 +28,20 @@ class CatalogoMudo implements CardRepositoryInterface
         return null;
     }
 
+    public function impresionesDe(string $uuid, ?string $cursor, int $limite): ?array
+    {
+        return null;
+    }
+
+    /**
+     * El escáner no pasa por aquí: este doble prueba otra cosa. Existe porque
+     * la interfaz lo declara desde el M2 del Plan - Escáner de Cartas por Cámara.
+     */
+    public function porUuids(array $uuids): array
+    {
+        return [];
+    }
+
     public function allSets(): array
     {
         return [];
@@ -34,7 +49,61 @@ class CatalogoMudo implements CardRepositoryInterface
 }
 
 /**
- * Las dos rutas `GET` de precons, la tercera divergencia del `CLAUDE.md`.
+ * Un catálogo que sí sabe de impresiones: el doble de las rutas de carta.
+ *
+ * Apunta lo que recibe `impresionesDe()` en vez de devolver algo fijo, porque lo
+ * que prueba el router de `/printings` no es la consulta —eso es de
+ * `ImpresionesDeCartaTest`, contra MySQL de verdad— sino **lo que el router le
+ * pasa al repositorio**: el `limit` acotado, el cursor tal cual y el uuid
+ * descodificado. Un doble que solo devolviera filas dejaría el acotado sin
+ * probar, que es justo el único sitio donde se acota (`ValidationMiddleware` no
+ * ve esta ruta).
+ */
+class CatalogoDeImpresiones implements CardRepositoryInterface
+{
+    /** @var list<array{uuid: string, cursor: string|null, limite: int}> */
+    public array $llamadas = [];
+
+    /** Lo que devolverá `impresionesDe()`. `null` es el uuid que no existe. */
+    public ?array $pagina = null;
+
+    /** Lo que devolverá `findByUuid()`, para distinguir la ficha de la lista. */
+    public ?array $ficha = null;
+
+    public function search(SearchCriteria $criterios): array
+    {
+        return ['items' => [], 'nextCursor' => null];
+    }
+
+    public function findByUuid(string $uuid): ?array
+    {
+        return $this->ficha;
+    }
+
+    public function impresionesDe(string $uuid, ?string $cursor, int $limite): ?array
+    {
+        $this->llamadas[] = ['uuid' => $uuid, 'cursor' => $cursor, 'limite' => $limite];
+
+        return $this->pagina;
+    }
+
+    /**
+     * El escáner no pasa por aquí: este doble prueba otra cosa. Existe porque
+     * la interfaz lo declara desde el M2 del Plan - Escáner de Cartas por Cámara.
+     */
+    public function porUuids(array $uuids): array
+    {
+        return [];
+    }
+
+    public function allSets(): array
+    {
+        return [];
+    }
+}
+
+/**
+ * Las rutas `GET` de precons y la sexta ruta, `/cards/{uuid}/printings`.
  *
  * Lo que se protege, por orden de importancia:
  *
@@ -46,6 +115,22 @@ class CatalogoMudo implements CardRepositoryInterface
  *  3. **Que la lista y la ficha son rutas distintas** y ni el `match` ni la
  *     expresión regular se comen una por la otra.
  *
+ * Y de `/printings`, por el mismo orden:
+ *
+ *  1. **Que el `limit` se acota aquí o no lo acota nadie.** Esta ruta no tiene
+ *     criteria que normalice `$_GET` y `public/index.php` la desvía antes de
+ *     construir `Application`, así que `ValidationMiddleware` ni la ve. Un
+ *     `limit=100000` sin acotar es un `LIMIT` de seis cifras sobre las 949
+ *     impresiones del peor caso.
+ *  2. **Que el 404 es del `uuid` y no de la carta.** El repositorio devuelve
+ *     `null` solo cuando el uuid no está en `mtg_printing`; una carta que nunca
+ *     se reimprimió es un 200 con un único item, y confundirlos haría que
+ *     `/import` leyera «esta carta no se puede corregir» como «este uuid está
+ *     roto».
+ *  3. **Que `/printings` no se la come la ficha.** Su rama va antes en el
+ *     `match` (`CatalogHttpRouter.php:87`), y el doble devuelve cosas distintas
+ *     por cada camino para que intercambiarlas se vea.
+ *
  * Las cabeceras no se pueden inspeccionar bajo el SAPI de CLI —mismo límite que
  * `ImageHttpRouterTest`—, así que el `Cache-Control` de 5 minutos se verifica con
  * `curl` contra el contenedor, no aquí. Lo que sí se comprueba es el código de
@@ -55,11 +140,14 @@ final class CatalogHttpRouterTest extends TestCase
 {
     private PreconesFalsos $precons;
 
+    private CatalogoDeImpresiones $cartas;
+
     private CatalogHttpRouter $router;
 
     protected function setUp(): void
     {
         $this->precons = new PreconesFalsos();
+        $this->cartas  = new CatalogoDeImpresiones();
 
         foreach (['Alfa', 'Bravo', 'Charlie', 'Delta', 'Echo'] as $i => $nombre) {
             $this->precons->precons[] = [
@@ -97,7 +185,7 @@ final class CatalogHttpRouterTest extends TestCase
 
         $this->router = new CatalogHttpRouter(
             new SearchCards(new CatalogoMudo()),
-            new CatalogoMudo(),
+            $this->cartas,
             new SearchPrecons($this->precons),
             new GetPrecon($this->precons),
             new NullLogger()
@@ -254,6 +342,142 @@ final class CatalogHttpRouterTest extends TestCase
 
         $this->assertSame(404, http_response_code());
         $this->assertSame(['error' => 'not_found'], $cuerpo);
+    }
+
+    /* ── La sexta ruta: /api/catalog/cards/{uuid}/printings ──────────────── */
+
+    public function testLasImpresionesSalenConSuCursorYSinUnaClaveDeMas(): void
+    {
+        $this->cartas->pagina = [
+            'items'      => [['uuid' => 'u-1', 'setCode' => 'LEA'], ['uuid' => 'u-2', 'setCode' => 'A25']],
+            'nextCursor' => 'eyJ2IjoiMTk5MyJ9',
+        ];
+
+        $cuerpo = $this->pedir('/api/catalog/cards/u-1/printings');
+
+        $this->assertSame(200, http_response_code());
+        // Exactamente `items` + `nextCursor`, el mismo par que /cards y /decks:
+        // es lo que permite que el scroll infinito del frontend sea un solo
+        // trozo de código. Una clave de más aquí lo bifurcaría.
+        $this->assertSame(['items', 'nextCursor'], array_keys($cuerpo));
+        $this->assertSame(['u-1', 'u-2'], array_column($cuerpo['items'], 'uuid'));
+        $this->assertSame('eyJ2IjoiMTk5MyJ9', $cuerpo['nextCursor']);
+    }
+
+    public function testUnUuidQueNoExisteEs404PrintingNotFound(): void
+    {
+        // `null` del repositorio = el uuid no está en `mtg_printing`.
+        $this->cartas->pagina = null;
+
+        $cuerpo = $this->pedir('/api/catalog/cards/no-existe/printings');
+
+        $this->assertSame(404, http_response_code());
+        $this->assertSame(['error' => 'printing_not_found'], $cuerpo);
+    }
+
+    public function testUnaCartaDeImpresionUnicaEs200ConUnItem(): void
+    {
+        $this->cartas->pagina = ['items' => [['uuid' => 'u-solo']], 'nextCursor' => null];
+
+        $cuerpo = $this->pedir('/api/catalog/cards/u-solo/printings');
+
+        // El 404 es del `uuid`, no de la carta: una impresión que existe y cuya
+        // carta no tiene hermanas devuelve su única fila. Si esto fuese 404,
+        // `/import` leería «esta carta no se puede corregir» como «este uuid
+        // está roto», que es otro fallo y con otra salida.
+        $this->assertSame(200, http_response_code());
+        $this->assertCount(1, $cuerpo['items']);
+        $this->assertNull($cuerpo['nextCursor']);
+    }
+
+    /**
+     * El acotado de `limit`, que es lo único que separa a esta ruta de un
+     * `LIMIT` de seis cifras: no hay criteria que normalice `$_GET` y
+     * `ValidationMiddleware` no ve el desvío del catálogo.
+     *
+     * Los cuatro casos son los que M2 midió a mano contra el contenedor.
+     *
+     * @return list<array{0: array<string, string>, 1: int}>
+     */
+    public static function limitesQueLleganPorLaUrl(): array
+    {
+        return [
+            'el techo de 100'        => [['limit' => '100000'], 100],
+            'el defecto de 60'       => [[], 60],
+            'el suelo de 1'          => [['limit' => '0'], 1],
+            'no numerico, al defecto' => [['limit' => 'abc'], 60],
+        ];
+    }
+
+    /**
+     * @param array<string, string> $query
+     */
+    #[DataProvider('limitesQueLleganPorLaUrl')]
+    public function testElLimiteSeAcotaEntreUnoYCien(array $query, int $esperado): void
+    {
+        $this->cartas->pagina = ['items' => [], 'nextCursor' => null];
+
+        $_GET = $query;
+        $this->pedir('/api/catalog/cards/u-1/printings?' . http_build_query($query));
+
+        $this->assertSame($esperado, $this->cartas->llamadas[0]['limite']);
+    }
+
+    public function testElCursorViajaCrudoYSinElNoHayCursor(): void
+    {
+        $this->cartas->pagina = ['items' => [], 'nextCursor' => null];
+
+        // Un cursor ilegible NO es un error: `Cursor::decodificar()` lo trata
+        // como «empieza por el principio». Validarlo aquí convertiría un cursor
+        // caducado en un 400 que el cliente no sabría resolver.
+        $_GET = ['cursor' => 'basura-que-no-es-base64'];
+        $this->pedir('/api/catalog/cards/u-1/printings?cursor=basura-que-no-es-base64');
+
+        $this->assertSame('basura-que-no-es-base64', $this->cartas->llamadas[0]['cursor']);
+
+        $_GET = [];
+        $this->pedir('/api/catalog/cards/u-1/printings');
+
+        $this->assertNull($this->cartas->llamadas[1]['cursor']);
+    }
+
+    public function testElUuidLlegaDescodificadoAlRepositorio(): void
+    {
+        $this->cartas->pagina = ['items' => [], 'nextCursor' => null];
+
+        $this->pedir('/api/catalog/cards/' . rawurlencode('uuid con espacio') . '/printings');
+
+        $this->assertSame('uuid con espacio', $this->cartas->llamadas[0]['uuid']);
+    }
+
+    public function testLaFichaNoSeComeLaRutaDeImpresionesNiAlReves(): void
+    {
+        $this->cartas->ficha  = ['uuid' => 'u-1', 'name' => 'Lightning Bolt'];
+        $this->cartas->pagina = ['items' => [['uuid' => 'u-1']], 'nextCursor' => null];
+
+        // La ficha sigue siendo la ficha: no lleva `items`.
+        $ficha = $this->pedir('/api/catalog/cards/u-1');
+
+        $this->assertSame(200, http_response_code());
+        $this->assertSame('Lightning Bolt', $ficha['name']);
+        $this->assertArrayNotHasKey('items', $ficha);
+        $this->assertSame([], $this->cartas->llamadas);
+
+        // Y `/printings` va por su rama, que en el `match` está ANTES.
+        $lista = $this->pedir('/api/catalog/cards/u-1/printings');
+
+        $this->assertArrayHasKey('items', $lista);
+        $this->assertArrayNotHasKey('name', $lista);
+        $this->assertCount(1, $this->cartas->llamadas);
+    }
+
+    public function testUnSegmentoDeMasDespuesDePrintingsNoLoAtiendeNadie(): void
+    {
+        $cuerpo = $this->pedir('/api/catalog/cards/u-1/printings/otra-cosa');
+
+        $this->assertSame(404, http_response_code());
+        $this->assertSame(['error' => 'not_found'], $cuerpo);
+        $this->assertSame([], $this->cartas->llamadas);
     }
 
     /** @return array<string, mixed> */

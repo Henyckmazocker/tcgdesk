@@ -10,6 +10,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Solo arm64. Lo trajo el escáner de cartas: ML Kit empaqueta
+        // `libmlkit_google_ocr_pipeline.so` en CUATRO ABIs y son 39,14 MiB, de los
+        // que `arm64-v8a` es 10,55 y el resto —x86 11,03, x86_64 11,09,
+        // armeabi-v7a 6,47— son 28,6 MiB que ningún móvil moderno ejecuta. Sin
+        // este filtro el APK de debug pasaba de 5,7 MB a 51,1 MB.
+        //
+        // OJO a lo que cuesta: con esto el APK **no corre en un emulador x86**.
+        // En dispositivo físico no cambia nada —arm64 es todo lo vendido desde
+        // ~2017, el Realme RMX1993 de las pruebas incluido—, pero si algún día
+        // hace falta el emulador, lo que se quita es esta línea.
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61

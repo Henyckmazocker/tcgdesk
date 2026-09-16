@@ -224,30 +224,13 @@ import Skeleton from 'primevue/skeleton'
 import CardImage from '@/components/CardImage.vue'
 import CollectionAviso from '@/components/CollectionAviso.vue'
 import CollectionControls from '@/components/CollectionControls.vue'
-import { ACABADOS, CONDICIONES, IDIOMAS, etiquetaAcabado } from '@/constants/collection'
+import { ACABADOS, COLORES, CONDICIONES, IDIOMAS, RAREZAS, etiquetaAcabado, etiquetaRareza } from '@/constants/collection'
 import { useCatalogStore } from '@/stores/catalog'
 import { useCollectionStore } from '@/stores/collection'
 
 const VISTAS = [
   { label: 'Rejilla', value: 'grid', icon: 'pi pi-th-large' },
   { label: 'Tabla', value: 'table', icon: 'pi pi-list' }
-]
-
-const RAREZAS = [
-  { label: 'Común', value: 'common' },
-  { label: 'Infrecuente', value: 'uncommon' },
-  { label: 'Rara', value: 'rare' },
-  { label: 'Mítica', value: 'mythic' },
-  { label: 'Especial', value: 'special' },
-  { label: 'Bonus', value: 'bonus' }
-]
-
-const COLORES = [
-  { label: 'Blanco', value: 'W' },
-  { label: 'Azul', value: 'U' },
-  { label: 'Negro', value: 'B' },
-  { label: 'Rojo', value: 'R' },
-  { label: 'Verde', value: 'G' }
 ]
 
 const ORDENES = [
@@ -295,10 +278,6 @@ function estadoDeFiltrosVacio() {
  */
 function precioDe(item) {
   return item.priceEur === null ? 'sin precio' : `${item.priceEur.toFixed(2)} €`
-}
-
-function etiquetaRareza(valor) {
-  return RAREZAS.find((r) => r.value === valor)?.label ?? valor
 }
 
 function abrir(item) {

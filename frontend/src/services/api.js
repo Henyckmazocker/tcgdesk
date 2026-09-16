@@ -211,4 +211,54 @@ export async function publicGet(path, params = {}) {
   }
 }
 
-export default { apiCall, catalogGet, publicGet, setJwtToken, getJwtToken, setCsrfToken, API_BASE }
+/**
+ * Baja los BYTES de la imagen de una impresión.
+ *
+ * Es la hermana binaria de `imagenDeCarta()` de `services/scryfall.js`: aquella
+ * compone la URL para que la pinte un `<img>`, esta se trae el JPEG para
+ * metérselo a ORB. La ruta es la misma —`GET /api/images/{scryfall_id}`, que
+ * sirve la copia local si existe y si no manda un 302 al CDN—, así que sigue sin
+ * haber una sola llamada a la API de Scryfall.
+ *
+ * Va sin `withCredentials` y sin `Authorization` por el mismo motivo que
+ * `catalogGet`: la ruta se desvía antes de construir `Application`, no tiene
+ * sesión y no hay nada que autorizar. Mandar credenciales obligaría al backend a
+ * reflejar el origen para una petición que no lo necesita.
+ *
+ * **La usa la siembra de descriptores y NADIE más**, y solo cuando
+ * `scan_orb_refs` dice que esa impresión no está sembrada: la segunda vez que se
+ * escanea una carta no se baja ninguna imagen.
+ *
+ * @param {string} scryfallId
+ * @param {'small'|'normal'|'large'} tamano  `normal` es el que fijó el M0(b)
+ * @returns {Promise<Uint8Array|null>} null si la imagen no se pudo traer
+ */
+export async function imagenBytes(scryfallId, tamano = 'normal') {
+  if (!scryfallId) {
+    return null
+  }
+
+  try {
+    const response = await axios.get(
+      `${API_BASE}/api/images/${encodeURIComponent(scryfallId)}`,
+      { params: { size: tamano }, responseType: 'arraybuffer', timeout: 30000 }
+    )
+
+    return new Uint8Array(response.data)
+  } catch {
+    // Una imagen que no se puede bajar NO es un error del escaneo: la carta se
+    // resuelve igual por nombre y esa impresión se sembrará la próxima vez.
+    return null
+  }
+}
+
+export default {
+  apiCall,
+  catalogGet,
+  publicGet,
+  imagenBytes,
+  setJwtToken,
+  getJwtToken,
+  setCsrfToken,
+  API_BASE
+}

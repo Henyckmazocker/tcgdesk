@@ -5,7 +5,7 @@ import { flushPromises } from '@vue/test-utils'
 import CatalogView from '@/views/CatalogView.vue'
 import { catalogGet } from '@/services/api'
 
-import { SESION, montarVista } from '../../helpers'
+import { SESION, montarVista, pulsacionLarga } from '../../helpers'
 
 import cartasFixture from '../../fixtures/catalog_cards.json'
 import setsFixture from '../../fixtures/catalog_sets.json'
@@ -131,6 +131,80 @@ describe('el primer render', () => {
 
     expect(tarjetas[0].find('.carta__precio').exists()).toBe(false)
     expect(tarjetas[1].find('.carta__precio').text()).toBe('3.50 €')
+  })
+
+  /**
+   * **El clic normal sobre la miniatura sigue navegando** (M1 de «Vista Ampliada
+   * de la Carta»), aquí contra el tercer envoltorio: un `div role="link"` con un
+   * `@click` de Vue (`CatalogView.vue:95-103`), que llama a `abrir()` y empuja a
+   * `/card/:uuid` (`:192-194`).
+   *
+   * El `click` nace en el `<img>` de `CardImage` y burbujea hasta ese `div`, y el
+   * componente lleva un listener en fase de CAPTURA sobre su raíz que puede
+   * matarlo antes de que salga —M0 lo midió—. Pero solo traga cuando su bandera
+   * `debeTragarClick` está armada, y nace en `false`: pinchar una carta del
+   * catálogo tiene que seguir abriendo su ficha. Si alguien deja la bandera
+   * armada de serie (era el spike de M0), este test se pone rojo.
+   *
+   * **Su par complementario llega con M2**, el hito que arma la bandera: una
+   * pulsación larga amplía la carta y al soltar NO navega.
+   */
+  it('un clic sobre la MINIATURA navega a la ficha: el enlace sigue vivo', async () => {
+    const { wrapper, router } = await montarCatalogo()
+
+    // Se espía `router.push` —llamándolo de verdad— en vez de mirar solo la ruta:
+    // el componente de `/card/:uuid` es un `import()` perezoso y la navegación
+    // tarda más que cualquier espera razonable, con lo que mirar solo
+    // `currentRoute` da falsos verdes. `abrir()` sí llama a `push` de forma
+    // síncrona (`CatalogView.vue:192-194`); la ruta resultante se espera aparte.
+    const push = vi.spyOn(router, 'push')
+
+    const miniatura = wrapper.findAll('.carta')[0].find('.carta__imagen img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await miniatura.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    expect(push).toHaveBeenCalledTimes(1)
+
+    // `vi.waitFor` y no un `flushPromises`: el destino es un `import()` perezoso.
+    await vi.waitFor(() => expect(router.currentRoute.value.name).toBe('card'))
+
+    push.mockRestore()
+  })
+
+  /**
+   * **El par complementario del anterior** (M2): una pulsación larga sobre la
+   * miniatura la amplía, y al soltar **no** abre la ficha.
+   *
+   * `pointerdown(touch)` → 450 ms → `pointerup` → `click`. Al soltar,
+   * `CardImage` arma `debeTragarClick` porque la ampliación llegó a abrirse, y
+   * su listener de captura mata el `click` antes de que burbujee hasta el
+   * `div role="link"` y llame a `abrir()` (`CatalogView.vue:192-194`).
+   *
+   * Se mira el espía de `push` y no `currentRoute`, por el `import()` perezoso
+   * de `/card/:uuid` que ya explica el test de arriba.
+   */
+  it('una PULSACIÓN LARGA amplía y al soltar NO navega', async () => {
+    const { wrapper, router } = await montarCatalogo()
+
+    const push = vi.spyOn(router, 'push')
+
+    const miniatura = wrapper.findAll('.carta')[0].find('.carta__imagen img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await pulsacionLarga(miniatura)
+    await miniatura.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    expect(push).not.toHaveBeenCalled()
+    expect(router.currentRoute.value.name).toBe('catalog')
+
+    push.mockRestore()
   })
 })
 

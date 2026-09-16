@@ -43,4 +43,18 @@ interface PriceRepositoryInterface
 
     /** @return array<string, int> tabla → filas */
     public function contadores(): array;
+
+    /**
+     * El día más reciente que hay en el histórico, `YYYY-MM-DD`, o `null` si
+     * `mtg_price_daily` está vacía.
+     *
+     * Es un método de lectura en un puerto que hasta ahora solo escribía, y
+     * está aquí y no en el puerto de catálogo por lo mismo que lo está
+     * `contadores()`: quien pregunta por la salud del histórico pregunta por la
+     * tabla que este puerto es el único que toca. Lo consume `prices:health`,
+     * que compara esta fecha con hoy — si el sync diario deja de correr, el
+     * único síntoma es que este valor se queda quieto, y estuvo 33 días
+     * quieto sin que nadie lo mirara.
+     */
+    public function ultimaFechaHistorico(): ?string;
 }

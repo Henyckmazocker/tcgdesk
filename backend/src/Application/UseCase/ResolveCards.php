@@ -127,6 +127,18 @@ class ResolveCards
             'setCode'      => $asumida['setCode'] ?? $veredicto->setCode ?? $fila->setCode,
             'finish'       => $fila->finish,
             'language'     => $fila->language,
+            // ## `detectedLanguage` NO ES `language`, Y LA DIFERENCIA ES EL M8
+            //
+            // `language` es el de la FILA: lo que el fichero decía o lo que el
+            // cliente mandó, con su respaldo ya aplicado. Nunca es null y no
+            // dice nada de la carta.
+            //
+            // `detectedLanguage` es lo que **declaró el nombre que resolvió**,
+            // o null si ninguno lo declaró. Van los dos y por separado a
+            // propósito: fundirlos haría indistinguible «lo detecté» de «me
+            // rendí y usé el ajuste», que es justo lo que el cliente necesita
+            // distinguir para no pisar el código impreso en la esquina.
+            'detectedLanguage' => $veredicto->language,
             'condition'    => $fila->condition,
             'quantity'     => $fila->quantity,
             // La zona que dijo la decklist pegada (`Deck` / `Sideboard` / …).

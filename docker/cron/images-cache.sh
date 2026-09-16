@@ -27,10 +27,14 @@
 # Ritmo: 10 req/s, el máximo que pide Scryfall ([[TCGDesk/Fuentes de Datos]]).
 # Lo impone el propio comando; --rps solo sirve para bajarlo, nunca para subirlo.
 #
-# Instalación (en el host, no en el contenedor) — NO está instalado todavía:
+# Instalación (en el host, no en el contenedor) — INSTALADO el 2026-09-14:
 #
 #   crontab -e
-#   15 4 * * *  /home/david/Documents/workspace/tcgdesk/docker/cron/images-cache.sh >> /var/log/tcgdesk-images.log 2>&1
+#   15 4 * * *  /home/david/Documents/workspace/tcgdesk/docker/cron/images-cache.sh >> /home/david/tcgdesk-images.log 2>&1
+#
+#   El log va al home y NO a /var/log: ese directorio no lo puede escribir el
+#   usuario del crontab, y bash abre el redirect antes de ejecutar el comando,
+#   así que un `>> /var/log/...` no «pierde el log» — impide que el job corra.
 #
 # Comprobar que funcionó:
 #

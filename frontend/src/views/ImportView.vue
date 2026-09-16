@@ -148,16 +148,29 @@
           <div v-else-if="conflicto.reason === 'mismatch' && conflicto.candidates.length > 1" class="desacuerdo">
             <div class="desacuerdo__lado">
               <h3 class="desacuerdo__que">Lo que dice el <strong>NOMBRE</strong></h3>
-              <button
-                v-for="(cand, k) in conflicto.candidates.slice(0, -1)"
-                :key="'n' + k"
-                type="button"
-                class="candidato"
-                :class="{ 'candidato--elegido': eleccion[i] === k }"
-                @click="elegir(i, k)"
-              >
-                <CandidatoEtiqueta :candidato="cand" />
-              </button>
+              <template v-for="(cand, k) in conflicto.candidates.slice(0, -1)" :key="'n' + k">
+                <button
+                  type="button"
+                  class="candidato"
+                  :class="{ 'candidato--elegido': eleccion[i] === k }"
+                  @click="elegir(i, k)"
+                >
+                  <CandidatoEtiqueta :candidato="candidatoAPintar(i, k, cand)" />
+                </button>
+                <!--
+                  HERMANO del botón y jamás dentro: un `Select` anidado en un
+                  `<button>` es HTML inválido y, peor, abrirlo dispararía el
+                  `@click` del botón y reelegiría el candidato.
+                -->
+                <SelectorDeImpresion
+                  v-if="eleccion[i] === k && cand.assumedPrinting && cand.printingCount > 1"
+                  :printing-uuid="cand.printingUuid"
+                  :printing-count="cand.printingCount"
+                  :nombre="cand.name"
+                  :elegida="impresionConflicto[i] ?? null"
+                  @elegir="corregirConflicto(i, $event)"
+                />
+              </template>
             </div>
             <div class="desacuerdo__lado">
               <h3 class="desacuerdo__que">Lo que dice el <strong>(SET) número</strong></h3>
@@ -167,24 +180,51 @@
                 :class="{ 'candidato--elegido': eleccion[i] === conflicto.candidates.length - 1 }"
                 @click="elegir(i, conflicto.candidates.length - 1)"
               >
-                <CandidatoEtiqueta :candidato="conflicto.candidates[conflicto.candidates.length - 1]" />
+                <CandidatoEtiqueta
+                  :candidato="candidatoAPintar(i, conflicto.candidates.length - 1, conflicto.candidates[conflicto.candidates.length - 1])"
+                />
               </button>
+              <!--
+                Este lado casi nunca lo necesita —viene de un (SET) número, o
+                sea de una impresión concreta—, pero el desplegable se pinta con
+                la misma condición que el otro lado y no con una suposición: el
+                día que un candidato de aquí llegue con edición asumida, se
+                corrige igual que los demás.
+              -->
+              <SelectorDeImpresion
+                v-if="eleccion[i] === conflicto.candidates.length - 1
+                  && conflicto.candidates[conflicto.candidates.length - 1].assumedPrinting
+                  && conflicto.candidates[conflicto.candidates.length - 1].printingCount > 1"
+                :printing-uuid="conflicto.candidates[conflicto.candidates.length - 1].printingUuid"
+                :printing-count="conflicto.candidates[conflicto.candidates.length - 1].printingCount"
+                :nombre="conflicto.candidates[conflicto.candidates.length - 1].name"
+                :elegida="impresionConflicto[i] ?? null"
+                @elegir="corregirConflicto(i, $event)"
+              />
             </div>
           </div>
 
           <!-- AMBIGUOUS (y el mismatch degenerado de un solo candidato): elige uno. -->
           <div v-else-if="conflicto.candidates.length" class="candidatos">
-            <button
-              v-for="(cand, k) in conflicto.candidates"
-              :key="'k' + k"
-              type="button"
-              class="candidato"
-              :class="{ 'candidato--elegido': eleccion[i] === k }"
-              :disabled="!cand.printingUuid"
-              @click="elegir(i, k)"
-            >
-              <CandidatoEtiqueta :candidato="cand" />
-            </button>
+            <template v-for="(cand, k) in conflicto.candidates" :key="'k' + k">
+              <button
+                type="button"
+                class="candidato"
+                :class="{ 'candidato--elegido': eleccion[i] === k }"
+                :disabled="!cand.printingUuid"
+                @click="elegir(i, k)"
+              >
+                <CandidatoEtiqueta :candidato="candidatoAPintar(i, k, cand)" />
+              </button>
+              <SelectorDeImpresion
+                v-if="eleccion[i] === k && cand.assumedPrinting && cand.printingCount > 1"
+                :printing-uuid="cand.printingUuid"
+                :printing-count="cand.printingCount"
+                :nombre="cand.name"
+                :elegida="impresionConflicto[i] ?? null"
+                @elegir="corregirConflicto(i, $event)"
+              />
+            </template>
           </div>
 
           <footer class="conflicto__pie">
@@ -231,13 +271,51 @@
             <Column field="name" header="Carta">
               <template #body="{ data }">
                 <span>{{ data.name }}</span>
-                <Tag v-if="data.assumedPrinting" value="edición asumida" severity="warn" class="tabla__tag" />
+                <!--
+                  La marca se conserva mientras nadie corrija la edición, porque
+                  mientras tanto sigue siendo verdad; en cuanto se elige una
+                  impresión concreta deja de serlo y desaparece.
+                -->
+                <Tag
+                  v-if="data.assumedPrinting && !impresionResuelta[data.idx]"
+                  value="edición asumida"
+                  severity="warn"
+                  class="tabla__tag"
+                />
               </template>
             </Column>
             <Column field="setCode" header="Edición">
               <template #body="{ data }">
-                <span>{{ data.setCode }}</span>
-                <small v-if="data.assumedPrinting" class="tabla__sub">de {{ data.printingCount }}</small>
+                <!--
+                  Corregida la edición, este código es el de la impresión que
+                  YA NO se va a importar: se tacha en vez de borrarlo, porque
+                  enseñarlo tal cual sería mentir y quitarlo dejaría al usuario
+                  sin saber qué acaba de cambiar. La edición buena la enseña el
+                  desplegable de la columna de al lado.
+                -->
+                <span :class="{ 'tabla__anulado': impresionResuelta[data.idx] }">{{ data.setCode }}</span>
+                <small
+                  v-if="data.assumedPrinting && !impresionResuelta[data.idx]"
+                  class="tabla__sub"
+                >de {{ data.printingCount }}</small>
+              </template>
+            </Column>
+            <!--
+              La corrección de la edición asumida. Solo aparece donde hay algo
+              que elegir: una carta con una sola impresión no ofrece nada, y
+              pintarle un desplegable vacío sería una petición tirada por cada
+              carta nunca reimpresa, que son muchas.
+            -->
+            <Column header="Cambiar edición" style="width: 17rem">
+              <template #body="{ data }">
+                <SelectorDeImpresion
+                  v-if="data.assumedPrinting && data.printingCount > 1"
+                  :printing-uuid="data.printingUuid"
+                  :printing-count="data.printingCount"
+                  :nombre="data.name"
+                  :elegida="impresionResuelta[data.idx] ?? null"
+                  @elegir="corregirResuelta(data.idx, $event)"
+                />
               </template>
             </Column>
             <Column field="finish" header="Acabado">
@@ -438,6 +516,7 @@ import Textarea from 'primevue/textarea'
 
 import BarraDeProgreso from '@/components/ImportProgress.vue'
 import CandidatoEtiqueta from '@/components/ImportCandidate.vue'
+import SelectorDeImpresion from '@/components/PrintingSelect.vue'
 import { ESTADOS_MAZO, etiquetaAcabado, etiquetaZona } from '@/constants/collection'
 import { apiCall } from '@/services/api'
 
@@ -587,6 +666,21 @@ const descartadas = ref({})
 /** Índice de conflicto → índice del candidato elegido, o null si se descarta. */
 const eleccion = ref({})
 
+/**
+ * La corrección de la **edición asumida**, en dos mapas indexados igual que los
+ * dos de arriba: por índice de fila resuelta y por índice de conflicto.
+ *
+ * Son dos y no uno porque las dos superficies no comparten índice —la fila 3 de
+ * `resolved` y el conflicto 3 no tienen nada que ver—, y fundirlos en una clave
+ * compuesta solo serviría para inventar una forma nueva de indexar el mismo
+ * estado que `descartadas` y `eleccion` ya llevan.
+ *
+ * Un valor aquí **anula** el `printingUuid` que trajo la previsualización, y
+ * solo eso: nada más del payload de `import_apply` cambia.
+ */
+const impresionResuelta = ref({})
+const impresionConflicto = ref({})
+
 const contenido = computed(() => (nombreFichero.value ? contenidoFichero.value : pegado.value))
 const hayContenido = computed(() => contenido.value.trim() !== '')
 
@@ -615,13 +709,18 @@ const sinDecidir = computed(
  *
  * Un conflicto sin decidir no entra —el estado por defecto es descartar—, y un
  * candidato sin `printingUuid` tampoco: sin impresión no hay nada que escribir.
+ *
+ * Y es aquí, en los dos únicos sitios donde se lee un `printingUuid`, donde
+ * aterriza la corrección de la edición asumida: se anula el uuid y no se toca
+ * nada más, así que una previsualización en la que nadie abra un desplegable
+ * manda byte a byte lo mismo que mandaba antes de este hito.
  */
 const filasAImportar = computed(() => {
   const filas = []
 
   preview.value.resolved.forEach((fila, i) => {
     if (!descartadas.value[i]) {
-      filas.push(aFilaDelContrato(fila.printingUuid, fila))
+      filas.push(aFilaDelContrato(impresionResuelta.value[i] ?? fila.printingUuid, fila))
     }
   })
 
@@ -630,7 +729,9 @@ const filasAImportar = computed(() => {
     const candidato = k === undefined || k === null ? null : conflicto.candidates[k]
 
     if (candidato?.printingUuid) {
-      filas.push(aFilaDelContrato(candidato.printingUuid, conflicto))
+      filas.push(
+        aFilaDelContrato(impresionConflicto.value[i] ?? candidato.printingUuid, conflicto)
+      )
     }
   })
 
@@ -797,6 +898,8 @@ async function previsualizar() {
   preview.value = respuesta.data
   descartadas.value = {}
   eleccion.value = {}
+  impresionResuelta.value = {}
+  impresionConflicto.value = {}
   resueltasAbiertas.value = respuesta.data.conflicts.length === 0
   soloAsumidas.value = false
   paso.value = 'preview'
@@ -862,6 +965,39 @@ function mensajeDe(respuesta) {
 
 function elegir(i, k) {
   eleccion.value = { ...eleccion.value, [i]: k }
+
+  // Cambiar de candidato tira la edición corregida del anterior. No es celo:
+  // la corrección es un uuid de OTRA carta, y arrastrarlo importaría la
+  // impresión de un candidato que el usuario acaba de descartar.
+  const resto = { ...impresionConflicto.value }
+
+  delete resto[i]
+  impresionConflicto.value = resto
+}
+
+/** Guarda la impresión elegida a mano para la fila resuelta `idx`. */
+function corregirResuelta(idx, printingUuid) {
+  impresionResuelta.value = { ...impresionResuelta.value, [idx]: printingUuid }
+}
+
+/** Lo mismo para el candidato elegido del conflicto `i`. */
+function corregirConflicto(i, printingUuid) {
+  impresionConflicto.value = { ...impresionConflicto.value, [i]: printingUuid }
+}
+
+/**
+ * El candidato tal como se pinta, que no siempre es el que llegó.
+ *
+ * Cuando ya se ha corregido a mano su edición, la marca «edición asumida de N»
+ * y el código de edición que trajo la previsualización han dejado de ser
+ * verdad: la edición que se va a importar es la que enseña el desplegable de al
+ * lado. Se apagan en una copia, y no tocando `ImportCandidate.vue`, que es una
+ * etiqueta y tiene que seguir siéndolo.
+ */
+function candidatoAPintar(i, k, candidato) {
+  return eleccion.value[i] === k && impresionConflicto.value[i]
+    ? { ...candidato, assumedPrinting: false, setCode: '' }
+    : candidato
 }
 
 function descartarConflicto(i) {
@@ -879,6 +1015,8 @@ function reiniciar() {
   error.value = ''
   descartadas.value = {}
   eleccion.value = {}
+  impresionResuelta.value = {}
+  impresionConflicto.value = {}
   comoMazo.value = false
   aDeseos.value = false
   mazo.value = { name: '', status: 'building', format: '' }
@@ -1236,6 +1374,11 @@ function volverAtras() {
   display: block;
   color: var(--p-text-muted-color);
   font-size: 0.75rem;
+}
+
+.tabla__anulado {
+  text-decoration: line-through;
+  color: var(--p-text-muted-color);
 }
 
 /* ---- Paso 2: pie --------------------------------------------------------- */

@@ -1,0 +1,86 @@
+{
+  "items": [
+    {
+      "uuid": "d247cc06-de08-519d-a409-03b35126210a",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "325",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "dce15387-4114-4b3e-91aa-5b42b45c44ac",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "c6a547a9-49d6-585e-b130-398476ca4105",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "TRK",
+      "setName": "Star Trek",
+      "collectorNumber": "326",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "4fae200d-5757-4924-8cf4-ab2a5ef2ccc0",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": null,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "58ede794-5b49-5d9a-93f2-ce99ef2c9723",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "HOB",
+      "setName": "The Hobbit",
+      "collectorNumber": "198",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "5f533364-0f91-4e49-aaeb-83c4c1f6d316",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 0.61,
+        "foil": 0.45,
+        "etched": null
+      }
+    }
+  ],
+  "nextCursor": "eyJ2IjoiMjAyNi0wOC0xNCIsInUiOiI1OGVkZTc5NC01YjQ5LTVkOWEtOTNmMi1jZTk5ZWYyYzk3MjMifQ"
+}

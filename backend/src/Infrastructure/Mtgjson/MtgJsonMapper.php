@@ -191,6 +191,28 @@ class MtgJsonMapper
      * Una por idioma. `name_cjk` solo se rellena para los idiomas sin espacios;
      * en el resto va NULL y el índice ngram no los ve.
      *
+     * **`scryfall_id` es el id de la IMAGEN de esa traducción**, y es el motivo
+     * entero del M6 del Plan - Reconocimiento de la Impresión por su Arte:
+     * sembrar el índice ORB desde `mtg_printing.scryfall_id` sembraba la imagen
+     * **inglesa** para todos los idiomas, y medido el 2026-09-16 eso tira el
+     * 70,9 % de los keypoints de una carta española —los de la caja de reglas—.
+     * MTGJSON lo trae dentro de `identifiers` de cada `foreignData`, así que
+     * **no hace falta la API de Scryfall**: es el mismo bucle de siempre leyendo
+     * un campo más. Queda `null` cuando esa traducción no lo publica, y entonces
+     * el que sirve `scan_orb_refs` es el inglés.
+     *
+     * **`name_normalized` se calcula aquí por lo mismo que el de `mtg_card`**
+     * (ver el docblock del constructor): la ingesta es idempotente y se relanza,
+     * así que si no la escribiera, cada reimportación devolvería a NULL las filas
+     * que `catalog:normalize` ya había rellenado y el resolvedor dejaría de
+     * encontrar esos idiomas **sin un solo error**. Es la misma función que usan
+     * el backfill y el paso 3c del resolvedor: tres sitios, una sola regla.
+     *
+     * Y **el mismo enganche frágil vale para `scryfall_id`**: si alguien toca
+     * este bucle y se lo lleva por delante, cada reimportación dejará las cartas
+     * nuevas sin id localizado **en silencio** y el escáner volverá a sembrarlas
+     * en inglés. El backfill de las que ya estaban es `catalog:localized-ids`.
+     *
      * @param  array<string, mixed> $card
      * @return list<array<string, mixed>>
      */
@@ -207,12 +229,14 @@ class MtgJsonMapper
             }
 
             $filas[] = [
-                'printing_uuid' => $card['uuid'],
-                'language'      => $idioma,
-                'name'          => $nombre,
-                'text'          => $traduccion['text'] ?? null,
-                'type_line'     => $traduccion['type'] ?? null,
-                'name_cjk'      => in_array($idioma, self::IDIOMAS_CJK, true) ? $nombre : null,
+                'printing_uuid'   => $card['uuid'],
+                'language'        => $idioma,
+                'name'            => $nombre,
+                'name_normalized' => $this->normalizador->normalizar((string) $nombre),
+                'text'            => $traduccion['text'] ?? null,
+                'type_line'       => $traduccion['type'] ?? null,
+                'name_cjk'        => in_array($idioma, self::IDIOMAS_CJK, true) ? $nombre : null,
+                'scryfall_id'     => $traduccion['identifiers']['scryfallId'] ?? null,
             ];
         }
 

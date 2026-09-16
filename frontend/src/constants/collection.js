@@ -33,6 +33,94 @@ export const IDIOMAS = [
   { label: 'Phyrexiano', value: 'Phyrexian' }
 ]
 
+/**
+ * El código de idioma **impreso en la carta** → el `value` de `IDIOMAS`.
+ *
+ * Vive aquí, pegado a la lista de arriba, y **no** en `services/scanParser.js`,
+ * que es su único consumidor. El motivo es que el destino de cada entrada no es
+ * una cadena cualquiera: es literalmente un `value` de `IDIOMAS`, o sea un
+ * nombre largo de MTGJSON que viaja **dentro del `UNIQUE KEY uq_item`**. Con la
+ * tabla en el parser, el día que la BD renombrara un idioma —`Portuguese
+ * (Brazil)` es el candidato evidente— esto seguiría apuntando al nombre viejo
+ * **sin dar ningún error**: la carta escaneada se escribiría en una línea propia
+ * y el usuario vería su colección partida en dos sin saber por qué.
+ *
+ * `Phyrexian` no está, y no es un olvido: es un idioma de la BD que **no tiene
+ * código en el bloque de la esquina**, así que no hay nada impreso que traducir.
+ *
+ * `ZHS` y `ZHT` son los únicos códigos de tres letras, y por eso la
+ * `LINEA_EDICION` del parser acepta de dos a tres.
+ */
+export const IDIOMA_POR_CODIGO_IMPRESO = Object.freeze({
+  EN: 'English',
+  ES: 'Spanish',
+  FR: 'French',
+  DE: 'German',
+  IT: 'Italian',
+  PT: 'Portuguese (Brazil)',
+  JA: 'Japanese',
+  KO: 'Korean',
+  RU: 'Russian',
+  ZHS: 'Chinese Simplified',
+  ZHT: 'Chinese Traditional'
+})
+
+/**
+ * @param {string|null|undefined} codigo el código tal cual salió del OCR
+ * @returns {string|null} el `value` de `IDIOMAS`, o `null` si no es uno de los
+ *   once. **Null y no un valor por defecto**: inventarse un idioma es peor que
+ *   no mandar ninguno, porque el idioma forma parte de la identidad de la línea
+ *   de colección y un `English` supuesto sobre una carta alemana no se ve.
+ */
+export function idiomaDesdeCodigoImpreso(codigo) {
+  if (!codigo) return null
+  return IDIOMA_POR_CODIGO_IMPRESO[String(codigo).toUpperCase()] ?? null
+}
+
+/**
+ * El `value` de `IDIOMAS` → el **script de ML Kit** con el que hay que leer esa
+ * carta (`@capacitor-mlkit/text-recognition`, que ofrece `LATIN`, `CHINESE`,
+ * `JAPANESE`, `KOREAN` y `DEVANAGARI`).
+ *
+ * Vive aquí, pegado a la lista de arriba, **por el mismo motivo que
+ * `IDIOMA_POR_CODIGO_IMPRESO`**: la clave no es una cadena cualquiera, es un
+ * `value` de `IDIOMAS`. El día que la lista cambie —añadir un idioma, renombrar
+ * `Portuguese (Brazil)`— esto tiene que cambiar al lado y no en una vista.
+ *
+ * **Solo están los que NO son latinos.** El resto —las ocho lenguas latinas y
+ * `Phyrexian`, que se imprime en un alfabeto inventado que ningún modelo lee—
+ * caen al `LATIN` por defecto de `scriptDeOcr()`: enumerarlos sería una lista
+ * que se olvida de actualizar el día que entre un idioma nuevo, y el defecto
+ * correcto para un idioma nuevo desconocido es el latino.
+ */
+export const SCRIPT_OCR_POR_IDIOMA = Object.freeze({
+  Japanese: 'JAPANESE',
+  Korean: 'KOREAN',
+  'Chinese Simplified': 'CHINESE',
+  'Chinese Traditional': 'CHINESE'
+})
+
+/** El script latino, que es el defecto y el que lee ocho de los once idiomas. */
+export const SCRIPT_OCR_POR_DEFECTO = 'LATIN'
+
+/**
+ * El script de ML Kit para un idioma de `IDIOMAS`.
+ *
+ * **Sale del SELECTOR, nunca del idioma que detecta el resolvedor**, y no es una
+ * preferencia: el OCR ocurre **antes** de la resolución, así que cuando hay que
+ * elegir el modelo la detección todavía no existe. Es el único punto de toda la
+ * cadena donde el selector de idioma es insustituible.
+ *
+ * @param {string|null|undefined} idioma el `value` de `IDIOMAS`
+ * @returns {string} el script, con `LATIN` por defecto — un idioma que no esté
+ *   en el mapa se lee en latino, que es lo que hacía el escáner entero hasta el
+ *   M9 y nunca es peor que no leer nada.
+ */
+export function scriptDeOcr(idioma) {
+  if (!idioma) return SCRIPT_OCR_POR_DEFECTO
+  return SCRIPT_OCR_POR_IDIOMA[idioma] ?? SCRIPT_OCR_POR_DEFECTO
+}
+
 /** La escala de Cardmarket, la misma del ENUM y del objeto de valor Condition. */
 export const CONDICIONES = [
   { label: 'Mint', value: 'M' },
@@ -62,8 +150,10 @@ export const POR_DEFECTO = Object.freeze({
  * La escala de rareza, en el orden en que la enseña el backend.
  *
  * Vive aquí desde M5 porque el dashboard y `/sets` son el tercer y cuarto sitio
- * que necesitan traducirla. `CatalogView` y `CollectionView` siguen con su copia
- * local: unificarlas es un cambio de esas dos vistas y no toca en este hito.
+ * que necesitan traducirla. Desde el 2026-09-14 es la ÚNICA definición: las
+ * copias locales de `CatalogView` y `CollectionView` se borraron y las dos
+ * vistas importan de aquí, así que `/catalog`, `/collection` y `/wishlist`
+ * listan las seis rarezas en este mismo orden, de mítica a común.
  */
 export const RAREZAS = [
   { label: 'Mítica', value: 'mythic' },
@@ -77,6 +167,59 @@ export const RAREZAS = [
 export function etiquetaRareza(valor) {
   return RAREZAS.find((r) => r.value === valor)?.label ?? valor
 }
+
+/**
+ * La letra de rareza **impresa en la esquina** → el `value` de `RAREZAS`, que es
+ * a su vez el ENUM de `mtg_printing.rarity`.
+ *
+ * Va aquí por lo mismo que `IDIOMA_POR_CODIGO_IMPRESO` y no por simetría: el
+ * destino de cada entrada es un `value` de la lista de arriba, y separarlos es
+ * dejar que se desincronicen en silencio. Y la letra **no es** el valor del
+ * ENUM: mandar `R` a `scan_resolve` no resolvería a *rare*, no casaría nada.
+ *
+ * `T` y `L` solo salen en cartas antiguas y las dos caen en `bonus`, que es el
+ * cajón donde MTGJSON deja lo que no es ninguna de las cinco rarezas de
+ * siempre. **No hay entrada para `B`** aunque la regex del parser acepte esa
+ * letra: el plan no le dio destino y ponerle uno a ojo escribiría una rareza
+ * inventada, así que una `B` deja la rareza a `null` y el número sigue valiendo.
+ */
+export const RAREZA_POR_LETRA_IMPRESA = Object.freeze({
+  C: 'common',
+  U: 'uncommon',
+  R: 'rare',
+  M: 'mythic',
+  S: 'special',
+  T: 'bonus',
+  L: 'bonus'
+})
+
+/**
+ * @param {string|null|undefined} letra la letra tal cual salió del OCR
+ * @returns {string|null} el `value` de `RAREZAS`, o `null` si la letra no tiene
+ *   destino. La rareza es un dato de contraste, no de identidad: sin ella el
+ *   resolvedor sigue casando por `(set, número)`, así que `null` no rompe nada.
+ */
+export function rarezaDesdeLetraImpresa(letra) {
+  if (!letra) return null
+  return RAREZA_POR_LETRA_IMPRESA[String(letra).toUpperCase()] ?? null
+}
+
+/**
+ * Los cinco colores de maná, en orden WUBRG (el canónico de MTG y el que usa
+ * el backend).
+ *
+ * Centralizada el 2026-09-14 por el mismo motivo que `RAREZAS`: estaba copiada
+ * byte a byte en `CatalogView`, `CollectionView` y `WishlistView`. No lleva
+ * `etiquetaColor()` porque nadie traduce un color suelto todavía: las tres
+ * vistas solo la usan como `:options` de su filtro.
+ */
+export const COLORES = [
+  { label: 'Blanco', value: 'W' },
+  { label: 'Azul', value: 'U' },
+  { label: 'Negro', value: 'B' },
+  { label: 'Rojo', value: 'R' },
+  { label: 'Verde', value: 'G' }
+]
 
 export function etiquetaAcabado(valor) {
   return ACABADOS.find((a) => a.value === valor)?.label ?? valor

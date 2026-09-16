@@ -5,7 +5,7 @@ import { flushPromises } from '@vue/test-utils'
 import DeckView from '@/views/DeckView.vue'
 import { apiCall } from '@/services/api'
 
-import { SESION, montarVista } from '../../helpers'
+import { SESION, montarVista, pulsacionLarga } from '../../helpers'
 
 import deckGetFixture from '../../fixtures/deck_get.json'
 import deckUpdateFixture from '../../fixtures/deck_update.json'
@@ -211,6 +211,89 @@ describe('el primer render', () => {
     expect(errores).toEqual([])
     expect(wrapper.find('.mazo__error').text()).toContain('Ese mazo no existe.')
     expect(wrapper.find('.cabecera').exists()).toBe(false)
+  })
+
+  /**
+   * **El clic normal sobre la miniatura sigue navegando** (M1 de «Vista Ampliada
+   * de la Carta»), aquí contra el envoltorio más terco de los tres: un
+   * `router-link` (`DeckView.vue:315-320`), que no escucha con un `@click` de
+   * Vue sino con su propio manejador interno.
+   *
+   * `CardImage` lleva un listener de `click` en **fase de captura** sobre su
+   * raíz, y M0 midió que desde ahí `stopPropagation()` mata incluso el manejador
+   * del `router-link` —también vive en fase de burbuja sobre el `<a>`—. Por eso
+   * ese listener solo traga cuando su bandera `debeTragarClick` está armada, y
+   * nace en `false`: apuntar y hacer clic tiene que seguir llevando a la ficha.
+   * Si alguien deja la bandera armada de serie (era el spike de M0), este test
+   * se pone rojo.
+   *
+   * **Su par complementario llega con M2**, el hito que arma la bandera: una
+   * pulsación larga en táctil amplía la carta y al soltar NO navega.
+   */
+  it('un clic sobre la MINIATURA navega a la ficha: el enlace sigue vivo', async () => {
+    const { wrapper, router } = await montarMazo()
+
+    /**
+     * Se espía `router.push` —llamándolo de verdad— en vez de mirar solo la ruta
+     * resultante, y no es un capricho: el componente de `/card/:uuid` es un
+     * `import()` perezoso que en ESTE fichero nadie ha cargado todavía, así que
+     * la navegación tarda MÁS que cualquier `flushPromises` razonable. Mirando
+     * solo `currentRoute` el test daba falsos verdes —se midió en M0—: la ruta
+     * aún no había cambiado, no es que no fuera a cambiar. `push` sí se llama de
+     * forma síncrona dentro del manejador del `router-link`, así que es lo que
+     * se afirma; la ruta resultante se espera aparte, con `vi.waitFor`.
+     */
+    const push = vi.spyOn(router, 'push')
+
+    const miniatura = wrapper.find('.zona__mini img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await miniatura.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    expect(push).toHaveBeenCalledTimes(1)
+
+    // `vi.waitFor` y no un `flushPromises`: el destino es un `import()` perezoso.
+    await vi.waitFor(() => expect(router.currentRoute.value.name).toBe('card'))
+
+    push.mockRestore()
+  })
+
+  /**
+   * **El par complementario del anterior** (M2): mantener el dedo sobre la
+   * miniatura la amplía, y al soltar **no** navega.
+   *
+   * La secuencia es la real: `pointerdown(touch)` → 450 ms → `pointerup` →
+   * `click`. `pointerup` arma `debeTragarClick` porque la ampliación llegó a
+   * abrirse, y el listener de captura de `CardImage` mata el `click` antes de
+   * que el `router-link` lo vea.
+   *
+   * Se afirma sobre el espía de `push` y NO sobre `router.currentRoute`, por lo
+   * mismo que explica el test de arriba: el componente de `/card/:uuid` es un
+   * `import()` perezoso y la ruta tarda más que cualquier espera razonable, así
+   * que «no ha cambiado» no distingue «no iba a cambiar» de «todavía no ha
+   * llegado». Es el falso verde que M0 midió.
+   */
+  it('una PULSACIÓN LARGA amplía y al soltar NO navega', async () => {
+    const { wrapper, router } = await montarMazo()
+
+    const push = vi.spyOn(router, 'push')
+
+    const miniatura = wrapper.find('.zona__mini img')
+
+    expect(miniatura.exists()).toBe(true)
+
+    await pulsacionLarga(miniatura)
+    await miniatura.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    expect(push).not.toHaveBeenCalled()
+    expect(router.currentRoute.value.name).toBe('deck')
+
+    push.mockRestore()
   })
 })
 

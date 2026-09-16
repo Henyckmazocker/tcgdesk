@@ -49,6 +49,7 @@ Todo corre en Docker. **No hay PHP en el host**; no lo busques.
 ./dev-setup.sh --stop       # para
 ./dev-setup.sh --logs       # logs en vivo
 ./dev-setup.sh --reset      # recrea contenedores Y VOLÚMENES (borra la BD)
+./dev-setup.sh --mobile     # compila el APK, pone `adb reverse` e INSTALA en el móvil
 
 # URLs (dev)
 #   Frontend  http://localhost:8094
@@ -59,7 +60,7 @@ Todo corre en Docker. **No hay PHP en el host**; no lo busques.
 docker compose exec backend composer test
 
 # Tests del frontend — al revés: SIEMPRE en el host, con nvm (Node 22)
-cd frontend && npm test              # vitest run — 758 tests en 30 ficheros, ~17 s
+cd frontend && npm test              # vitest run — 1.017 tests en 37 ficheros, ~19 s
 cd frontend && npm run test:watch    # vitest en modo vigilancia
 cd frontend && npm run test:coverage # umbrales incluidos; sale con código != 0 si no pasan
 
@@ -71,9 +72,33 @@ docker compose exec backend php bin/tcgdesk hello
 docker compose exec -u www-data backend php bin/tcgdesk catalog:import   # ~3,5 min
 docker compose exec -u www-data backend php bin/tcgdesk prices:sync      # ~18 s, diario
 docker compose exec -u www-data backend php bin/tcgdesk prices:seed      # 90 días, una vez
+#   --force-download vuelve a bajar AllPrices.json.gz. OBLIGATORIO para rellenar un hueco del
+#   histórico: sin él reutiliza el .gz de disco, que trae la ventana de 90 días DE ENTONCES, y
+#   con INSERT IGNORE no inserta nada pareciendo que funcionó.
+docker compose exec -u www-data backend php bin/tcgdesk prices:health    # 0 si el histórico está al día
 docker compose exec -u www-data backend php bin/tcgdesk images:cache     # imágenes de la colección
-docker compose exec -u www-data backend php bin/tcgdesk catalog:normalize # ~2 s, backfill de name_normalized
 docker compose exec -u www-data backend php bin/tcgdesk decks:import      # ~1,5 min, los 3.029 precons
+
+# Índice de nombres del resolvedor — LAS DOS columnas `name_normalized`
+#   `mtg_card` (34.992 cartas, el nombre en inglés) y `mtg_printing_localized` (410.604 filas en
+#   diez idiomas, que es lo que hace que una «Llanura» se resuelva). `catalog:import` las mantiene
+#   al día por su cuenta; esto es el backfill.
+docker compose exec -u www-data backend php bin/tcgdesk catalog:normalize              # ~20 s las dos
+docker compose exec -u www-data backend php bin/tcgdesk catalog:normalize --all        # si cambia NameNormalizer
+docker compose exec -u www-data backend php bin/tcgdesk catalog:normalize --batch=2000 # lotes más grandes
+#   Devuelve 1 si al terminar queda alguna fila a NULL: una fila sin clave no resuelve por nombre y
+#   no protesta nadie.
+
+# Id de Scryfall por idioma — es lo que hace que ORB siembre la referencia del idioma de la carta
+#   Sale de `foreignData[].identifiers.scryfallId`, que la ingesta TIRABA hasta el 2026-09-16.
+#   `catalog:import` lo mantiene al día (MISMO enganche frágil que `name_normalized`); esto es el
+#   backfill de las 410.604 filas ya existentes. Devuelve 1 si queda alguna que debería tener id.
+docker compose exec -u www-data backend php bin/tcgdesk catalog:localized-ids
+
+# `catalog:hash` y `vision:refs` EXISTIERON y se borraron el 2026-09-15 con el índice visual.
+#   No los busques: la vía del hash perceptual está medida y muerta (una foto real queda a 11-12
+#   bits de su propia referencia contra un margen de 6). El porqué entero, con las siete tandas de
+#   medidas, está en el Log del «Plan - Escáner de Cartas por Cámara» del Brain.
 
 # Móvil (Capacitor) — esto sí en el host, con nvm
 cd frontend && npm run build:mobile && npx cap sync android
@@ -127,6 +152,19 @@ src/Cli/CommandRegistry      resuelve por nombre, instancia perezosamente
 comando que falla y devuelve `0` deja el catálogo desactualizado sin que nadie se entere. El registry
 captura las excepciones, las loguea y devuelve `1`.
 
+**Desde el 2026-09-14 el cron existe de verdad** (`crontab -l`): `prices-sync.sh` a las 15:30 CEST e
+`images-cache.sh` a las 4:15. Y hay **ocho** comandos (2026-09-15) — esta cifra se ha quedado corta
+cuatro veces y larga una, así que cuéntalos con `bin/tcgdesk` en vez de leerla. Llegaron a ser diez:
+`catalog:hash` y `vision:refs` entraron con el índice visual y **se borraron el mismo día**, cuando la
+vía del hash perceptual se midió contra fotos reales y no la pasó. El último que queda es
+`prices:health`, que compara
+`MAX(price_date)` de `mtg_price_daily` con hoy y sale con `1` si el desfase pasa de dos días. Va
+enganchado al final de `prices-sync.sh`, que manda el código del sync si el sync falló y el de la
+salud si el sync fue bien — un job que termina en 0 sobre una tabla parada es exactamente el fallo
+que costó 33 días de histórico. **Los logs del cron van al home, NO a `/var/log`**: bash abre el
+redirect antes de ejecutar el comando, así que un destino no escribible no «pierde el log», impide
+que el job corra.
+
 ### Divergencia 3 — rutas `GET` para lectura de catálogo
 
 El catálogo, con filtros y scroll infinito, necesita URLs paginables y cacheables. **Solo el catálogo
@@ -140,7 +178,18 @@ GET /api/catalog/sets                   → las 868 ediciones
 GET /api/catalog/cards?q=&set=&rarity=&colors=&price_min=&price_max=&sort=&cursor=&limit=
 GET /api/catalog/cards/{uuid}           → ficha + legalidades + idiomas + histórico de precio
                                           404 {"error":"printing_not_found"}
+GET /api/catalog/cards/{uuid}/printings?cursor=&limit=
+                                        → todas las ediciones de esa carta, de la más nueva a la
+                                          más vieja, con el MISMO contrato que /cards
 ```
+
+**La sexta rama va ANTES que la de la ficha en el `match`**, y no por estilo: `([^/]+)` no casa con
+barras, así que hoy el orden da igual, pero el día que alguien relaje ese patrón a `(.+)` la ficha se
+come la ruta nueva y contesta `printing_not_found` sin que nadie entienda por qué. **Su 404 es del
+`uuid`, no de la carta**: una impresión que existe pero nunca se reimprimió devuelve **200 con un
+solo item**. Y **`limit` lo acota el router** (1..100, 60 por defecto), al revés que las demás, que lo
+acotan en su `SearchCriteria`: esta ruta no tiene criteria y `ValidationMiddleware` no la ve, así que
+lo que no acote el router no lo acota nadie.
 
 **Se pagina por cursor, nunca por offset**: `LIMIT 60 OFFSET 50000` obliga a MySQL a recorrer y tirar
 50.000 filas en cada tirón del scroll. El cursor es opaco y solo el cliente lo transporta.
@@ -166,6 +215,11 @@ GET /api/catalog/decks/{fileName}       → 404 {"error":"precon_not_found"}
 `Logging → Auth → Csrf → Validation`): la divergencia es **solo de lectura** y no se extiende. Eran
 **tres** casos en `CatalogHttpRouter`; hoy son **cuatro rutas `GET`** contando el router público de
 abajo. Un quinto se discute antes.
+>
+> **Y el 2026-09-14 entró un caso más SIN abrir divergencia**: `GET /api/catalog/cards/{uuid}/printings`,
+> la sexta ruta de `CatalogHttpRouter`. Cumple los tres criterios de siempre —catálogo público,
+> reconstruible, sin sesión ni CSRF— así que es un caso más del mismo `match`, no un desvío nuevo:
+> **siguen siendo cuatro divergencias `GET`**, no cinco.
 
 > **Y el cuarto se discutió y se RECHAZÓ**, el 2026-09-12, al pintar el corazón relleno del catálogo.
 > Hacía falta saber qué impresiones están en tu lista de deseos mientras miras `/catalog`, y lo
@@ -343,6 +397,54 @@ Los `.env` están gitignored y contienen secretos reales. Las plantillas son los
 - **Android necesita DOS clientes OAuth**: el de tipo *web* (el de `.env`, que valida el backend como
   `aud`) y uno de tipo *Android* con el package name y el SHA-1 del keystore. `cap sync` pasa sin el
   segundo, pero `GoogleAuth.signIn()` falla.
+- **El build de Android necesita JDK 21** porque `@capacitor/android@8.3.1` fija
+  `JavaVersion.VERSION_21`; con el 17 Gradle muere con `invalid source release: 21`. **Desde el
+  2026-09-16 no hay que compilar a mano ni clavar `JAVA_HOME`**: `./dev-setup.sh --mobile` busca el
+  JDK 21, compila, pone `adb reverse tcp:8899` —que **no persiste** entre reconexiones— e instala en
+  el dispositivo. Si no encuentra JDK 21 lo dice con la lista literal de dónde buscó. **Y elige
+  dispositivo sin adivinar**: el móvil de David aparece dos veces en `adb devices` (Wi-Fi y USB), así
+  que con varios del mismo `model:` coge el primero diciéndolo, y con modelos distintos **no adivina**.
+  `ADB_SERIAL` manda sobre todo.
+- **`cv` de opencv.js es un THENABLE, y eso cuelga el proceso PARA SIEMPRE.** El `Module` de Emscripten
+  define `then`, así que un `await cv` o un `resolve(cv)` meten al motor en un bucle infinito de
+  microtareas: **100 % de CPU, memoria PLANA y ni el depurador interrumpe**. Costó una tarde en el
+  móvil y volvió a morder en Vitest por otra puerta —`import cv from '@techstark/opencv-js'` deja el
+  fichero de test a 0 bytes—. En tests se carga con `createRequire`, **nunca con `import`**, y
+  `opencvListo()` resuelve con `true`, nunca con `cv`. Si algún día ves CPU al 100 % con la RSS quieta,
+  es esto y no un cálculo pesado.
+- **El margen de ORB se mide FUERA DEL ARTE, no sobre los inliers totales.** Dos reimpresiones de la
+  misma carta **empatan clavado en la ilustración** (medido: 83 contra 85 inliers) y eso ahoga la
+  señal; lo que discrimina es el cuadro de reglas y el título, porque cada marco los coloca distinto.
+  Por eso `ZONA_DE_ARTE` se **excluye** del recuento. ⚠️ Y la zona que el sentido común señalaría
+  —marco, borde, bloque de coleccionista— **está medida y NO sirve**: ORB pone ahí 1 o 2 inliers y un
+  ranking por esa franja **corona impresiones equivocadas**. Por debajo de **4** inliers fuera del arte
+  no se certifica, pase lo que pase con el cociente: es el suelo de RANSAC.
+- **Por encima de 100 impresiones, ORB ni consulta ni siembra ni empareja.** `Plains` tiene **910** e
+  `Island` 913, y emparejar cuesta `ms = −15,0 + 14,713·n` (R² 0,9996) → **~38 s en el Realme**. El
+  tope deja fuera **7 cartas de 34.992**. El criterio **no** son los 800 ms del bucle: ORB va en un
+  worker y **sin `await`**, así que no lo bloquea — lo que cuesta es **ocupar el worker**.
+- **La caché `orbRefs` se indexa por `(oracleId, idioma)`, no por `oracleId`.** Con la clave corta, la
+  misma carta escaneada en dos idiomas sirve las referencias cacheadas del primero y ORB empareja
+  contra el arte equivocado **sin un solo error visible**.
+- **`language` y `scryfallLanguage` NO son lo mismo en la respuesta de `scan_orb_refs`.** El primero es
+  el idioma de los descriptores servidos; el segundo, el de la **imagen** que se manda. El cliente
+  sella la fila con **el segundo**: si sellara con el idioma que pidió, guardaría descriptores ingleses
+  etiquetados como españoles y el `INSERT IGNORE` bloquearía **para siempre** la siembra correcta.
+  Afecta al **52 %** del catálogo, que es el que no tiene fila en español.
+- **El filtro de nombre del parser acepta CJK y cirílico, y UN SOLO carácter es un nombre.** Exigía
+  `/[a-zà-ÿ]/i`, así que `クローンの軍勢` no era candidato y el escáner acababa tomando por nombre la
+  línea del artista. Y el mínimo de dos caracteres es correcto para un alfabeto y **falso para el
+  japonés**: hay **1.630 filas** con nombre de un carácter y son las tierras básicas —山 418, 島 411,
+  沼 401, 森 400—, o sea lo que más se escanea.
+- **`npm install` a secas FALLA en `frontend/`.** `@codetrix-studio/capacitor-google-auth` declara un
+  peer de `@capacitor/core@^6` y este repo va por el **8**, así que npm aborta por conflicto de peers.
+  Se instala con `npm install --legacy-peer-deps`. La app funciona —el plugin es compatible de hecho,
+  solo no ha actualizado su rango—, pero cualquiera que clone y haga `npm install` se estrella.
+- **El APK filtra a `arm64-v8a`** (`android/app/build.gradle`, bloque `ndk`). Lo trajo el escáner: ML
+  Kit empaqueta `libmlkit_google_ocr_pipeline.so` en cuatro ABIs y son **39,14 MiB**, de los que 28,6
+  son arquitecturas que ningún móvil moderno ejecuta; sin el filtro el APK de debug pasa de 5,7 MB a
+  **51,1 MB**, y con él se queda en **27,5 MB** (2026-09-16, con opencv.js dentro). La consecuencia que hay que recordar: **el APK no
+  corre en un emulador x86**. En dispositivo físico, igual que siempre.
 - **El frontend dev es el `8094`, no el 8099.** El 8099 lo tenía `bingoSorpresa` desde antes y no se
   detectó al reservar puertos: bingo se levanta con `npm run serve` (no con Docker), así que su
   puerto **no aparece en `ss -ltn`** salvo que esté corriendo. Al elegir puerto en este workspace, no
@@ -366,7 +468,9 @@ Los `.env` están gitignored y contienen secretos reales. Las plantillas son los
 - **`board` en `mtg_precon_card` no lleva `companion`**, pero `mtg_deck_card` **sí**. Al copiar de una
   a otra (`ImportPreconToCollection`), el mapeo tiene que ser explícito.
 - **`backend/storage/` está ignorado entero.** Ahí viven los 177 MB de `AllPrintings.json.gz` y los
-  149 MB de `AllPrices.json.gz`; enumerar subcarpetas ya falló una vez.
+  149 MB de `AllPrices.json.gz`; enumerar subcarpetas ya falló una vez. **`MtgJsonDownloader` reutiliza
+  lo que encuentre**, así que un fichero viejo ahí dentro es una ingesta que parece correr y no trae
+  nada nuevo: `prices:sync` fuerza la descarga siempre, `prices:seed` solo con `--force-download`.
 - **La CLI se ejecuta con `-u www-data`, NUNCA como root.** Monolog crea el log del día con el owner
   de quien lanza el comando. Si lo lanza root, Apache —que es `www-data`— no puede escribir en él y
   **toda petición HTTP devuelve 500**, healthcheck incluido. Si ya pasó:
@@ -384,6 +488,60 @@ Los `.env` están gitignored y contienen secretos reales. Las plantillas son los
   lee de `information_schema.INNODB_FT_DEFAULT_STOPWORD`, nunca se copia a mano.
 - **El japonés, el chino y el coreano necesitan el índice `ngram`** (`mtg_printing_localized.name_cjk`):
   el parser por defecto tokeniza por espacios y esos idiomas no los usan.
+- **`gd` sigue en la imagen y ya no lo usa nadie.** Entró el 2026-09-15
+  (`docker/backend/Dockerfile.backend.dev:8-26`) para decodificar JPEG en PHP, que era lo que
+  necesitaba el hash perceptual. **El hash se borró ese mismo día** y con él `Domain/Vision/`,
+  `catalog:hash`, `vision:refs`, `frontend/src/services/cardHash.js` y la tabla `mtg_printing_hash`.
+  La extensión se queda porque quitarla exige reconstruir la imagen y no molesta; si alguien la ve y
+  se pregunta para qué está, la respuesta es **para nada, hoy**.
+- **La vía visual por hash está MEDIDA y MUERTA: no la reimplementes.** El dHash de 64 bits acertaba
+  entre imágenes de Scryfall —299 de 300, 0 falsos positivos en 44.850 pares— y **no reconocía ni una
+  foto real**: una toma del móvil queda a **11-12 bits** de su propia referencia contra un margen
+  mediano de **6**, y sobre 8 cartas la correcta salió en los puestos **#5 a #3218**. No es cuestión
+  de umbral: el error de la foto dobla la distancia mínima entre cartas distintas, y a 256 bits sube
+  en la misma proporción. Las siete tandas de medidas están en el Log del «Plan - Escáner de Cartas
+  por Cámara» del Brain. La vía que **sí** funciona, medida el mismo día, es **ORB** (8 de 8 en el
+  puesto 1), y va en un plan aparte.
+- **El resolvedor tiene SIETE pasos y dos son nuevos, y los dos sirven también a `/import`.** El
+  **3c** busca el nombre en `mtg_printing_localized.name_normalized` —410.604 filas, diez idiomas—
+  porque hasta el 2026-09-15 los pasos 3 y 4 solo miraban `mtg_card`, que guarda el inglés: una
+  «Llanura» salía `not_found` en el escáner **y en un CSV**. El **5** resuelve por distancia de
+  edición ≤ 2, que es lo que rescata una errata de un carácter del OCR («Tlanura»). Dos reglas que
+  no se relajan: el 5 **solo mira los `not_found` del 4** —un empate del `FULLTEXT` no baja ahí, o
+  convertiría un empate honesto en una resolución falsa— y **no busca por debajo de 6 caracteres**,
+  porque el OCR lee fragmentos de borde (`Pla`, `PF`, `tab`) y a distancia 2 un trozo de tres letras
+  alcanza media docena de cartas reales.
+- **MTGJSON trae nombres localizados CRUZADOS, y el paso 3c los desempata por dominancia.** Medido:
+  «Llanura» apunta a *Plains* con 407 filas y a *Swamp* con **4**, todas del set `INV`; «Isla» a
+  *Island* con 405 y a *Plains* con 4. Sin desempate, **tres de las cinco tierras básicas españolas
+  no se resolverían nunca**. La carta mayoritaria gana **solo si supera a la siguiente por ≥ 10
+  veces**; de las 298 claves con más de una carta detrás, 11 son dato sucio y **136 son empates
+  reales que siguen dando `ambiguous`**.
+- **`printingCount === 1` NO significa «la carta tiene una sola impresión».** Significa **entre
+  cuántas se eligió**, y vale 1 también cuando la lectura ya traía la impresión
+  (`ResolveCards.php:141`). Por eso `ScanController::fuenteDeCerteza()` mira **primero el paso y
+  después el recuento**: al revés, una *Lightning Bolt* de 130 ediciones leída por su esquina se
+  reportaría como `single`. El booleano saldría igual; la fuente mentiría.
+- **`scan_resolve` declara su propio límite, 300/min, y no es un afloje.** No declaraba ninguno y
+  heredaba el global de `ActionRouter` (**60/min**), así que el bucle de la cámara —~2 vueltas por
+  segundo— empezaba a comer **429 a los treinta segundos**. El síntoma es «el escáner deja de
+  reconocer al rato» y no se parece en nada a la causa. Hay un test que lo fija.
+- **El bucle del escáner se para con la pantalla apagada, y el rearranque hay que ESPERARLO.**
+  `cancelado = true` no para el bucle: se lo pide, y la vuelta en curso todavía tiene que terminar su
+  captura y su OCR. Rearrancar en ese hueco deja `bucleVivo` a `true`, `arrancarBucle()` vuelve sin
+  hacer nada y un instante después el bucle viejo sale solo: **cámara viva y bucle muerto**, que en
+  pantalla es una previsualización que se ve y no reconoce nada.
+- **Los dobles de Capacitor en los tests necesitan LATENCIA.** El bucle es un `while` que encadena
+  promesas; con dobles que resuelven en el mismo tick gira sin ceder el hilo y **mata un worker de
+  Vitest con `SIGABRT`** tras dos minutos. Con **1 ms** en `captureSample()` y `processImage()`,
+  `ScanView.spec.js` pasa en 1,16 s.
+- **El paso 2b del resolvedor CEDE EL TURNO, no conflictúa, y solo actúa sin `setCode`.** Resuelve
+  `(nombre, número)` sin edición —el caso de las Secret Lair, que no lo imprimen—, pero solo devuelve
+  los pares con **exactamente una** impresión detrás (`HAVING COUNT(*) = 1`): un `Plains 250`, que vive
+  en 14 ediciones, no sale en el mapa y sigue al paso 3 resolviéndose **exactamente como antes**. Esa
+  es la regla que impide que rompa `/import`. Y su clave **solo** se construye cuando `setCode` es
+  `null` o vacío: si el par `(set, número)` existía y no casó, insistir por nombre y número resolvería
+  a otra impresión de la misma carta y taparía un desacuerdo que hoy sale a la luz.
 - **`name_normalized` NO es `name` en minúsculas.** Conserva los blancos `_____` —si los tratas como
   puntuación, `_____ Goblin` de Unfinity colapsa a la clave `goblin` y se apropia de lo que el usuario
   teclea— y el ` // ` de las dobles cara, con reintento aparte por la cara frontal. **No hay

@@ -1,0 +1,121 @@
+-- Migration: 20260916_120000_mtg_printing_hash.sql
+-- Descripción: el índice visual del catálogo — un hash perceptual de 64 bits por
+--              impresión y cara. Es el M4 del Plan - Índice Visual del Catálogo.
+--
+-- ============================================================================
+-- QUÉ GUARDA Y QUÉ NO
+-- ============================================================================
+-- Un número, y nada más. `catalog:hash` baja la imagen `small` del CDN de
+-- Scryfall A MEMORIA, la hashea con `App\Domain\Vision\PerceptualHash` y la
+-- descarta: NO SE ESCRIBE NI UN PÍXEL EN DISCO. Las 110.384 impresiones son
+-- 1,4 GiB de tránsito (13,5 KB de media por imagen `small`, medido sobre 10
+-- reales el 2026-09-15) y ~883 KB guardados aquí.
+--
+-- Esto no es solo una cuenta de disco: esquiva de raíz la regla de
+-- [[TCGDesk/Fuentes de Datos]] que `ScryfallImageDownloader:20-28` documenta
+-- —las imágenes son copyright de Wizards of the Coast y no se pueden recortar,
+-- distorsionar, difuminar ni marcar al agua—. De una imagen derivada no queda
+-- aquí nada que se pueda mostrar: 64 bits no reconstruyen una carta.
+--
+-- `mtg_image_cache` es OTRA COSA y esta migración no la toca: aquella guarda la
+-- imagen que se le enseña al usuario, con su PK de un solo tamaño
+-- (`scryfall_id`). Este índice no la necesita ni la arregla.
+--
+-- ============================================================================
+-- POR QUÉ TABLA PROPIA Y NO UNA COLUMNA EN `mtg_printing`
+-- ============================================================================
+-- Dos razones, y las dos del plan:
+--
+--   1. **Las impresiones de doble cara tienen dos imágenes y necesitan dos
+--      hashes.** Contadas en la BD viva el 2026-09-15: `transform` 1.065,
+--      `modal_dfc` 328, `reversible_card` 211 y `meld` 48 — 1.652 impresiones.
+--      Una columna en `mtg_printing` solo daría sitio a una.
+--   2. **Dos algoritmos tienen que poder convivir** mientras el spike decide
+--      cuál es el bueno, y sin una migración destructiva por medio. De ahí la
+--      columna `algo` dentro de la PRIMARY KEY.
+--
+-- Y una tercera que manda más que las dos: `mtg_printing` es la tabla más
+-- consultada del proyecto y se queda como está.
+--
+-- ============================================================================
+-- POR QUÉ `BIGINT UNSIGNED` Y NO UN BINARY(8)
+-- ============================================================================
+-- Porque el barrido del M5 es `BIT_COUNT(hash ^ :hash) <= :umbral`, que es
+-- aritmética de enteros y no comparación de cadenas. Medido en la BD viva el
+-- 2026-09-15: **45 ms** para un barrido completo de las 110.384 filas. No hace
+-- falta ningún índice exótico ni ninguna extensión — la fuerza bruta ya es más
+-- rápida que la red.
+--
+-- ============================================================================
+-- LA FRONTERA DEL SIGNO, QUE ES LO QUE MUERDE EN SILENCIO
+-- ============================================================================
+-- `PerceptualHash::deRgb()` devuelve un `int` de PHP, o sea **64 bits CON
+-- SIGNO**: un hash cuyo bit más significativo sea 1 sale NEGATIVO, y eso es
+-- correcto y está ejercitado (`PerceptualHashTest` tiene el caso que da `-1` en
+-- PHP y en JavaScript). Esta columna es `BIGINT UNSIGNED`. Las dos cosas son
+-- ciertas a la vez y el cruce se hace en UN SOLO SITIO:
+--
+--   PHP → MySQL : `MySqlPrintingHashRepository::aSinSigno()`, que es
+--                 `sprintf('%u', $firmado)` — sobre un PHP de 64 bits (el del
+--                 contenedor: `PHP_INT_SIZE` = 8) eso convierte -1 en
+--                 18446744073709551615 exactamente.
+--   MySQL → PHP : `CAST(hash AS SIGNED)` en el propio SELECT, para que el valor
+--                 llegue a PHP dentro del rango de un `int` y no haya que
+--                 restar 2^64 a mano ni sacar `bcmath` (que tampoco está
+--                 instalado).
+--
+-- Por qué `UNSIGNED` entonces, si PHP habla con signo: porque lo que se guarda
+-- son 64 bits, no una cantidad, y una columna `SIGNED` haría que el volcado de
+-- la tabla y cualquier consulta a mano enseñaran números negativos sin más
+-- explicación que ésta. `BIT_COUNT` y el `^` funcionan igual con las dos.
+--
+-- Y la consecuencia que hay fuera de la base de datos, escrita aquí porque es
+-- donde se busca: **el hash viaja como CADENA decimal en el JSON**, nunca como
+-- número. 64 bits no caben en los 53 de un `Number` de JavaScript y el
+-- desbordamiento redondea en silencio devolviendo un número perfectamente
+-- creíble. Es el problema de los IDs de Twitter, y un bit perdido son 64 falsos
+-- negativos en el barrido.
+--
+-- ============================================================================
+-- POR QUÉ `ON DELETE CASCADE` EN LA FK
+-- ============================================================================
+-- El aviso de `CLAUDE.md` es que `mtg_precon_card` NO tiene FK a `mtg_printing`
+-- a propósito, y aquí SÍ la hay: el caso es distinto. Allí el precon llega de un
+-- fichero ajeno que puede nombrar un `uuid` que nuestro `AllPrintings` aún no
+-- tiene, y la FK reventaría la ingesta entera. Aquí el hash lo genera
+-- `catalog:hash` LEYENDO impresiones que ya existen: nunca puede haber una fila
+-- huérfana de origen.
+--
+-- CASCADE y no el RESTRICT por defecto porque esta tabla es **zona 1 derivada**:
+-- si una impresión desaparece, su hash no significa nada y nadie lo va a echar
+-- de menos; con RESTRICT, en cambio, un borrado en el catálogo fallaría con un
+-- error de clave foránea y el catálogo es reconstruible por definición. Es el
+-- mismo criterio que `mtg_precon_card → mtg_precon`
+-- (20260911_201000_mtg_precon_tables.sql:93). Lo contrario de `mtg_price_daily`,
+-- que va con RESTRICT porque su histórico es irrecuperable y borrarlo en
+-- cascada sería perder dato que MTGJSON ya no devuelve.
+--
+-- ============================================================================
+-- SI ESTA MIGRACIÓN FALLA, MIRA EL LOG DEL CONTENEDOR
+-- ============================================================================
+-- `docker/database/run_migrations.sh:114-119` manda `stderr` a /dev/null, así
+-- que una migración que falle NO enseña el error de MySQL. Está anotado desde el
+-- Plan - Amigos y Seguimiento y sigue sin arreglar. Si `--migrate` dice que algo
+-- fue mal:
+--   docker compose exec -T mysql mysql -u root -p... tcgdesk_db < este_fichero
+
+CREATE TABLE IF NOT EXISTS mtg_printing_hash (
+    printing_uuid CHAR(36)        NOT NULL COMMENT 'mtg_printing.uuid — la impresión hasheada',
+    face          ENUM('front','back') NOT NULL COMMENT 'Las 1.652 de doble cara tienen las dos',
+    algo          VARCHAR(16)     NOT NULL COMMENT "Hoy solo 'dhash8' (PerceptualHash::ALGO); la columna existe para que dos convivan sin migración destructiva",
+    hash          BIGINT UNSIGNED NOT NULL COMMENT 'Los 64 bits. PHP los produce CON signo y cruza con sprintf(%u) al escribir y CAST(... AS SIGNED) al leer',
+    PRIMARY KEY (printing_uuid, face, algo),
+    -- El barrido del M5 filtra por algoritmo y recorre TODO lo demás calculando
+    -- `BIT_COUNT(hash ^ ?)`: no hay nada que indexar del hash —la distancia de
+    -- Hamming no tiene orden— así que este índice es el único que sirve, y sirve
+    -- para acotar el recorrido al algoritmo vigente cuando haya dos.
+    KEY idx_algo (algo),
+    CONSTRAINT fk_printing_hash_printing
+        FOREIGN KEY (printing_uuid) REFERENCES mtg_printing(uuid) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  COMMENT='Hash perceptual de 64 bits por impresión y cara: el índice visual del catálogo';

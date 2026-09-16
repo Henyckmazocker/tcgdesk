@@ -51,9 +51,23 @@ final class MtgJsonMapperTest extends TestCase
             'text'         => 'At the beginning of your end step, transform Cloistered Youth.',
             'otherFaceIds' => ['ccab0ddd-0000-0000-0000-00000000000b'],
             'foreignData'  => [
-                ['language' => 'Spanish',  'name' => 'Joven enclaustrada // Demonio impío'],
+                // El español trae `identifiers` con su propio `scryfallId`, que
+                // es como MTGJSON lo publica de verdad; el japonés no lo trae, y
+                // ese es el NULL legítimo que cae al inglés.
+                [
+                    'language'    => 'Spanish',
+                    'name'        => 'Joven enclaustrada // Demonio impío',
+                    'identifiers' => [
+                        'multiverseId' => '147645',
+                        'scryfallId'   => '1e59f85a-0000-0000-0000-0000000000es',
+                    ],
+                ],
                 ['language' => 'Japanese', 'name' => '修道院の若者 // 不浄の悪鬼'],
-                ['language' => 'Chinese Traditional', 'name' => '幽禁少女 // 瀆聖邪鬼'],
+                [
+                    'language'    => 'Chinese Traditional',
+                    'name'        => '幽禁少女 // 瀆聖邪鬼',
+                    'identifiers' => ['scryfallId' => '1e59f85a-0000-0000-0000-0000000000zh'],
+                ],
             ],
         ];
 
@@ -154,6 +168,54 @@ final class MtgJsonMapperTest extends TestCase
         self::assertNull($porIdioma['Spanish']);
         self::assertSame('修道院の若者 // 不浄の悪鬼', $porIdioma['Japanese']);
         self::assertSame('幽禁少女 // 瀆聖邪鬼', $porIdioma['Chinese Traditional']);
+    }
+
+    /**
+     * **`identifiers.scryfallId` de cada traducción se ingiere** — el enganche
+     * del M6.
+     *
+     * Es la imagen POR IDIOMA, y es lo que hace que el escáner siembre el índice
+     * ORB con la carta que el usuario tiene en la mano en vez de con su versión
+     * inglesa. Si alguien toca este bucle y se lo lleva por delante, cada
+     * reimportación dejará las cartas nuevas sin id localizado **en silencio**,
+     * exactamente como pasó con `name_normalized`.
+     */
+    public function testCadaTraduccionSeLlevaSuScryfallIdCuandoMtgjsonLoTrae(): void
+    {
+        [$caraA] = $this->carasDeCloisteredYouth();
+
+        $porIdioma = [];
+        foreach ($this->mapper->localized($caraA) as $fila) {
+            $porIdioma[$fila['language']] = $fila['scryfall_id'];
+        }
+
+        self::assertSame('1e59f85a-0000-0000-0000-0000000000es', $porIdioma['Spanish']);
+        self::assertSame('1e59f85a-0000-0000-0000-0000000000zh', $porIdioma['Chinese Traditional']);
+        self::assertNull(
+            $porIdioma['Japanese'],
+            'MTGJSON no publica id para toda traducción: eso es un NULL legítimo, no un fallo.'
+        );
+    }
+
+    /**
+     * El id localizado **no es el de `mtg_printing`**.
+     *
+     * Escribir el inglés en las diez filas sería peor que dejarlas a NULL: la
+     * caída al inglés dejaría de verse y el escáner seguiría sembrando la imagen
+     * equivocada creyendo que tiene la buena.
+     */
+    public function testElIdLocalizadoNoEsElDeLaImpresion(): void
+    {
+        [$caraA] = $this->carasDeCloisteredYouth();
+
+        $printing = $this->mapper->printing($caraA, 'ISD');
+        $filas    = $this->mapper->localized($caraA);
+
+        self::assertSame('f8b8f0b4-0000-0000-0000-000000000001', $printing['scryfall_id']);
+
+        foreach ($filas as $fila) {
+            self::assertNotSame($printing['scryfall_id'], $fila['scryfall_id']);
+        }
     }
 
     public function testElIdiomaNoSeTruncaAunqueMidaMasDe16Caracteres(): void

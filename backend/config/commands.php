@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Cli\Commands\CatalogImportCommand;
+use App\Cli\Commands\CatalogLocalizedIdsCommand;
 use App\Cli\Commands\CatalogNormalizeCommand;
 use App\Cli\Commands\DecksImportCommand;
 use App\Cli\Commands\HelloCommand;
 use App\Cli\Commands\ImagesCacheCommand;
+use App\Cli\Commands\PricesHealthCommand;
 use App\Cli\Commands\PricesSeedCommand;
 use App\Cli\Commands\PricesSyncCommand;
 
@@ -35,13 +37,38 @@ use App\Cli\Commands\PricesSyncCommand;
  * casa lo que el usuario teclea. No cuelga del cron —la ingesta mantiene la
  * columna al día por su cuenta—, pero devuelve 1 si queda una sola carta fuera
  * del índice, que es la comprobación de que sigue estándolo.
+ *
+ * `catalog:hash` y `vision:refs` ESTUVIERON AQUÍ y se borraron con el M1 del
+ * Plan - Escáner de Cartas por Cámara, junto con la tabla `mtg_printing_hash` y
+ * los 883 KB de índice que llenaban. La identificación por hash perceptual está
+ * medida y muerta —una foto queda a 11-12 bits de su propia referencia contra un
+ * margen mediano de 6, y sobre 8 cartas reales la correcta salió en los puestos
+ * #5 a #3218—, y el porqué íntegro vive en el `## 📅 Log` de ese plan. No se
+ * vuelven a escribir.
+ *
+ * `catalog:localized-ids` llega con el M6 del Plan - Reconocimiento de la
+ * Impresión por su Arte, y es hermano de `catalog:normalize` y no una bandera
+ * suya: aquel recalcula una clave a partir de lo que ya está en la tabla —no sale
+ * a internet y termina en 20 s—, y este **tiene que leer `AllPrintings.json.gz`**
+ * porque el `scryfallId` de cada traducción no se puede calcular, solo copiar.
+ * Rellena la imagen POR IDIOMA, que es lo que hace que el escáner siembre el
+ * índice ORB en el idioma de la carta en vez de en inglés. Tampoco cuelga del
+ * cron —la ingesta mantiene la columna al día— pero devuelve 1 si queda una fila
+ * que MTGJSON sí trae con id y que sigue a NULL.
+ *
+ * `prices:health` llega con el M3 del Plan - Jobs Programados: no ingiere nada,
+ * solo mira si `mtg_price_daily` se ha quedado atrás y lo dice con el código de
+ * salida. Va enganchado al final de `prices-sync.sh`, porque el agujero de 33
+ * días que motivó aquel plan existió justamente porque nadie miraba.
  */
 return [
     CatalogImportCommand::class,
+    CatalogLocalizedIdsCommand::class,
     CatalogNormalizeCommand::class,
     DecksImportCommand::class,
     HelloCommand::class,
     ImagesCacheCommand::class,
+    PricesHealthCommand::class,
     PricesSeedCommand::class,
     PricesSyncCommand::class,
 ];

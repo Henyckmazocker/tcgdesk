@@ -29,6 +29,7 @@
         :scryfall-id="carta.scryfallId"
         :nombre="carta.name"
         tamano="normal"
+        :ampliable="false"
         class="ficha__imagen"
       />
 

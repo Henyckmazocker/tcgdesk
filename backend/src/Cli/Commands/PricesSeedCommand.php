@@ -56,8 +56,9 @@ class PricesSeedCommand implements CommandInterface
 
         if (isset($opciones['help'])) {
             echo "prices:seed — siembra los 90 días de histórico\n\n"
-                . "  --file=RUTA   Usa un fichero ya descargado\n"
-                . "  --help        Esto\n\n"
+                . "  --file=RUTA       Usa un fichero ya descargado\n"
+                . "  --force-download  Vuelve a bajar AllPrices.json.gz aunque ya esté en disco\n"
+                . "  --help            Esto\n\n"
                 . "Descarga AllPrices.json.gz (149 MB) y escribe SOLO en mtg_price_daily.\n"
                 . "Es idempotente: relanzarlo no duplica nada, solo tarda.\n";
             return 0;
@@ -68,7 +69,13 @@ class PricesSeedCommand implements CommandInterface
         echo "Sembrando el histórico de precios. Esto tarda: son 149 MB y 90 días por carta.\n";
 
         try {
-            $ruta = $opciones['file'] ?? $this->downloader->descargar(self::FICHERO);
+            // Sin `--force-download` se reutiliza el .gz que haya en disco, que es
+            // lo que se quiere mientras se depura. Para rellenar un hueco del
+            // histórico es justo al revés: el fichero viejo trae la ventana de 90
+            // días de *entonces*, y con `INSERT IGNORE` la siembra no insertaría
+            // nada pareciendo que fue bien.
+            $ruta = $opciones['file']
+                ?? $this->downloader->descargar(self::FICHERO, isset($opciones['force-download']));
 
             $stats = $this->ingesta->ingerir(
                 (string) $ruta,

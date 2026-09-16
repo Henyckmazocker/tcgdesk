@@ -1,0 +1,86 @@
+{
+  "items": [
+    {
+      "uuid": "09b117e2-2c2c-522c-9c72-6e302d770f76",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "HOB",
+      "setName": "The Hobbit",
+      "collectorNumber": "193",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "c3e84b42-5423-4d4d-b8fc-cfbb2c53a4ca",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 0.15,
+        "foil": 0.16,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "ae29e830-890f-5112-87de-b32bedfb428f",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "MSH",
+      "setName": "Marvel Super Heroes",
+      "collectorNumber": "295",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "22463284-2478-4b1e-9a37-6dd2383266cf",
+      "finishes": {
+        "foil": true,
+        "nonfoil": true,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": 0.09,
+        "foil": 0.18,
+        "etched": null
+      }
+    },
+    {
+      "uuid": "5fd6a9a8-c70e-5b08-84e0-dd1d2c6217e2",
+      "oracleId": "b34bb2dc-c1af-4d77-b0b3-a0fb342a5fc6",
+      "name": "Forest",
+      "setCode": "MSH",
+      "setName": "Marvel Super Heroes",
+      "collectorNumber": "441",
+      "rarity": "common",
+      "manaCost": null,
+      "manaValue": 0,
+      "colors": [],
+      "colorIdentity": [
+        "G"
+      ],
+      "typeLine": "Basic Land — Forest",
+      "scryfallId": "6b6a8792-2355-4948-9c19-68491888d73f",
+      "finishes": {
+        "foil": true,
+        "nonfoil": false,
+        "etched": false
+      },
+      "priceEur": {
+        "normal": null,
+        "foil": 0.41,
+        "etched": null
+      }
+    }
+  ],
+  "nextCursor": "eyJ2IjoiMjAyNi0wNi0yNiIsInUiOiI1ZmQ2YTlhOC1jNzBlLTViMDgtODRlMC1kZDFkMmM2MjE3ZTIifQ"
+}

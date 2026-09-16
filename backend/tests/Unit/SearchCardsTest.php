@@ -35,6 +35,20 @@ class CartasFalsas implements CardRepositoryInterface
         return null;
     }
 
+    public function impresionesDe(string $uuid, ?string $cursor, int $limite): ?array
+    {
+        return null;
+    }
+
+    /**
+     * El escáner no pasa por aquí: este doble prueba otra cosa. Existe porque
+     * la interfaz lo declara desde el M2 del Plan - Escáner de Cartas por Cámara.
+     */
+    public function porUuids(array $uuids): array
+    {
+        return [];
+    }
+
     public function allSets(): array
     {
         return [];

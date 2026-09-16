@@ -102,6 +102,18 @@ class MySqlPriceRepository implements PriceRepositoryInterface
         );
     }
 
+    /**
+     * `MAX(price_date)` sale del índice de la PK, así que no recorre los 17,8 M
+     * de filas: es una consulta constante aunque la tabla siga creciendo.
+     */
+    public function ultimaFechaHistorico(): ?string
+    {
+        $fecha = $this->db->query('SELECT MAX(price_date) FROM mtg_price_daily')->fetchColumn();
+
+        // La tabla vacía devuelve una fila con NULL, no cero filas.
+        return $fecha === null || $fecha === false ? null : (string) $fecha;
+    }
+
     public function contadores(): array
     {
         return [
